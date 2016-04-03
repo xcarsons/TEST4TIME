@@ -32,6 +32,7 @@ public class DeviceIntentService extends IntentService {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
+        populateBlockApps();
         return START_STICKY;
     }
 
@@ -57,7 +58,7 @@ public class DeviceIntentService extends IntentService {
      */
     @Override
     protected void onHandleIntent(Intent intent) {
-        populateBlockApps();
+
         ActivityManager manager = (ActivityManager) getApplicationContext().getSystemService(ACTIVITY_SERVICE);
 
         while(true) {

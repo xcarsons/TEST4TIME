@@ -74,6 +74,9 @@ public class BlockedApps extends Activity {
                 Log.d("REFRESH", "BTN pressed");
                 Toast.makeText(BlockedApps.this, "List Saved", Toast.LENGTH_SHORT).show();
                 listadaptor.saveApplications();
+
+                Intent i = new Intent(this, DeviceIntentService.class);
+                startService(i);
                 break;
             }
             default: {
