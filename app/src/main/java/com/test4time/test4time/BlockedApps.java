@@ -103,10 +103,11 @@ public class BlockedApps extends Activity {
         return applist;
     }
 
+
     /*
-     * inner class creates a thread to populated the RecyclerView
-     * Data retrieved (applications installed on device, applications in BLOCKAPPS table)
-     */
+         * inner class creates a thread to populated the RecyclerView
+         * Data retrieved (applications installed on device, applications in BLOCKAPPS table)
+         */
     private class LoadApplications extends AsyncTask<Void, Void, Void> {
         private ProgressDialog progress = null;
 
