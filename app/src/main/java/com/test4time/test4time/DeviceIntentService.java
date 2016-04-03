@@ -54,7 +54,9 @@ public class DeviceIntentService extends IntentService {
     }
 
     /*
-     *
+     * Logic of the intent service
+     * Current Foreground activity is monitored, if it's in the block apps list
+     * Redirect to Test4Time app
      */
     @Override
     protected void onHandleIntent(Intent intent) {

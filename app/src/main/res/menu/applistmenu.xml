@@ -5,8 +5,10 @@
         android:orderInCategory="100"
         android:showAsAction="always"
         android:title="SAVE"/>
+
     <item
-        android:id="@+id/action_settings"
-        android:title="Settings">
+        android:id="@+id/action_checkall"
+        android:title="Check All">
     </item>
+
 </menu>
