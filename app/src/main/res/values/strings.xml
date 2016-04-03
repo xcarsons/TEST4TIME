@@ -5,5 +5,6 @@
     <string name="start">Press to Start</string>
     <string name="submitText">SUBMIT</string>
     <string name="backspace_string">CLEAR</string>
+    <string name="parentTitle">Parent Menu</string>
 
 </resources>
