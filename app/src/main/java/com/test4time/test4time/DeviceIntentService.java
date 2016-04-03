@@ -7,10 +7,12 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.*;
 import android.os.Process;
 import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,6 +23,7 @@ import java.util.List;
  */
 public class DeviceIntentService extends IntentService {
     private static final String TAG = "com.test4time.test4time";
+    private ArrayList<String> blockApps;
 
     public DeviceIntentService() {
         super("DeviceIntentService");
@@ -33,7 +36,7 @@ public class DeviceIntentService extends IntentService {
     }
 
     /*
-     * Start service even if Test4Time application is killed
+     * Start service if Test4Time application is killed
      */
     @Override
     public void onTaskRemoved(Intent rootIntent) {
@@ -54,23 +57,36 @@ public class DeviceIntentService extends IntentService {
              */
     @Override
     protected void onHandleIntent(Intent intent) {
-       // what the service does
+        populateBlockApps();
         ActivityManager manager = (ActivityManager) getApplicationContext().getSystemService(ACTIVITY_SERVICE);
 
         while(true) {
             List<ActivityManager.RunningAppProcessInfo> tasks = manager.getRunningAppProcesses();
-            Log.d("FOREGROUND",tasks.get(0).processName); //
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            if(tasks.get(0).processName.equals("com.pandora.android")) { // get foreground activity
+
+            if(blockApps.contains(tasks.get(0).processName)) {// get foreground activity
                 Intent test4Time = new Intent(getApplicationContext(), BlockedApps.class);
                 test4Time.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(test4Time);
             }
         }
+    }
+
+    /*
+     * Populate ArrayList<String> of blocked apps
+     * Stores the processName of the application
+     */
+    private void populateBlockApps() {
+        blockApps = new ArrayList<String>();
+        Database db = new Database(getApplicationContext(), null, null, 0, null);
+        Cursor data = db.getBlockedApps();
+        data = db.getBlockedApps();
+        // get list of blocked apps from BLOCKAPPS table, add them to the list of selected (checked) apps
+        while (data.moveToNext()) {
+            Application app = new Application(data.getString(1), data.getString(2), data.getString(3));
+            blockApps.add(data.getString(3));
+        }
+        db.close();
+        blockApps.remove(TAG); // remove the test4time process if it exists
     }
 
 }
