@@ -58,7 +58,6 @@ public class DeviceIntentService extends IntentService {
      */
     @Override
     protected void onHandleIntent(Intent intent) {
-
         ActivityManager manager = (ActivityManager) getApplicationContext().getSystemService(ACTIVITY_SERVICE);
 
         while(true) {
