@@ -3,4 +3,7 @@
     <string name="app_name">Test4Time</string>
     <string name="welcome">Welcome to Test4Time!</string>
     <string name="start">Press to Start</string>
+    <string name="submitText">SUBMIT</string>
+    <string name="backspace_string">CLEAR</string>
+
 </resources>

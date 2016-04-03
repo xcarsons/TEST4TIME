@@ -1,5 +1,7 @@
 package com.test4time.test4time;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.Random;
 /**
  * Question.java
@@ -17,7 +19,7 @@ public class Question {
     //TODO: change to an enum?
     /** Current grade level of the current question
      * Possible values include: P, K, 1, 2, 3, etc. */
-    static char LEVEL;
+    char level;
 
     /** The value displayed on the left of the operator symbol*/
     String left;
@@ -40,16 +42,17 @@ public class Question {
      * This can be used to create a base Question object,
      * then an appropriate question will be generated based on grade LEVEL. */
     public Question(char level) {
-        nextMathQuestion(level);
+
     }
 
     /** Initialize a new question with a starting question.
      *  (leftNew opNew rightNew = answerNew) */
-    public Question(String leftNew, String rightNew, String opNew, String answerNew) {
+    public Question(String leftNew, String rightNew, String opNew, String answerNew, char level) {
         left = leftNew;
         right = rightNew;
         opSign = opNew;
         answer = answerNew;
+        this.level = level;
     }
 
     /** Should nextMathQuestion return a Question?
@@ -59,332 +62,342 @@ public class Question {
      *      > Question q = new question();
      *      > q.nextMathQuestion(..)*/
 
-    /** Set the current Question object's values to a new Math question based on grade LEVEL */
-    public void nextMathQuestion(char LEVEL) {
+    public Question obsoletenextMathQuestion(char level) {
         Random random = new Random();
-        this.LEVEL = LEVEL;
-        //TODO: add more grade levels
-        //another idea: instead of completely random ranges,
-        //   have higher grades pick between lower grades level (a small chance)?
-        //also, the higher level problems (137+225=362) may be too difficult for mental math
-        switch(LEVEL) {
-            // grade P only have Addition problems
-            case 'P':
-                //NOTE: it may be more appropriate to give Preschoolers counting problems
-                //      this could be like "How many ___ are there?"
-                //      for now, they just get additions up to 5 + 5
-                nextAddQuestion(LEVEL);
-                break;
-            // grade K have Addition and Subtraction problems
-            case 'K':
-                //randomly select between Addition and Subtraction
-                if(random.nextInt(2) % 2 == 0) {
-                    nextAddQuestion(LEVEL);
-                } else {
-                    nextSubQuestion(LEVEL);
-                }
-                break;
-            // grade 1 have Addition and Subtraction problems
-            case '1':
-                if(random.nextInt(2) % 2== 0) {
-                    nextAddQuestion(LEVEL);
-                } else {
-                    nextSubQuestion(LEVEL);
-                }
-                break;
-            // grade 2 have Addition and Subtraction problems with 2 digits
-            case '2':
-                if(random.nextInt(2) % 2== 0) {
-                    nextAddQuestion(LEVEL);
-                } else {
-                    nextSubQuestion(LEVEL);
-                }
-                break;
-            // grade 3 have Addition and Subtraction problems with 3 digits
-            case '3':
-                if(random.nextInt(2) % 2== 0) {
-                    nextAddQuestion(LEVEL);
-                } else {
-                    nextSubQuestion(LEVEL);
-                }
-                break;
-            // otherwise, only do Addition problems
-            default:
-                nextAddQuestion(LEVEL);
-        }
-    }
+        this.level = level;
+        String left = "-1";
+        String right = "-1";
+        String op = "+";
+        String answer = "-1";
 
-    /** A method that returns a new value using base and multiplier
-     * @param base The start value to use (2,3, or 5)
-     * @param multiplier The value to multiplied with the to-be-calculated base value*/
-    private int getMultiplierValue(int base, int multiplier) {
-        switch(base) {
-            //use a base value of 2 with multiplier
-            case 0:
-                return 2 * multiplier;
-            //use a base value of 5 with multiplier
-            case 1:
-                //NOTE: THIS IS 5
-                // 2 and 5 are better numbers than 2 and 3 for getting 'simple' numbers
-                // so 5 is the next option
-                return 5 * multiplier;
-            //use a base value of 5 with multiplier
-            case 2:
-                return 3 * multiplier;
-            //if not specified, use a base of 2
-            default:
-                return 2 * multiplier;
-        }
-    }
+        //set values for left, right, op, and answer according to grade level
 
-    /** Set the current Question values to a new Addition problem based on grade LEVEL */
-    public void nextAddQuestion(char LEVEL) {
-        Random random = new Random();
-        int leftMax = 0, rightMax = 0;
-        int leftVal = -1, rightVal = -1;
-        boolean setValues = true;
-        switch(LEVEL) {
-            case 'P':
-                //note, these MaxValues ARE included in the range
-                // so max of 5 means values [0,1,2,3,4,5]
-                leftMax = 5;
-                rightMax = 5;
-                break;
+        switch(level) {
             case 'K':
-                leftMax = 10;
-                rightMax = 10;
                 break;
             case '1':
-                leftMax = 20;
-                rightMax = 20;
                 break;
             case '2':
-                //make these numbers nicer/easier for mental math
-                //  - maybe have it pick like multiples of 2,3 or 5?
-
-
-                //turn off setValues, so the leftMax and rightMax values are used
-                setValues = false;
-                {
-                    //get a number 0,1,or 2 to get a base value
-                    //  where 0 sets a base of 2, 1 sets a base of 5, and 2 sets a base of 3
-                    int leftBase = random.nextInt(2);
-                    int rightBase = random.nextInt(2);
-                    //get a number from 0-20 to multiply with base
-                    int leftMultiplier = random.nextInt(21);
-                    int rightMultiplier = random.nextInt(21);
-                    leftMax = getMultiplierValue(leftBase, leftMultiplier);
-                    rightMax = getMultiplierValue(rightBase, rightMultiplier);
-                }
-                //leftMax = 100;
-                //rightMax = 100;
                 break;
             case '3':
-                //make these numbers nicer/easier for mental math
-                //  - maybe have it pick like multiples of 2,3 or 5?
-
-                //turn off setValues, so the leftMax and rightMax values are used
-                setValues = false;
-                {
-                    //get a number 0,1,or 2 to get a base value
-                    //  where 0 sets a base of 2, 1 sets a base of 5, and 2 sets a base of 3
-                    int leftBase = random.nextInt(2);
-                    int rightBase = random.nextInt(2);
-                    //get a number from 0-60 to multiply with base
-                    int leftMultiplier = random.nextInt(61);
-                    int rightMultiplier = random.nextInt(61);
-                    //maximum value is 5 * 60 = 300
-                    leftMax = getMultiplierValue(leftBase, leftMultiplier);
-                    rightMax = getMultiplierValue(rightBase, rightMultiplier);
-                }
-
-                //leftMax = 300;
-                //rightMax = 300;
                 break;
-            default:
-                //otherwise, just have a max of 3
-                leftMax = 3;
-                rightMax = 3;
+            case '4':
+                break;
+            case '5':
+                break;
+            case '6':
                 break;
         }
 
-        //if setValues, then use the Max values to generate a new random number
-        if (setValues) {
-            leftVal = random.nextInt(leftMax + 1);
-            rightVal = random.nextInt(rightMax + 1);
-        } else {
-            //otherwise, just set the new values to the max values
-            leftVal = leftMax;
-            rightVal = rightMax;
-        }
-        left = Integer.toString(leftVal);
-        right = Integer.toString(rightVal);
-        answer = Integer.toString(leftVal + rightVal);
-        opSign = "+";
+        Question q = new Question(left, right, op, answer, level);
+        return null;
     }
 
-    /** Set the current Question values to a new Subtraction problem based on grade LEVEL */
-    public void nextSubQuestion(char LEVEL) {
+    public static LinkedList<Question> generateQuestionPool(char level) {
+
         Random random = new Random();
-        int leftMax, rightMax;
+        LinkedList<Question> questions;
+        int index = 0;
+
+        String leftNew, rightNew, ansNew;
+        char opNew;
+        int leftMax = 10, rightMax = 10;
         int leftVal, rightVal;
-        boolean setValues = true;
-        switch(LEVEL) {
-            case 'P':
-                //note, these MaxValues ARE included in the range
-                // so max of 5 means values [0,1,2,3,4,5]
-                leftMax = 10;
-                rightMax = 5;
-                break;
+
+        switch(level) {
+            /*
+            K-  Addition and subtraction with 10 as the largest sum or addend.
+            5 addition problems followed by 5 subtraction.
+             */
             case 'K':
-                leftMax = 20;
-                rightMax = 10;
+                //generate 10 questions
+                questions  = new LinkedList<Question>();
+
+                while(index < 10) {
+                    leftVal = random.nextInt(11);
+                    rightVal = random.nextInt(11);
+
+                    //generate 5 addition problems first
+                    if(index < 5) {
+                        leftNew = Integer.toString(leftVal);
+                        rightNew = Integer.toString(rightVal);
+                        ansNew = Integer.toString(leftVal + rightVal);
+                        //questions[index] = new Question(leftNew, rightNew, "+", ansNew, level);
+                        questions.add(new Question(leftNew, rightNew, "+", ansNew, level));
+                    } else {
+                        //then generate 5 subtraction problems
+                        //if left < right, swap the values
+                        if(leftVal >= rightVal) {
+                            leftNew = Integer.toString(leftVal);
+                            rightNew = Integer.toString(rightVal);
+                            ansNew = Integer.toString(leftVal - rightVal);
+                        } else {
+                            leftNew = Integer.toString(rightVal);
+                            rightNew = Integer.toString(leftVal);
+                            ansNew = Integer.toString(rightVal - leftVal);
+                        }
+                        //questions[index] = new Question(leftNew, rightNew, "-", ansNew, level);
+                        questions.add(new Question(leftNew, rightNew, "-", ansNew, level));
+                    }
+                    index++;
+                }
+                //char newOp = ((random.nextInt(10) + 1 ) % 2 == 0) ? '+' : '-';
                 break;
+            /*
+            1st grade-  Addition and subtraction, no carrying or borrowing.  99 is the top.
+            Alternate + and -.  Have half of them have a sum 20 or less.  Every fourth problem do
+            the opposite of the previous one.  So if the third problem is 6+3=9, then the fourth
+            one should be 9-3=6 or 9-6=3.  I want to show how the two are connected.
+            Every fifth problem have them add 3 digits (5+4+2) where the sum is 20 or less.
+            */
+
+            /*
+                This is working for alternating Addition and subtraction
+
+             */
             case '1':
-                leftMax = 30;
-                rightMax = 20;
+                questions  = new LinkedList<Question>();
+
+                int addOrS = random.nextInt();
+
+
+                while (index < 20) {
+
+                    if (index < 10) {
+                        leftVal = random.nextInt(20);
+                        if(leftVal == 20 && addOrS % 2 == 0) {
+                            rightVal = 0;
+                        } else {
+                            int limit = 21 - leftVal;
+                            rightVal = random.nextInt(limit);
+                        }
+
+                    } else {
+                        leftVal = 1 + random.nextInt(100);
+                        int limit = 100 - leftVal;
+                        rightVal = random.nextInt(limit);
+                    }
+                    if (addOrS % 2 == 0) {
+                        leftNew = Integer.toString(leftVal);
+                        rightNew = Integer.toString(rightVal);
+                        ansNew = Integer.toString(leftVal + rightVal);
+
+                        questions.add(new Question(leftNew, rightNew, "+", ansNew, level));
+                        //questions[index] = new Question(leftNew, rightNew, "+", ansNew, level);
+                    } else {
+                        if (addOrS % 2 != 0) {
+                            rightVal = random.nextInt(leftVal);
+                            //Swap if left bigger than right
+                            if (leftVal >= rightVal) {
+                                leftNew = Integer.toString(leftVal);
+                                rightNew = Integer.toString(rightVal);
+                                ansNew = Integer.toString(leftVal - rightVal);
+                            } else {
+                                leftNew = Integer.toString(rightVal);
+                                rightNew = Integer.toString(leftVal);
+                                ansNew = Integer.toString(rightVal - leftVal);
+                            }
+                            questions.add(new Question(leftNew, rightNew, "-", ansNew, level));
+                            //questions[index] = new Question(leftNew, rightNew, "-", ansNew, level);
+                        }
+                    }
+                    addOrS++;
+                    index++;
+
+                }
+
+
                 break;
+
+            /*2nd grade-  Same as 1st but we are going to include 3 digit problems (124+232).
+                Carrying and borrowing only on two digit problems.  Again 99 is the top.
+                Alternate + and -.  3 digit problem every 10th problem.
+             */
+
             case '2':
-                //make these numbers nicer/easier for mental math
-                //  - maybe have it pick like multiples of 2,3 or 5?
+                questions  = new LinkedList<Question>();
 
-                setValues = false;
-                {
-                    //get a number 0,1,or 2 to get a base value
-                    //  where 0 sets a base of 2, 1 sets a base of 5, and 2 sets a base of 3
-                    int leftBase = random.nextInt(2);
-                    int rightBase = random.nextInt(2);
-                    //get a number from 0-20 to multiply with base
-                    int leftMultiplier = random.nextInt(31);
-                    int rightMultiplier = random.nextInt(21);
-                    leftMax = getMultiplierValue(leftBase, leftMultiplier);
-                    rightMax = getMultiplierValue(rightBase, rightMultiplier);
+                int addOrSubtract = random.nextInt();
+
+
+                while (index < 20) {
+
+                    if (index < 8) {
+                        leftVal = random.nextInt(20);
+                        if(leftVal == 20 && addOrSubtract % 2 == 0) {
+                            rightVal = 0;
+                        } else {
+                            int limit = 21 - leftVal;
+                            rightVal = random.nextInt(limit);
+                        }
+
+
+                    } else {
+                        if (index == 9 || index == 19) {
+                            leftVal = 99 + (random.nextInt() * 1000);
+                            int limit = 1000 - leftVal;
+                            rightVal = random.nextInt(limit);
+
+                        }else {
+                            leftVal = 1 + random.nextInt(100);
+                            int limit = 100 - leftVal;
+                            rightVal = random.nextInt(limit);
+                        }
+                    }
+                    if (addOrSubtract % 2 == 0) {
+                        leftNew = Integer.toString(leftVal);
+                        rightNew = Integer.toString(rightVal);
+                        ansNew = Integer.toString(leftVal + rightVal);
+
+                        questions.add(new Question(leftNew, rightNew, "+", ansNew, level));
+                        //questions[index] = new Question(leftNew, rightNew, "+", ansNew, level);
+                    } else {
+                        if (addOrSubtract % 2 != 0) {
+                            rightVal = random.nextInt(leftVal);
+                            //Swap if left bigger than right
+                            if (leftVal >= rightVal) {
+                                leftNew = Integer.toString(leftVal);
+                                rightNew = Integer.toString(rightVal);
+                                ansNew = Integer.toString(leftVal - rightVal);
+                            } else {
+                                leftNew = Integer.toString(rightVal);
+                                rightNew = Integer.toString(leftVal);
+                                ansNew = Integer.toString(rightVal - leftVal);
+                            }
+                            questions.add(new Question(leftNew, rightNew, "-", ansNew, level));
+                            //questions[index] = new Question(leftNew, rightNew, "-", ansNew, level);
+                        }
+                    }
+                    addOrSubtract++;
+                    index++;
+
                 }
-
-                //leftMax = 150;
-                //rightMax = 100;
                 break;
+
+
+            /*
+            3rd grade-  Times tables through 10.  Every 10th problem a 2 digit addition or
+            subtraction problem.  Borrowing and carrying is fine.
+             */
             case '3':
-                //make these numbers nicer/easier for mental math
-                //  - maybe have it pick like multiples of 2,3 or 5?
-                setValues = false;
-                {
-                    //get a number 0,1,or 2 to get a base value
-                    //  where 0 sets a base of 2, 1 sets a base of 5, and 2 sets a base of 3
-                    int leftBase = random.nextInt(2);
-                    int rightBase = random.nextInt(2);
-                    //get a number from 0-100 to multiply with base
-                    int leftMultiplier = random.nextInt(101);
-                    int rightMultiplier = random.nextInt(61);
-                    leftMax = getMultiplierValue(leftBase, leftMultiplier);
-                    rightMax = getMultiplierValue(rightBase, rightMultiplier);
+                questions  = new LinkedList<Question>();
+
+                while (index < 10) {
+                    leftVal = random.nextInt(11);
+                    rightVal = random.nextInt(11);
+
+                    if (index < 9) {
+                        leftNew = Integer.toString(leftVal);
+                        rightNew = Integer.toString(rightVal);
+                        ansNew = Integer.toString(leftVal * rightVal);
+                        questions.add(new Question(leftNew, rightNew, "x", ansNew, level));
+                        //questions[index] = new Question(leftNew, rightNew, "x", ansNew, level);
+                    } else {
+                        int max = 99;
+                        int min = 10;
+
+                        //Generate random number to determine addition or subtraction
+                        int addOrSub = random.nextInt(2);
+
+                        //specify values that the addition/subtraction must be between (two digit)
+                        leftVal = random.nextInt((max - min) + 1) + min;
+                        rightVal = random.nextInt((max - min) + 1) + min;
+
+                        if (addOrSub % 2 != 0) {
+                            leftNew = Integer.toString(leftVal);
+                            rightNew = Integer.toString(rightVal);
+                            ansNew = Integer.toString(leftVal + rightVal);
+
+                            questions.add(new Question(leftNew, rightNew, "+", ansNew, level));
+                            //questions[index] = new Question(leftNew, rightNew, "+", ansNew, level);
+                        } else {
+
+                            //Swap if left bigger than right
+                            if(leftVal >= rightVal) {
+                                leftNew = Integer.toString(leftVal);
+                                rightNew = Integer.toString(rightVal);
+                                ansNew = Integer.toString(leftVal - rightVal);
+                            } else {
+                                leftNew = Integer.toString(rightVal);
+                                rightNew = Integer.toString(leftVal);
+                                ansNew = Integer.toString(rightVal - leftVal);
+                            }
+                            questions.add(new Question(leftNew, rightNew, "-", ansNew, level));
+                            //questions[index] = new Question(leftNew, rightNew, "-", ansNew, level);
+                        }
+
+                    }
+                    index ++;
                 }
-                //leftMax = 500;
-                //rightMax = 300;
+                break;
+            /*
+            Times tables through 12.  Every 4th problem a division problem that's the inverse of
+            the previous multiplication problem (problem 3 is 6x3=18, problem 4 is 18 divided by 6
+            or 18 divided by 3).  Every 10th problem a 2 digit addition or subtraction problem.
+            Every 20th problem multiply 3 numbers with a product below 100 (7x3x2).
+             */
+            case '4':
+                questions  = new LinkedList<Question>();
+
+                index = 0;
+                while(index < 10) {
+                    if(index == 9) {
+                        //make the 10th problem a 2 digit addition/subtraction problem
+                        //TODO: copy over add/sub from 1st grade
+                    } else if(index % 4 < 3) {
+                        //times tables from 0..12
+                        leftVal = random.nextInt(13);
+                        rightVal = random.nextInt(13);
+                        leftNew = Integer.toString(leftVal);
+                        rightNew = Integer.toString(rightVal);
+                        ansNew = Integer.toString(leftVal * rightVal);
+                        questions.add(new Question(leftNew, rightNew, "x", ansNew, level));
+                    } else {
+                        // make the 4th problem inverse of 3rd
+                        // 3rd: 6x3=18  becomes  4th: 18 / 6 = 3
+                        Question third = questions.peekLast();
+                        leftNew = third.answer;
+                        rightNew = third.left;
+                        ansNew = third.right;
+                        // display the character for the division symbol
+                        String testOpStr = "\u00F7";
+                        //questions.add(new Question(leftNew, rightNew, "/", ansNew, level));
+                        questions.add(new Question(leftNew, rightNew, testOpStr, ansNew, level));
+                    }
+                    index++;
+                }
+                break;
+            /*
+           Multiplication and division thru 12 alternating mult and div. First 6 random,
+           second 6 alternate the mult with a division prob that's the inverse of the previous
+           mult problem.  Second 6 example (6x4=24, 24/6=4, 9x3=27, 27/9=3, 8x7=56, 56/8=7).
+           7th problem a simple fraction addition problem (same denominator, sum <1).  14th problem
+           fraction multiplication (single digit 1/3 x 3/4=3/12).  21st problem fraction subtraction
+           (same denominator 3/4-1/4=2/4).  Then repeat the cycle, 28th is frac addition,
+           35th mult, 42nd subtraction.  If the answer box can't do a fraction then can we do mult
+           choice?  Or maybe we can use the / bar in the answer box?
+             */
+            case '5':
+                questions  = new LinkedList<Question>();
+                index = 0;
+                break;
+            case '6':
+                questions  = new LinkedList<Question>();
                 break;
             default:
-                //otherwise, just have a max of 3
-                leftMax = 5;
-                rightMax = 3;
-                break;
-        }
-
-        if(setValues) {
-            leftVal = random.nextInt(leftMax + 1);
-            rightVal = random.nextInt(rightMax + 1);
-        } else {
-            leftVal = leftMax;
-            rightVal = rightMax;
-        }
-        // if the left value is smaller than the right value, swap them so you don't get negatives
-        if(leftVal < rightVal) {
-            int temp = leftVal;
-            leftVal = rightVal;
-            rightVal = temp;
-        }
-
-        left = Integer.toString(leftVal);
-        right = Integer.toString(rightVal);
-        answer = Integer.toString(leftVal - rightVal);
-        opSign = "-";
-    }
-
-    /** Set the current Question values to a new Multiplication problem based on grade LEVEL */
-    public void nextMulQuestion(char LEVEL) {
-        //TODO: multiplication questions
-        // this will probably be 4th+ grade level
-    }
-
-    /** Set the current Question values to a new Division problem based on grade LEVEL */
-    public void nextDivQuestion(char LEVEL) {
-        //TODO: division questions
-        // this will probable be 4th/5th+ grade level
-    }
-
-    /** --OLD VERSION - this method is no longer used--
-     * Creation of Math questions all in one method based on LEVEL */
-    public void create(int LEVEL) {
-        //TODO: add more levels of questions
-        int leftMax = 1;
-        int rightMax = 1;
-        int opMax = 1;
-        Random random = new Random();
-        switch (LEVEL) {
-            case 0:
-                leftMax = 10;
-                rightMax = 10;
-                opMax = 2;
-                break;
-            case 1:
-                leftMax = 20;
-                rightMax = 20;
-                opMax = 2;
-                break;
-            case 2:
-                break;
-        }
-
-        int leftNew = random.nextInt(leftMax);
-        int rightNew = random.nextInt(rightMax);
-        int ansNew = 0;
-        int op = random.nextInt(opMax);
-        switch (op) {
-            case 0:
-                ansNew = leftNew + rightNew;
-                opSign = "+";
-
-                left = Integer.toString(leftNew);
-                right = Integer.toString(rightNew);
-                break;
-            case 1:
-                if(leftNew > rightNew) {
-                    ansNew = leftNew - rightNew;
-
-                    left = Integer.toString(leftNew);
-                    right = Integer.toString(rightNew);
-                } else {
-                    ansNew = rightNew - leftNew;
-
-                    //swapped the operation, so swap left and right numbers
-                    left = Integer.toString(rightNew);
-                    right = Integer.toString(leftNew);
-                }
-                ansNew = (leftNew > rightNew) ? leftNew - rightNew : rightNew - leftNew;
-                opSign = "-";
+                questions = null;
                 break;
         }
 
 
-        answer = Integer.toString(ansNew);
-
-        System.out.println(LEVEL + ": " + left + opSign + right + " = " + answer);
+        return questions;
     }
 
     /** The toString method for the Question class that returns a string in the following form:
      *      gradeLEVEL: left opSign right = answer
      */
     public String toString() {
-        return (LEVEL + ": " + left + opSign + right + "=" + answer);
+        return (level + ": " + left + opSign + right + "=" + answer);
     }
 
     /** Main method used for testing the generation of new questions */
@@ -392,6 +405,18 @@ public class Question {
 
         Question q = new Question();
 
+        System.out.println("Start to generate questions");
+
+        LinkedList<Question> questions = generateQuestionPool('2');
+
+        while(questions.size() > 0) {
+            System.out.println(questions.remove());
+            Thread.sleep(2000);
+        }
+        System.out.println(questions);
+        System.out.println("Load more questions");
+
+        /*
         while(true) {
             q.nextMathQuestion('2');
             System.out.println(q);
@@ -400,7 +425,7 @@ public class Question {
             System.out.println();
             Thread.sleep(2000);
         }
-
+        */
         /*
         while(true) {
             q.nextMathQuestion('P');
