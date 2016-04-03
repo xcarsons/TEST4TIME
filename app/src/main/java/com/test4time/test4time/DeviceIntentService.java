@@ -63,8 +63,9 @@ public class DeviceIntentService extends IntentService {
 
         while(true) {
             List<ActivityManager.RunningAppProcessInfo> tasks = manager.getRunningAppProcesses();
+            List<ActivityManager.RunningTaskInfo> taskInfo = manager.getRunningTasks(1); // used for older versions of android
 
-            if(blockApps.contains(tasks.get(0).processName)) {// get foreground activity
+            if(blockApps.contains(tasks.get(0).processName) || blockApps.contains(taskInfo.get(0).topActivity.getPackageName())) {// get foreground activity
                 Intent test4Time = new Intent(getApplicationContext(), BlockedApps.class);
                 test4Time.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(test4Time);
