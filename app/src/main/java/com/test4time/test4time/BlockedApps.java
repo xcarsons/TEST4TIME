@@ -72,14 +72,6 @@ public class BlockedApps extends Activity {
             case R.id.action_save: {
                 Log.d("REFRESH", "BTN pressed");
                 listadaptor.saveApplications();
-                Database db = new Database(this, null, null, 0, null);
-                Cursor data = db.getBlockedApps();
-                while(data.moveToNext()) {
-                    Log.d("SAVED",data.getString(0)+" : ID");
-                    Log.d("SAVED",data.getString(1)+" : NAME");
-                    Log.d("SAVED",data.getString(2)+" : PACKAGE");
-                    Log.d("SAVED",data.getString(3)+" : PROCESS");
-                }
                 break;
             }
             default: {
@@ -92,26 +84,6 @@ public class BlockedApps extends Activity {
         return result;
     }
 
-    private void displayAboutDialog() {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle(getString(R.string.about_title));
-//        builder.setMessage(getString(R.string.about_desc));
-
-        builder.setPositiveButton("Know More", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://javatechig.com"));
-                startActivity(browserIntent);
-                dialog.cancel();
-            }
-        });
-        builder.setNegativeButton("No Thanks!", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
-    }
 
 //    @Override
 //    protected void onListItemClick(ListView l, View v, int position, long id) {
@@ -157,8 +129,13 @@ public class BlockedApps extends Activity {
             applist = checkForLaunchIntent(packageManager.getInstalledApplications(PackageManager.GET_META_DATA));
             listadaptor = new ApplicationAdapter(BlockedApps.this, applist);
 
-
-
+            Database db = new Database(getApplicationContext(), null, null, 0, null);
+            Cursor data = db.getBlockedApps();
+            data = db.getBlockedApps();
+            while (data.moveToNext()) {
+                listadaptor.addApp(data.getString(1));
+            }
+            db.close();
             return null;
         }
 

@@ -23,22 +23,14 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
     private int focusedItem = 0;
     private PackageManager packageManager;
     private HashMap<Integer,Application> appSelected = null;
+    private ArrayList<String> appBlocked = null;
 
     public ApplicationAdapter(Context context, List<ApplicationInfo> appsList) {
         this.appsList = appsList;
         this.mContext = context;
         this.appSelected = new HashMap<Integer,Application>();
-        Database db = new Database(mContext, null, null, 0, null);
-        Cursor data = db.getBlockedApps();
-        data = db.getBlockedApps();
-        while (data.moveToNext()) {
-            Log.d("getApp", data.getString(0));
-            Log.d("getApp", data.getString(1));
-            Log.d("getApp", data.getString(2));
-            Log.d("getApp", data.getString(3));
-            Application app = new Application(data.getString(1), data.getString(2), data.getString(3));
-            //appsSelected.add(app);
-        }
+        this.appBlocked = new ArrayList<String>();
+
         packageManager = context.getPackageManager();
     }
 
@@ -46,7 +38,6 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
     public ListRowViewHolder onCreateViewHolder(final ViewGroup viewGroup, final int position) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.approw, null);
         final ListRowViewHolder holder = new ListRowViewHolder(v);
-
 
         return holder;
     }
@@ -65,22 +56,13 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
 
         // prevents app from being removed from appSelected(hashmap) when scrolling out of view
         listRowViewHolder.checkBox.setOnCheckedChangeListener(null);
-        listRowViewHolder.checkBox.setChecked(appSelected.get(position) == null ? false : true);
 
-//        holder.checkBox.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if (holder.checkBox.isChecked()) {
-//                    Log.d("CHECK", holder.appName.getText() + " is checked");
-//                    Log.d("CHECK", holder.packageName.getText() + " is package");
-//                    Log.d("CHECK", holder.processName.getText() + " is process");
-//                    appsSelected.add(position, new Application(holder.appName.getText().toString(), holder.packageName.getText().toString(), holder.processName.getText().toString()));
-//                } else {
-//                    Log.d("CHECK", holder.appName.toString() + " is unchecked");
-//                    appsSelected.remove(position);
-//                }
-//            }
-//        });
+        if (appSelected.get(position) != null || appBlocked.contains(listRowViewHolder.appName.getText().toString())) {
+            listRowViewHolder.checkBox.setChecked(true);
+        } else {
+            listRowViewHolder.checkBox.setChecked(false);
+        }
+
 
         listRowViewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -90,6 +72,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
                     appSelected.put(position, new Application(listRowViewHolder.appName.getText().toString(),listRowViewHolder.packageName.getText().toString(), listRowViewHolder.processName.getText().toString()));
                 } else {
                     appSelected.remove(position);
+                    appBlocked.remove(listRowViewHolder.appName.getText().toString());
                 }
             }
         });
@@ -107,6 +90,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
 
     protected void saveApplications() {
         Database db = new Database(mContext, null, null, 0, null);
+        db.deleteBlockAppsRows();
         Iterator iterator = appSelected.entrySet().iterator();
         while (iterator.hasNext()) {
             Map.Entry pair = (Map.Entry) iterator.next();
@@ -116,60 +100,10 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
     }
 
 
+    protected void addApp(String appName) {
+        appBlocked.add(appName);
+    }
+
 }
-//    private Context context;
-//    private PackageManager packageManager;
-//
-//    public ApplicationAdapter(Context context, int textViewResourceId,
-//                              List<ApplicationInfo> appsList) {
-//        super(context, textViewResourceId, appsList);
-//        this.context = context;
-//        this.appsList = appsList;
-//        packageManager = context.getPackageManager();
-//    }
-//
-//    @Override
-//    public int getCount() {
-//        return ((null != appsList) ? appsList.size() : 0);
-//    }
-//
-//    @Override
-//    public ApplicationInfo getItem(int position) {
-//        return ((null != appsList) ? appsList.get(position) : null);
-//    }
-//
-//    @Override
-//    public long getItemId(int position) {
-//        return position;
-//    }
-//
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup parent) {
-//        View view = convertView;
-//        if (null == view) {
-//            LayoutInflater layoutInflater = (LayoutInflater) context
-//                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            view = layoutInflater.inflate(R.layout.approw, null);
-//        }
-//
-//        final ApplicationInfo applicationInfo = appsList.get(position);
-//        if (null != applicationInfo) {
-//            TextView appName = (TextView) view.findViewById(R.id.app_name);
-//            //TextView packageName = (TextView) view.findViewById(R.id.app_paackage);
-//            ImageView iconview = (ImageView) view.findViewById(R.id.app_icon);
-//            CheckBox cb = (CheckBox) view.findViewById(R.id.checkBox);
-//
-//            appName.setText(applicationInfo.loadLabel(packageManager));
-//            //packageName.setText(applicationInfo.packageName);
-//            iconview.setImageDrawable(applicationInfo.loadIcon(packageManager));
-//            cb.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                @Override
-//                public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-//                    Log.d("CHECKBOX", "Is checked? "+isChecked + "\nPackageName: " + applicationInfo.packageName);
-//                }
-//            });
-//        }
-//        return view;
-//    }
-//}
+
 

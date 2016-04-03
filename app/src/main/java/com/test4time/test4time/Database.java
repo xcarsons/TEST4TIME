@@ -154,6 +154,11 @@ public class Database extends SQLiteOpenHelper {
 
     /*
      * Returns all columns of a specified application, queries the application name
+     * * * Cursor info:
+     * - data.getString(0) returns ID
+     * - data.getString(1) returns NAME
+     * - data.getString(2) returns PackageName
+     * - data.getString(3) returns ProcessName
      */
     public Cursor getBlockAppData(String name) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -194,6 +199,11 @@ public class Database extends SQLiteOpenHelper {
 
     /*
      * Returns all apps that are listed as blocked
+     * * Cursor info:
+     * - data.getString(0) returns ID
+     * - data.getString(1) returns NAME
+     * - data.getString(2) returns PackageName
+     * - data.getString(3) returns ProcessName
      */
     public Cursor getBlockedApps() {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -230,5 +240,13 @@ public class Database extends SQLiteOpenHelper {
         db.setTransactionSuccessful();
         db.endTransaction();
         return ret;
+    }
+
+    /*
+     * Remove all rows (applications) from BLOCKAPPS table
+     */
+    public void deleteBlockAppsRows() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL("delete from "+BLOCKAPPS_TABLE);
     }
 }
