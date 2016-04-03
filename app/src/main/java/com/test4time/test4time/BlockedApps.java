@@ -2,6 +2,7 @@ package com.test4time.test4time;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -33,6 +34,10 @@ public class BlockedApps extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Intent i = new Intent(this, DeviceIntentService.class);
+        startService(i);
+
         setContentView(R.layout.appslist);
         mRecyclerView = (RecyclerView) findViewById(R.id.myList);
 

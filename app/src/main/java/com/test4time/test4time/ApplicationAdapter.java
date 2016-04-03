@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -101,6 +102,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
         while (iterator.hasNext()) {
             Map.Entry pair = (Map.Entry) iterator.next();
             Application app = (Application) pair.getValue();
+            Log.d("PACKAGE",app.getPackageName());
             db.insertApp(app.getName(), app.getPackageName(), app.getProcessName());
         }
 
