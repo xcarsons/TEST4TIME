@@ -29,8 +29,6 @@ import android.widget.Toast;
 
 public class BlockedApps extends Activity {
     private RecyclerView mRecyclerView;
-//    private RecyclerView.Adapter mAdapter;
-    private RecyclerView.LayoutManager mLayoutManager;
     private PackageManager packageManager = null;
     private List<ApplicationInfo> applist = null;
     private ApplicationAdapter listadaptor = null;
@@ -71,6 +69,7 @@ public class BlockedApps extends Activity {
         switch (item.getItemId()) {
             case R.id.action_save: {
                 Log.d("REFRESH", "BTN pressed");
+                Toast.makeText(BlockedApps.this, "List Saved", Toast.LENGTH_SHORT).show();
                 listadaptor.saveApplications();
                 break;
             }
@@ -84,28 +83,9 @@ public class BlockedApps extends Activity {
         return result;
     }
 
-
-//    @Override
-//    protected void onListItemClick(ListView l, View v, int position, long id) {
-//        super.onListItemClick(l, v, position, id);
-//
-//        ApplicationInfo app = applist.get(position);
-//        try {
-//            Intent intent = packageManager
-//                    .getLaunchIntentForPackage(app.packageName);
-//
-//            if (null != intent) {
-//                startActivity(intent);
-//            }
-//        } catch (ActivityNotFoundException e) {
-//            Toast.makeText(BlockedApps.this, e.getMessage(),
-//                    Toast.LENGTH_LONG).show();
-//        } catch (Exception e) {
-//            Toast.makeText(BlockedApps.this, e.getMessage(),
-//                    Toast.LENGTH_LONG).show();
-//        }
-//    }
-
+    /*
+     * generate list of installed apps
+     */
     private List<ApplicationInfo> checkForLaunchIntent(List<ApplicationInfo> list) {
         ArrayList<ApplicationInfo> applist = new ArrayList<ApplicationInfo>();
         for (ApplicationInfo info : list) {
@@ -132,8 +112,10 @@ public class BlockedApps extends Activity {
             Database db = new Database(getApplicationContext(), null, null, 0, null);
             Cursor data = db.getBlockedApps();
             data = db.getBlockedApps();
+            // get list of blocked apps from BLOCKAPPS table, add them to the list of selected (checked) apps
             while (data.moveToNext()) {
-                listadaptor.addApp(data.getString(1));
+                Application app = new Application(data.getString(1), data.getString(2), data.getString(3));
+                listadaptor.addApp(data.getString(1), app);
             }
             db.close();
             return null;

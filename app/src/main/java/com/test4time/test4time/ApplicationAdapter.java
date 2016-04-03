@@ -18,18 +18,18 @@ import android.view.ViewGroup;
 import android.widget.*;
 
 public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> {
+    // list of installed applications
     private List<ApplicationInfo> appsList = null;
     private Context mContext;
     private int focusedItem = 0;
     private PackageManager packageManager;
-    private HashMap<Integer,Application> appSelected = null;
-    private ArrayList<String> appBlocked = null;
+    // map of selected (checked) applications
+    private HashMap<String,Application> appSelected = null;
 
     public ApplicationAdapter(Context context, List<ApplicationInfo> appsList) {
         this.appsList = appsList;
         this.mContext = context;
-        this.appSelected = new HashMap<Integer,Application>();
-        this.appBlocked = new ArrayList<String>();
+        this.appSelected = new HashMap<String,Application>();
 
         packageManager = context.getPackageManager();
     }
@@ -57,7 +57,8 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
         // prevents app from being removed from appSelected(hashmap) when scrolling out of view
         listRowViewHolder.checkBox.setOnCheckedChangeListener(null);
 
-        if (appSelected.get(position) != null || appBlocked.contains(listRowViewHolder.appName.getText().toString())) {
+        // check the appropriate apps (check apps that should be checked
+        if (appSelected.get(listRowViewHolder.appName.getText().toString()) != null) {
             listRowViewHolder.checkBox.setChecked(true);
         } else {
             listRowViewHolder.checkBox.setChecked(false);
@@ -69,10 +70,9 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 listRowViewHolder.checkBox.setChecked(isChecked);
                 if(isChecked) {
-                    appSelected.put(position, new Application(listRowViewHolder.appName.getText().toString(),listRowViewHolder.packageName.getText().toString(), listRowViewHolder.processName.getText().toString()));
+                    appSelected.put(listRowViewHolder.appName.getText().toString(), new Application(listRowViewHolder.appName.getText().toString(), listRowViewHolder.packageName.getText().toString(), listRowViewHolder.processName.getText().toString()));
                 } else {
-                    appSelected.remove(position);
-                    appBlocked.remove(listRowViewHolder.appName.getText().toString());
+                    appSelected.remove(listRowViewHolder.appName.getText().toString());
                 }
             }
         });
@@ -88,6 +88,9 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
         notifyDataSetChanged();
     }
 
+    /*
+     * Save the selected applications to BLOCKAPPS table (db)
+     */
     protected void saveApplications() {
         Database db = new Database(mContext, null, null, 0, null);
         db.deleteBlockAppsRows();
@@ -97,11 +100,14 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
             Application app = (Application) pair.getValue();
             db.insertApp(app.getName(), app.getPackageName(), app.getProcessName());
         }
+
     }
 
-
-    protected void addApp(String appName) {
-        appBlocked.add(appName);
+    /*
+     * add app to selected list
+     */
+    protected void addApp(String appName, Application app) {
+        appSelected.put(appName, app);
     }
 
 }
