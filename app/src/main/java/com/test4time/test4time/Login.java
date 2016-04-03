@@ -1,21 +1,19 @@
 package com.test4time.test4time;
 
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-
-import java.util.List;
 
 
 /**
  * Created by carsonschaefer on 2/4/16.
+ * Login activity
+ * Users can log into there cloud stored accounts
  */
 public class Login extends Activity {
 

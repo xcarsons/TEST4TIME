@@ -40,22 +40,6 @@ public class MyActivity extends Activity {
         setContentView(R.layout.mathquestion);
 
 
-        final PackageManager pm = getPackageManager();
-        //get a list of installed apps.
-        List<PackageInfo> packs = pm.getInstalledPackages(0);
-        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-
-//        for (ApplicationInfo packageInfo : packages) {
-//            Log.d("", "Installed package :" + packageInfo.packageName);
-//            Log.d("", "Source dir : " + packageInfo.sourceDir);
-//            Log.d("", "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName));
-//        }
-        for (PackageInfo p :packs) {
-            if(!isSystemPackage(p)) {
-                Log.d("","Package name: "+p.packageName);
-            }
-        }
-
         num1 = (TextView) findViewById(R.id.num1);
         num2 = (TextView) findViewById(R.id.num2);
         sign = (TextView) findViewById(R.id.sign);

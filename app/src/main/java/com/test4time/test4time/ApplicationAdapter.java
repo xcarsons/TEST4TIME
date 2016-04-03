@@ -1,22 +1,25 @@
 package com.test4time.test4time;
 
-import java.util.ArrayList;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.CompoundButton;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
-import android.support.v7.widget.RecyclerView;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.*;
-
+/**
+ * @Author - Carson Schaefer
+ * Class is the adapter for the RecyclerView
+ * This creates each row and populates the data in each row
+ * of the RecycleView
+ */
 public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> {
     // list of installed applications
     private List<ApplicationInfo> appsList = null;

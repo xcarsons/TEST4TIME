@@ -1,7 +1,8 @@
 package com.test4time.test4time;
 
 /**
- * Created by carsonschaefer on 4/2/16.
+ * @Author - Carson Schaefer
+ * Class stores information about selected applications
  */
 public class Application {
     private String name, packageName, processName;

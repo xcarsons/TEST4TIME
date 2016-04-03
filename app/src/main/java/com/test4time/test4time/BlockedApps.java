@@ -1,18 +1,10 @@
 package com.test4time.test4time;
-import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -21,12 +13,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @Author - Carson Schaefer
+ * Class is the Activity where blocked applications
+ * are specified and selected
+ */
 public class BlockedApps extends Activity {
     private RecyclerView mRecyclerView;
     private PackageManager packageManager = null;
@@ -48,26 +44,28 @@ public class BlockedApps extends Activity {
         // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
 
-
-
         packageManager = getPackageManager();
 
-        new LoadApplications().execute();
+        new LoadApplications().execute(); // start thread to generate List of apps
     }
 
-
+    /*
+     * Create ActionBar
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.applistmenu, menu);
-
         return true;
     }
 
+    /*
+     * Button in ActionBar is selected
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         boolean result = true;
 
         switch (item.getItemId()) {
-            case R.id.action_save: {
+            case R.id.action_save: { // Saved button is selected
                 Log.d("REFRESH", "BTN pressed");
                 Toast.makeText(BlockedApps.this, "List Saved", Toast.LENGTH_SHORT).show();
                 listadaptor.saveApplications();
@@ -100,6 +98,10 @@ public class BlockedApps extends Activity {
         return applist;
     }
 
+    /*
+     * inner class creates a thread to populated the RecyclerView
+     * Data retrieved (applications installed on device, applications in BLOCKAPPS table)
+     */
     private class LoadApplications extends AsyncTask<Void, Void, Void> {
         private ProgressDialog progress = null;
 

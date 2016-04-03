@@ -10,7 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 /**
- * Created by carsonschaefer on 3/2/16.
+ * @Author - Carson Schaefer
+ * Class allows the user to sign up and store account in cloud
  */
 public class SignUp extends Activity{
 

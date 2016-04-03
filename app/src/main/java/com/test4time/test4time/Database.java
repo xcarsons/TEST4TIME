@@ -11,7 +11,8 @@ import android.util.Log;
 import java.io.*;
 
 /**
- * Created by carsonschaefer on 2/4/16.
+ * @Author - Carson Schaefer
+ * API for SQLite database on Android device
  */
 public class Database extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "Test4Time.db";
@@ -82,7 +83,7 @@ public class Database extends SQLiteOpenHelper {
     }
 
     /*
-     * Inert an application into the database (BLOCKAPPS table
+     * Inert an application into the BLOCKAPPS table
      */
     public boolean insertApp(String name, String pack, String process) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -243,10 +244,10 @@ public class Database extends SQLiteOpenHelper {
     }
 
     /*
-     * Remove all rows (applications) from BLOCKAPPS table
+     * Delete all rows (applications) in BLOCKAPPS table
      */
     public void deleteBlockAppsRows() {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("delete from "+BLOCKAPPS_TABLE);
+        db.execSQL("delete from " + BLOCKAPPS_TABLE);
     }
 }
