@@ -1,25 +1,38 @@
 package com.test4time.test4time;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by exovu_000 on 4/3/2016.
- */
-public class ParentMenu extends Activity {
+import javax.xml.validation.Validator;
+
+public class ParentMenu extends Activity
+        implements AddUserDialogFragment.AddUserDialogListener {
 
     private Button viewApps;
     private Button addUser;
+
+    private EditText userName;
 
     private RecyclerView mRecyclerView;
     private PackageManager packageManager = null;
@@ -39,6 +52,13 @@ public class ParentMenu extends Activity {
         viewApps = (Button) findViewById(R.id.parent_viewApps);
         addUser = (Button) findViewById(R.id.parent_addUser);
 
+        userName = (EditText)findViewById(R.id.parent_add_name);
+
+//        addUser.setOn
+        ClickListener clickListener = new ClickListener();
+        viewApps.setOnClickListener(clickListener);
+        addUser.setOnClickListener(clickListener);
+
         mRecyclerView = (RecyclerView) findViewById(R.id.parent_userList);
 
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -57,6 +77,40 @@ public class ParentMenu extends Activity {
         startActivity(intent);
     }
 
+    private void onAddUserAction() {
+        DialogFragment fragment = new AddUserDialogFragment();
+        fragment.show(getFragmentManager(), "add_user");
+    }
+
+    // The dialog fragment receives a reference to this Activity through the
+    // Fragment.onAttach() callback, which it uses to call the following methods
+    // defined by the NoticeDialogFragment.NoticeDialogListener interface
+    @Override
+    public void onDialogPositiveClick(DialogFragment dialog) {
+        // user pressed the "submit" button
+        System.out.println("test submit");
+        //if the name is not empty, then we can dismiss the dialog and update the user list
+        //userName = (EditText)findViewById(R.id.parent_add_name);
+        //if(!userName.getText().toString().equals("")) {
+        String name = ((AddUserDialogFragment)dialog).getUserName();
+        System.out.println("name: " + name);
+        if(!name.equals("")) {
+            System.out.println("dismiss");
+            dialog.dismiss();
+        } else {
+            System.out.println("don't dismiss");
+            dialog.show(getFragmentManager(), "add_user");
+        }
+
+    }
+
+    @Override
+    public void onDialogNegativeClick(DialogFragment dialog) {
+        // user pressed the "cancel" button
+        System.out.println("test cancel");
+        dialog.dismiss();
+    }
+
     /****************************************************************
      Responsible for handling clicks
      **************************************************************/
@@ -67,14 +121,34 @@ public class ParentMenu extends Activity {
                 // Send to page to view and update list of blocked apps
                 case R.id.parent_viewApps:
                     System.out.println("VIEW APPS");
-//                    viewBlockedApps(view);
+                    viewBlockedApps(view);
                     break;
                 // Open a view to add a new child user
                 case R.id.parent_addUser:
                     System.out.println("ADD A USER");
+                    onAddUserAction();
                     break;
             }
         }
     }
+
+    /*
+     * generate list of users
+     */
+    private List<ApplicationInfo> checkForLaunchIntent(List<ApplicationInfo> list) {
+        ArrayList<ApplicationInfo> userlist = new ArrayList<ApplicationInfo>();
+        for (ApplicationInfo info : list) {
+            try {
+                if (null != packageManager.getLaunchIntentForPackage(info.packageName)) {
+                    userlist.add(info);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return userlist;
+    }
+
+
 
 }

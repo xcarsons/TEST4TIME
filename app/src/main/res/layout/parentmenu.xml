@@ -9,20 +9,22 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/parentTitle"
         android:id="@+id/textView"
         android:textSize="32sp"
         android:layout_gravity="center"
         android:gravity="center_vertical" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:background="@drawable/border_style"/>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="96dp"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
         android:paddingTop="15dp"
@@ -31,16 +33,14 @@
         <Button
             android:id="@+id/parent_viewApps"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="View Blocked Apps"
-            android:textSize="32dp"
-            android:onClick="viewBlockedApps"/>
+            android:textSize="32dp"/>
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="6"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
         android:background="@drawable/border_style"
@@ -54,18 +54,18 @@
         <Button
             android:id="@+id/parent_addUser"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
+            android:layout_height="64dp"
             android:text="Add a User"
             android:textSize="32dp"
 
             />
-
+`
         <android.support.v7.widget.RecyclerView
             android:id="@+id/parent_userList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="4"
+            android:layout_gravity="bottom"
             />
     </LinearLayout>
 
