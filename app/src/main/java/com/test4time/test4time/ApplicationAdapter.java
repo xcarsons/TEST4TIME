@@ -107,10 +107,10 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
         while (iterator.hasNext()) {
             Map.Entry pair = (Map.Entry) iterator.next();
             Application app = (Application) pair.getValue();
-            Log.d("PACKAGE",app.getPackageName());
+            //Log.d("PACKAGE",app.getPackageName());
             db.insertApp(app.getName(), app.getPackageName(), app.getProcessName());
         }
-
+        db.close();
     }
 
     /*

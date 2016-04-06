@@ -140,6 +140,7 @@ public class BlockedApps extends Activity {
                 Application app = new Application(data.getString(1), data.getString(2), data.getString(3));
                 listadaptor.addApp(data.getString(1), app);
             }
+            data.close();
             db.close();
             return null;
         }
@@ -155,6 +156,7 @@ public class BlockedApps extends Activity {
             if (listadaptor.getCheckedItemCount() == listadaptor.getItemCount()) {
                 checkall.setTitle("UnCheck All");
             }
+            listadaptor.notifyDataSetChanged(); // new
             progress.dismiss();
             super.onPostExecute(result);
         }
