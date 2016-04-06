@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/chalkboard_dark2"
+    android:alpha ="255"
+    android:weightSum="1"
+    android:visibility="visible">
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/settingsBtn"
+        android:layout_gravity="right|top"
+        android:longClickable="true"
+        android:src="@drawable/gear"
+        android:background="@null"
+        android:cropToPadding="false"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Users"
+        android:id="@+id/UsersText"
+        android:contentDescription="Users"
+        android:textSize="40dp"
+        android:textStyle="bold"
+        android:textColor="#fdfafa"
+        android:layout_gravity="center" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:rotation="180"
+            android:id="@+id/pencil2"
+            android:src="@drawable/penciledit"
+            android:background="@null"
+            android:scaleType="centerCrop"
+            android:paddingLeft="10dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true" />
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:rotation="180"
+            android:id="@+id/pencil"
+            android:src="@drawable/penciledit"
+            android:layout_gravity="center_horizontal|left"
+            android:background="@null"
+            android:scaleType="centerCrop"
+            android:paddingLeft="10dp" />
+
+        <ListView
+            android:layout_width="228dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/userList"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@+id/pencil"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+
+
+</LinearLayout>
