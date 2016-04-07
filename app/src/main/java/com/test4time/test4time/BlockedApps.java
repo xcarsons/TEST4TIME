@@ -8,6 +8,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -51,6 +52,9 @@ public class BlockedApps extends Activity {
 
         packageManager = getPackageManager();
 
+        // show the back button in the top-left corner
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
         new LoadApplications().execute(); // start thread to generate List of apps
     }
 
@@ -78,6 +82,11 @@ public class BlockedApps extends Activity {
                 Intent i = new Intent(this, DeviceIntentService.class);
                 startService(i);
                 break;
+            }
+            // Respond to the action bar's Up/Home button (the top-left back button)
+            case android.R.id.home: {
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
             }
             default: {
                 result = super.onOptionsItemSelected(item);
