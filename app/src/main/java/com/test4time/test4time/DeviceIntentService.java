@@ -7,24 +7,17 @@ import android.app.IntentService;
 import android.app.PendingIntent;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.os.*;
-import android.os.Process;
-import android.util.Log;
+import android.os.SystemClock;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @Author - Carson Schaefer
@@ -71,6 +64,7 @@ public class DeviceIntentService extends IntentService {
      */
     @Override
     protected void onHandleIntent(Intent intent) {
+        // open settings to let user grant Test4Time access to usage data
         if (needPermissionForBlocking(this)) {
                 Intent settings = new Intent("android.settings.USAGE_ACCESS_SETTINGS");//Settings.ACTION_USAGE_ACCESS_SETTINGS);
                 settings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -79,10 +73,10 @@ public class DeviceIntentService extends IntentService {
         ActivityManager manager = (ActivityManager) getApplicationContext().getSystemService(ACTIVITY_SERVICE);
 
         while(true) {
-            List<ActivityManager.RunningAppProcessInfo> tasks = manager.getRunningAppProcesses();
+            List<ActivityManager.RunningAppProcessInfo> tasks = manager.getRunningAppProcesses(); // used for android 5.0
             List<ActivityManager.RunningTaskInfo> taskInfo = manager.getRunningTasks(1); // used for older versions of android
 
-            String p = getTopPackage();
+            String p = getTopPackage(); // used for android 5.1.1 and above
 
             if(blockApps.contains(tasks.get(0).processName) || blockApps.contains(taskInfo.get(0).topActivity.getPackageName()) || blockApps.contains(p)) {// get foreground activity
                 Intent test4Time = new Intent(getApplicationContext(), BlockedApps.class);
@@ -111,7 +105,9 @@ public class DeviceIntentService extends IntentService {
         blockApps.remove(TAG); // remove the test4time process if it exists
     }
 
-
+    /*
+     * get the package of the application running in the foreground
+     */
     private String getTopPackage(){
         long ts = System.currentTimeMillis();
         //noinspection ResourceType
@@ -124,6 +120,11 @@ public class DeviceIntentService extends IntentService {
         return usageStats.get(0).getPackageName();
     }
 
+    /*
+     * Compares the time that an application was used.
+     * This sorts the order that packages have been "opened"
+     * The front will be the Foreground activity
+     */
     static class RecentUseComparator implements Comparator<UsageStats> {
 
         @Override
@@ -133,7 +134,10 @@ public class DeviceIntentService extends IntentService {
     }
 
 
-    public static boolean needPermissionForBlocking(Context context) {
+    /*
+     * Check if Test4Time has access to usage Data
+     */
+    private static boolean needPermissionForBlocking(Context context) {
         try {
             PackageManager packageManager = context.getPackageManager();
             ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
@@ -144,8 +148,5 @@ public class DeviceIntentService extends IntentService {
             return true;
         }
     }
-
-//    Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-//    startActivity(intent);
 
 }
