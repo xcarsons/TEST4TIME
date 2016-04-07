@@ -6,12 +6,15 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 
 public class AddUserDialogFragment extends DialogFragment {
 
     String newUserName;
+    String newGradeLevel;
 
     public AddUserDialogFragment() {
 
@@ -19,6 +22,10 @@ public class AddUserDialogFragment extends DialogFragment {
 
     public String getUserName() {
         return newUserName;
+    }
+
+    public String getNewGradeLevel() {
+        return newGradeLevel;
     }
 
     /* The activity that creates an instance of this dialog fragment must
@@ -53,6 +60,7 @@ public class AddUserDialogFragment extends DialogFragment {
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
 
+
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
         builder.setView(inflater.inflate(R.layout.parent_createuser, null))
@@ -61,9 +69,40 @@ public class AddUserDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         Dialog d = (Dialog) dialog;
+                        // submit the info, add user to the list
                         EditText newName = (EditText) d.findViewById(R.id.parent_add_name);
                         newUserName = newName.getText().toString();
-                        // submit the info, add user to the list
+                        RadioGroup radioGroup = (RadioGroup) (d.findViewById(R.id.radiogroup_grade));
+
+                        int radioID= radioGroup.getCheckedRadioButtonId();
+                        if(radioID == -1){
+                            //no item selected -> currently not possible b/c we init to Kindergarten
+                        } else {
+                            switch(radioID) {
+                                case R.id.radioButton_K:    //grade is Kindergarten
+                                    newGradeLevel = "K";
+                                    break;
+                                case R.id.radioButton_1:    //grade is 1st
+                                    newGradeLevel = "1";
+                                    break;
+                                case R.id.radioButton_2:    //grade is 2nd
+                                    newGradeLevel = "2";
+                                    break;
+                                case R.id.radioButton_3:    //grade is 3rd
+                                    newGradeLevel = "3";
+                                    break;
+                                case R.id.radioButton_4:    //grade is 4th
+                                    newGradeLevel = "4";
+                                    break;
+                                case R.id.radioButton_5:    //grade is 5th
+                                    newGradeLevel = "5";
+                                    break;
+                                case R.id.radioButton_6:    //grade is 6th
+                                    newGradeLevel = "6";
+                                    break;
+                            }
+                        }
+
                         mListener.onDialogPositiveClick(AddUserDialogFragment.this);
 //                        AddUserDialogFragment.this.getDialog().dismiss();
                     }

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_horizontal"
+    android:id="@+id/rowLayout">
+
+    <LinearLayout
+        android:layout_width="256dp"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:paddingRight="20dp"
+            android:paddingLeft="10dp"/>
+
+        <TextView
+            android:id="@+id/user_grade"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:gravity="center"
+            android:paddingLeft="10dp"/>
+
+        <TextView
+            android:id="@+id/user_time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:gravity="center"
+            android:paddingLeft="10dp"/>
+
+        <!--<TextView-->
+        <!--android:id="@+id/app_paackage"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:gravity="center_vertical" />-->
+
+
+    </LinearLayout>
+    <Button
+        android:id="@+id/user_edit"
+        android:layout_width="60dp" android:layout_height="60dp"
+        android:drawableTop="@android:drawable/ic_menu_edit"
+        android:gravity="right"
+        android:layout_gravity="right"
+        />
+
+
+</LinearLayout>

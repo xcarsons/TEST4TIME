@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/parentTitle"
+        android:text="@string/parent_title"
         android:id="@+id/textView"
         android:textSize="32sp"
         android:layout_gravity="center"
@@ -63,9 +63,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/parent_userList"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4"
-            android:layout_gravity="bottom"
+            android:layout_height="wrap_content"
             />
     </LinearLayout>
 

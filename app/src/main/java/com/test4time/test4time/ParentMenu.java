@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -36,8 +37,9 @@ public class ParentMenu extends Activity
 
     private RecyclerView mRecyclerView;
     private PackageManager packageManager = null;
-    private List<ApplicationInfo> userlist = null;
-    private ApplicationAdapter listadaptor = null;  // might need a different class for Users
+    private List<UserData> userlist = null;
+    //private ApplicationAdapter listadaptor = null;  // might need a different class for Users
+    private UserAdapter listadaptor = null;
 
     /**
      * Called when the activity is first created.
@@ -66,8 +68,9 @@ public class ParentMenu extends Activity
 
         // use this setting to improve performance if you know that changes
         // in content do not change the layout size of the RecyclerView
-        mRecyclerView.setHasFixedSize(true);
+        //mRecyclerView.setHasFixedSize(true);
 
+        new LoadUsers().execute(); // start thread to generate list of users
     }
 
     public void viewBlockedApps(View view) {
@@ -94,12 +97,51 @@ public class ParentMenu extends Activity
         //if(!userName.getText().toString().equals("")) {
         String name = ((AddUserDialogFragment)dialog).getUserName();
         System.out.println("name: " + name);
+        String grade = ((AddUserDialogFragment)dialog).getNewGradeLevel();
+        System.out.println("grade: " + grade);
         if(!name.equals("")) {
             System.out.println("dismiss");
+            /*RadioGroup radioGroup = (RadioGroup) dialog.getActivity().findViewById(R.id.radiogroup_grade);
+            int id = radioGroup.getCheckedRadioButtonId();
+            if(id == -1) {
+                // no item selected, don't dismiss (but shouldn't be possible either
+            } else {
+                switch(id) {
+                    case R.id.radioButton_K:    //grade is Kindergarten
+                        grade = "K";
+                        break;
+                    case R.id.radioButton_1:    //grade is 1st
+                        grade = "1";
+                        break;
+                    case R.id.radioButton_2:    //grade is 2nd
+                        grade = "2";
+                        break;
+                    case R.id.radioButton_3:    //grade is 3rd
+                        grade = "3";
+                        break;
+                    case R.id.radioButton_4:    //grade is 4th
+                        grade = "4";
+                        break;
+                    case R.id.radioButton_5:    //grade is 5th
+                        grade = "5";
+                        break;
+                    case R.id.radioButton_6:    //grade is 6th
+                        grade = "6";
+                        break;
+                }
+            }
+            */
+            //Database db = new Database(getApplicationContext(), null, null, 0, null);
+            //insert (name, user type, pin, grade, time, timeup)
+            //db.insertUser(name, 0, 1234, grade, 0,0 );
+            System.out.println("pre count: " + listadaptor.getItemCount());
+            UserData newUserData = new UserData(name, grade, 0, 0);
+            listadaptor.addUser(name, newUserData);
+            System.out.println("post count: " + listadaptor.getItemCount());
             dialog.dismiss();
         } else {
             System.out.println("don't dismiss");
-            dialog.show(getFragmentManager(), "add_user");
+            //dialog.show(getFragmentManager(), "add_user");
         }
 
     }
@@ -149,6 +191,67 @@ public class ParentMenu extends Activity
         return userlist;
     }
 
+    /*
+         * inner class creates a thread to populated the RecyclerView
+         * Data retrieved (applications installed on device, applications in BLOCKAPPS table)
+         */
+    private class LoadUsers extends AsyncTask<Void, Void, Void> {
+        private ProgressDialog progress = null;
+
+        @Override
+        protected Void doInBackground(Void... params) {
+            //userlist = checkForLaunchIntent(packageManager.getInstalledApplications(PackageManager.GET_META_DATA));
+            //listadaptor = new ApplicationAdapter(ParentMenu.this, userlist);
+            userlist = new ArrayList<>();
+            listadaptor = new UserAdapter(ParentMenu.this, userlist);
+
+            /*
+            Database db = new Database(getApplicationContext(), null, null, 0, null);
+            Cursor data = db.getUsers();
+            // get list of users from USERS table, add them to the list of current users
+            while (data.moveToNext()) {
+                //Application app = new Application(data.getString(1), data.getString(2), data.getString(3));
+                UserData newUser = new UserData(data.getString(1), data.getString(4),
+                        Integer.parseInt(data.getString(5)), Integer.parseInt(data.getString(2)));
+//                listadaptor.addApp(data.getString(1), newUser);
+                listadaptor.addUser(data.getString(1), newUser);
+            }
+            db.close();
+            */
+            String sampleName = "Jimmy";
+            for(int i = 0; i < 10; i++) {
+                UserData newUser = new UserData(sampleName + i, Integer.toString(i+1),
+                        (i+1)*5, (i+1)*5);
+                listadaptor.addUser(sampleName + i, newUser);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+            mRecyclerView.setAdapter(listadaptor);
+            System.out.println("POST EXECUTE");
+            progress.dismiss();
+            super.onPostExecute(result);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progress = ProgressDialog.show(ParentMenu.this, null,
+                    "Loading Users");
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onProgressUpdate(Void... values) {
+            super.onProgressUpdate(values);
+        }
+    }
 
 
 }

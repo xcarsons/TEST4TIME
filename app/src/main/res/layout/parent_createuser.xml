@@ -42,6 +42,7 @@
             android:layout_marginLeft="20dp">
 
             <RadioGroup
+                android:id="@+id/radiogroup_grade"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -50,44 +51,44 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Kindergarten"
-                    android:id="@+id/radioButton"
+                    android:id="@+id/radioButton_K"
                     android:checked="true"/>
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1st Grade"
-                    android:id="@+id/radioButton3" />
+                    android:id="@+id/radioButton_1" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="2nd Grade"
-                    android:id="@+id/radioButton2" />
+                    android:id="@+id/radioButton_2" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="3rd Grade"
-                    android:id="@+id/radioButton4" />
+                    android:id="@+id/radioButton_3" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4th Grade"
-                    android:id="@+id/radioButton5" />
+                    android:id="@+id/radioButton_4" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="5th Grade"
-                    android:id="@+id/radioButton6" />
+                    android:id="@+id/radioButton_5" />
 
                 <RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="6th Grade"
-                    android:id="@+id/radioButton7" />
+                    android:id="@+id/radioButton_6" />
             </RadioGroup>
 
         </LinearLayout>
