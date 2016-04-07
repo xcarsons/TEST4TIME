@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -131,13 +132,13 @@ public class ParentMenu extends Activity
                 }
             }
             */
-            //Database db = new Database(getApplicationContext(), null, null, 0, null);
+            Database db = new Database(getApplicationContext(), null, null, 0, null);
             //insert (name, user type, pin, grade, time, timeup)
-            //db.insertUser(name, 0, 1234, grade, 0,0 );
-            System.out.println("pre count: " + listadaptor.getItemCount());
+            db.insertUser(name, 0, 1234, grade, 0,0 );
             UserData newUserData = new UserData(name, grade, 0, 0);
             listadaptor.addUser(name, newUserData);
-            System.out.println("post count: " + listadaptor.getItemCount());
+            Toast.makeText(ParentMenu.this, "Adding " + name + " to the list...",
+                    Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         } else {
             System.out.println("don't dismiss");
@@ -205,7 +206,7 @@ public class ParentMenu extends Activity
             userlist = new ArrayList<>();
             listadaptor = new UserAdapter(ParentMenu.this, userlist);
 
-            /*
+            // Populate the list with the current users in the database
             Database db = new Database(getApplicationContext(), null, null, 0, null);
             Cursor data = db.getUsers();
             // get list of users from USERS table, add them to the list of current users
@@ -217,13 +218,15 @@ public class ParentMenu extends Activity
                 listadaptor.addUser(data.getString(1), newUser);
             }
             db.close();
-            */
+
+            /* TESTING LIST POPULATION
             String sampleName = "Jimmy";
             for(int i = 0; i < 10; i++) {
                 UserData newUser = new UserData(sampleName + i, Integer.toString(i+1),
                         (i+1)*5, (i+1)*5);
                 listadaptor.addUser(sampleName + i, newUser);
             }
+            */
             return null;
         }
 
