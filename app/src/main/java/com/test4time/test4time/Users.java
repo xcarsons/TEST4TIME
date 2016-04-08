@@ -49,10 +49,14 @@ public class Users extends Activity {
         pencila = (ImageView) findViewById(R.id.pencil);
         pencilb = (ImageView) findViewById(R.id.pencil2);
         userList = (ListView) findViewById(R.id.userList);
+<<<<<<< HEAD
         //mRecyclerView = (RecyclerView) findViewById(R.id.userList);
         usersText = (TextView) findViewById(R.id.UsersText);
 
 
+=======
+        usersText = (TextView) findViewById(R.id.UsersText);
+>>>>>>> CarsonBranch
         settingsBtn.setOnClickListener(new ClickListener());
         usersText.setTypeface(font);
 

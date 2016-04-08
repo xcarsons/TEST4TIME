@@ -73,7 +73,6 @@ public class BlockedApps extends Activity {
             case R.id.action_save: { // Saved button is selected
                 Toast.makeText(BlockedApps.this, "List Saved", Toast.LENGTH_SHORT).show();
                 listadaptor.saveApplications();
-
                 Intent i = new Intent(this, DeviceIntentService.class);
                 startService(i); // start intent service so it can update the list of blocked apps
                 break;

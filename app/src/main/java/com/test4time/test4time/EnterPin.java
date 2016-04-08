@@ -15,7 +15,11 @@ import android.widget.TextView;
 import java.util.EventListener;
 
 /**
- * Created by carsonschaefer on 4/7/16.
+ * @Author - Carson Schaefer
+ * This is what the User is presented with when they try to open
+ * an application that is Blocked. User, if they have the correct pin
+ * may override the "block" and use the application. User may also
+ * select the Test4Time button and be redirected to the Users acitivty
  */
 public class EnterPin extends Activity {
     private EditText pinTb;
@@ -44,6 +48,22 @@ public class EnterPin extends Activity {
         appLaunch = recIntent.getStringExtra("appLaunched");
 
     }
+
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
+    // Kill Activity once home button is pressed
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
+
 
     private class ClickListener implements View.OnClickListener {
 
