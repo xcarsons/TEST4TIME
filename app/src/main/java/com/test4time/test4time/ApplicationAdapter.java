@@ -21,6 +21,7 @@ import java.util.Map;
  * of the RecycleView
  */
 public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> {
+    private static final String TAG = "com.test4time.test4time";
     // list of installed applications
     private List<ApplicationInfo> appsList = null;
     private Context mContext;
@@ -106,7 +107,9 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
             Map.Entry pair = (Map.Entry) iterator.next();
             Application app = (Application) pair.getValue();
             //Log.d("PACKAGE",app.getPackageName());
-            db.insertApp(app.getName(), app.getPackageName(), app.getProcessName());
+            if(app.getPackageName() != TAG) { // don't store test4time
+                db.insertApp(app.getName(), app.getPackageName(), app.getProcessName());
+            }
         }
         db.close();
     }

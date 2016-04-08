@@ -36,6 +36,7 @@ public class Users extends Activity {
         pencila = (ImageView) findViewById(R.id.pencil);
         pencilb = (ImageView) findViewById(R.id.pencil2);
         userList = (ListView) findViewById(R.id.userList);
+        usersText = (TextView) findViewById(R.id.UsersText);
         settingsBtn.setOnClickListener(new ClickListener());
         usersText.setTypeface(font);
 
