@@ -27,6 +27,7 @@ public class ListRowViewHolder extends RecyclerView.ViewHolder {
     protected TextView gradeLevel;
     protected TextView currentTime;
     protected Button editUserButton;
+    protected ImageView editUserImage;
 
     public ListRowViewHolder(View view) {
         super(view);
@@ -44,8 +45,20 @@ public class ListRowViewHolder extends RecyclerView.ViewHolder {
         this.userName = (TextView) view.findViewById(R.id.user_name);
         this.gradeLevel = (TextView) view.findViewById(R.id.user_grade);
         this.currentTime = (TextView) view.findViewById(R.id.user_time);
-        this.editUserButton = (Button) view.findViewById(R.id.user_edit);
+//        this.editUserButton = (Button) view.findViewById(R.id.user_edit);
+        this.editUserImage= (ImageView) view.findViewById(R.id.user_edit);
         view.setClickable(true);
+    }
+
+    public void bindUser(final UserData item, final ParentMenu.OnItemClickListener listener) {
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onItemClick(item);
+
+            }
+        });
+
     }
 
 }

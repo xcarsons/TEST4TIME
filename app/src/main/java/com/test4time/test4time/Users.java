@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-
 /**
  * Created by carsonschaefer on 2/4/16.
  */

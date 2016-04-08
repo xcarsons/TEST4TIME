@@ -35,7 +35,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="View Blocked Apps"
-            android:textSize="32dp"/>
+            android:textSize="24dp"/>
     </LinearLayout>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -54,9 +54,9 @@
         <Button
             android:id="@+id/parent_addUser"
             android:layout_width="match_parent"
-            android:layout_height="64dp"
+            android:layout_height="wrap_content"
             android:text="Add a User"
-            android:textSize="32dp"
+            android:textSize="24dp"
 
             />
 `
@@ -64,6 +64,7 @@
             android:id="@+id/parent_userList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+
             />
     </LinearLayout>
 

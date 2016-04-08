@@ -15,6 +15,7 @@ public class AddUserDialogFragment extends DialogFragment {
 
     String newUserName;
     String newGradeLevel;
+    private RadioGroup addRadioGroup;
 
     public AddUserDialogFragment() {
 
@@ -59,7 +60,7 @@ public class AddUserDialogFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         // Get the layout inflater
         LayoutInflater inflater = getActivity().getLayoutInflater();
-
+        addRadioGroup = (RadioGroup) getActivity().findViewById(R.id.radiogroup_grade);
 
         // Inflate and set the layout for the dialog
         // Pass null as the parent view because its going in the dialog layout
@@ -72,8 +73,11 @@ public class AddUserDialogFragment extends DialogFragment {
                         // submit the info, add user to the list
                         EditText newName = (EditText) d.findViewById(R.id.parent_add_name);
                         newUserName = newName.getText().toString();
-                        RadioGroup radioGroup = (RadioGroup) (d.findViewById(R.id.radiogroup_grade));
 
+                        //TODO: remove the findViewById from this section
+                        //      it's inefficient to call it in the onClick method
+
+                        RadioGroup radioGroup = (RadioGroup) (d.findViewById(R.id.radiogroup_grade));
                         int radioID= radioGroup.getCheckedRadioButtonId();
                         if(radioID == -1){
                             //no item selected -> currently not possible b/c we init to Kindergarten

@@ -9,5 +9,6 @@
     <string name="parent_add_name">  Child\'s Name</string>
     <string name="parent_add_grade">Select a Grade Level</string>
     <string name="cancel">Cancel</string>
+    <string name="current_time">Current Time</string>
 
 </resources>

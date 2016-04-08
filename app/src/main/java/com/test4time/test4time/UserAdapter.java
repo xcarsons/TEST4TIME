@@ -31,12 +31,16 @@ public class UserAdapter extends RecyclerView.Adapter<ListRowViewHolder> {
     //private PackageManager packageManager;
     // map of selected (checked) applications
     private HashMap<String,UserData> userDataHashMap = null;
+    private ParentMenu.OnItemClickListener listener;
 
-    public UserAdapter(Context context, List<UserData> usersList) {
+    public UserAdapter(Context context, List<UserData> usersList,
+                       ParentMenu.OnItemClickListener listener) {
         this.usersList= usersList;
         this.mContext = context;
         //this.appSelected = new HashMap<String,Application>();
         this.userDataHashMap = new HashMap<String, UserData>();
+        this.listener = listener;
+
 
         //packageManager = context.getPackageManager();
     }
@@ -44,7 +48,9 @@ public class UserAdapter extends RecyclerView.Adapter<ListRowViewHolder> {
     @Override
     public ListRowViewHolder onCreateViewHolder(final ViewGroup viewGroup, final int position) {
         View v = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.userrow, null);
+        v.setClickable(true);
         final ListRowViewHolder holder = new ListRowViewHolder(v, null);
+
 
         return holder;
     }
@@ -62,8 +68,13 @@ public class UserAdapter extends RecyclerView.Adapter<ListRowViewHolder> {
         listRowViewHolder.gradeLevel.setText(user.getGradeLevel());
         listRowViewHolder.currentTime.setText(Integer.toString(user.getCurrentTime()));
 
+        listRowViewHolder.bindUser(usersList.get(position), listener);
+
+//        listRowViewHolder.
+
         final AlertDialog.Builder alertBuild = new AlertDialog.Builder(mContext);
 
+        /*
         listRowViewHolder.editUserButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +89,7 @@ public class UserAdapter extends RecyclerView.Adapter<ListRowViewHolder> {
                 alertBuild.setTitle("Edit Child Information");
             }
         });
+        */
 
     }
 
@@ -103,22 +115,12 @@ public class UserAdapter extends RecyclerView.Adapter<ListRowViewHolder> {
             Map.Entry pair = (Map.Entry) iterator.next();
             UserData user = (UserData) pair.getValue();
             Log.d("USER_NAME", user.getName());
-            db.insertUser(user.getName(), user.getIsParent(), 0, user.getGradeLevel(),
-                user.getCurrentTime(), user.getCurrentTime());
+            // TEMPORARILY REMOVED FOR TESTING
+            //db.insertUser(user.getName(), user.getIsParent(), 0, user.getGradeLevel(),
+            //    user.getCurrentTime(), user.getCurrentTime());
+
         }
     }
-   /* protected void saveApplications() {
-        Database db = new Database(mContext, null, null, 0, null);
-        db.deleteBlockAppsRows();
-        Iterator iterator = appSelected.entrySet().iterator();
-        while (iterator.hasNext()) {
-            Map.Entry pair = (Map.Entry) iterator.next();
-            Application app = (Application) pair.getValue();
-            Log.d("PACKAGE", app.getPackageName());
-            db.insertApp(app.getName(), app.getPackageName(), app.getProcessName());
-        }
-
-    }*/
 
     /*
      * add app to selected list

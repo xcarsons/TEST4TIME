@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content" android:orientation="horizontal" android:gravity="center_horizontal"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_horizontal"
+    android:background="#474747"
     android:id="@+id/rowLayout">
 
     <LinearLayout
@@ -48,13 +51,16 @@
 
 
     </LinearLayout>
-    <Button
+    <ImageView
         android:id="@+id/user_edit"
-        android:layout_width="60dp" android:layout_height="60dp"
-        android:drawableTop="@android:drawable/ic_menu_edit"
+        android:layout_width="48dp" android:layout_height="48dp"
+        android:src="@android:drawable/ic_menu_edit"
         android:gravity="right"
         android:layout_gravity="right"
+        android:background="@android:color/darker_gray"
         />
+    <!--android:drawableTop="@android:drawable/ic_menu_edit"-->
+
 
 
 </LinearLayout>
