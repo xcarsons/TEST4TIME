@@ -8,6 +8,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -248,16 +249,10 @@ public class MyActivity extends Activity {
             }
             //ansString = ansString.replaceFirst("^0", "").replaceFirst("^0", "");
             if (ansString.equals(q.answer)) {
-
-                alertBuild.setCancelable(false).setPositiveButton(
-                        "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
+                final MediaPlayer mp = MediaPlayer.create(this, R.raw.bellsound);
+                    mp.start();
                                 CreateQuestion();
-                            }
-                        });
-                alertBuild.setTitle("Correct!");
+
                 sampleTime++;
                 time_saved.setText(String.format("%d minutes",sampleTime));
 
@@ -275,11 +270,11 @@ public class MyActivity extends Activity {
                 alertBuild.setTitle("Incorrect Answer");
                 //alertBuild.setMessage("Correct Answer: " + q.answer);
                 alertBuild.setMessage(q.left + " " + q.opSign + " " + q.right + " = " + q.answer);
+                AlertDialog alert = alertBuild.create();
+                alert.show();
             }
 
         }
-        AlertDialog alert = alertBuild.create();
-        alert.show();
     }
 
     private void onPressedKeypad(String num) {
