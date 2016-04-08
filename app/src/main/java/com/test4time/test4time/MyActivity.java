@@ -2,10 +2,14 @@ package com.test4time.test4time;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-
-
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,17 +18,9 @@ import android.view.Window;
 import android.widget.AnalogClock;
 import android.widget.Button;
 import android.widget.TextView;
-import android.content.DialogInterface;
-import android.util.Log;
-
-import org.w3c.dom.Text;
 
 import java.util.LinkedList;
-
 import java.util.List;
-import android.content.pm.PackageManager;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 /*********************************************************
  * Class responsible for manipulating the math question view
  *********************************************************/
@@ -68,6 +64,9 @@ public class MyActivity extends Activity {
 //            Log.d("", "Source dir : " + packageInfo.sourceDir);
 //            Log.d("", "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName));
 //        }
+        Intent intent = getIntent();
+        String easyPuzzle = intent.getExtras().getString("KEY");
+
         for (PackageInfo p :packs) {
             if(!isSystemPackage(p)) {
                 Log.d("","Package name: "+p.packageName);
@@ -134,6 +133,8 @@ public class MyActivity extends Activity {
         try {
             // instantiate font, then apply
             //Typeface font = Typeface.createFromAsset(getAssets(), "fonts/squeakychalksound.ttf");
+            User cn = new User();
+
             Typeface font = Typeface.createFromAsset(getAssets(), "fonts/chawp.ttf");
             num1.setTypeface(font);
             num2.setTypeface(font);
