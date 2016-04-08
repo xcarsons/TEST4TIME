@@ -13,6 +13,8 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.SystemClock;
+import android.support.v7.app.AlertDialog;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -79,8 +81,12 @@ public class DeviceIntentService extends IntentService {
             String p = getTopPackage(); // used for android 5.1.1 and above
 
             if(blockApps.contains(tasks.get(0).processName) || blockApps.contains(taskInfo.get(0).topActivity.getPackageName()) || blockApps.contains(p)) {// get foreground activity
-                Intent test4Time = new Intent(getApplicationContext(), BlockedApps.class);
+                Intent test4Time = new Intent(getApplicationContext(), EnterPin.class);
                 test4Time.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                String appLaunch = blockApps.contains(tasks.get(0).processName) ? tasks.get(0).processName :
+                        blockApps.contains(taskInfo.get(0).topActivity.getPackageName()) ? taskInfo.get(0).topActivity.getPackageName() :p;
+
+                test4Time.putExtra("appLaunched", appLaunch);
                 startActivity(test4Time);
             }
         }
