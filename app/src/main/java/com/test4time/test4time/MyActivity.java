@@ -2,10 +2,15 @@ package com.test4time.test4time;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-
-
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,17 +19,9 @@ import android.view.Window;
 import android.widget.AnalogClock;
 import android.widget.Button;
 import android.widget.TextView;
-import android.content.DialogInterface;
-import android.util.Log;
-
-import org.w3c.dom.Text;
 
 import java.util.LinkedList;
-
 import java.util.List;
-import android.content.pm.PackageManager;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageInfo;
 /*********************************************************
  * Class responsible for manipulating the math question view
  *********************************************************/
@@ -68,6 +65,9 @@ public class MyActivity extends Activity {
 //            Log.d("", "Source dir : " + packageInfo.sourceDir);
 //            Log.d("", "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName));
 //        }
+        Intent intent = getIntent();
+        String easyPuzzle = intent.getExtras().getString("KEY");
+
         for (PackageInfo p :packs) {
             if(!isSystemPackage(p)) {
                 Log.d("","Package name: "+p.packageName);
@@ -134,6 +134,8 @@ public class MyActivity extends Activity {
         try {
             // instantiate font, then apply
             //Typeface font = Typeface.createFromAsset(getAssets(), "fonts/squeakychalksound.ttf");
+            User cn = new User();
+
             Typeface font = Typeface.createFromAsset(getAssets(), "fonts/chawp.ttf");
             num1.setTypeface(font);
             num2.setTypeface(font);
@@ -247,16 +249,10 @@ public class MyActivity extends Activity {
             }
             //ansString = ansString.replaceFirst("^0", "").replaceFirst("^0", "");
             if (ansString.equals(q.answer)) {
-
-                alertBuild.setCancelable(false).setPositiveButton(
-                        "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
+                final MediaPlayer mp = MediaPlayer.create(this, R.raw.bellsound);
+                    mp.start();
                                 CreateQuestion();
-                            }
-                        });
-                alertBuild.setTitle("Correct!");
+
                 sampleTime++;
                 time_saved.setText(String.format("%d minutes",sampleTime));
 
@@ -274,11 +270,11 @@ public class MyActivity extends Activity {
                 alertBuild.setTitle("Incorrect Answer");
                 //alertBuild.setMessage("Correct Answer: " + q.answer);
                 alertBuild.setMessage(q.left + " " + q.opSign + " " + q.right + " = " + q.answer);
+                AlertDialog alert = alertBuild.create();
+                alert.show();
             }
 
         }
-        AlertDialog alert = alertBuild.create();
-        alert.show();
     }
 
     private void onPressedKeypad(String num) {

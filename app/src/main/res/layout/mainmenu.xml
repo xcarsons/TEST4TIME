@@ -35,7 +35,8 @@
 
         <ImageView
             android:layout_width="80dp"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight=".50"
             android:rotation="180"
             android:id="@+id/pencil2"
             android:src="@drawable/penciledit"
@@ -43,26 +44,35 @@
             android:scaleType="centerCrop"
             android:paddingLeft="10dp"
             android:layout_alignParentEnd="true"
-            android:layout_centerInParent="true" />
+            android:layout_centerVertical="true" />
 
         <ImageView
             android:layout_width="80dp"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight=".50"
             android:rotation="180"
             android:id="@+id/pencil"
             android:src="@drawable/penciledit"
             android:layout_gravity="center_horizontal|left"
             android:background="@null"
             android:scaleType="centerCrop"
-            android:paddingLeft="10dp" />
+            android:paddingLeft="10dp"
+            android:layout_centerVertical="true"
+            android:contextClickable="false"
+            android:clickable="true"
+            android:nestedScrollingEnabled="true" />
 
         <ListView
-            android:layout_width="228dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:id="@+id/userList"
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@+id/pencil"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:layout_toStartOf="@+id/pencil2"
+            android:clickable="true"
+            android:contextClickable="true">
+    </ListView>
     </RelativeLayout>
 
 
