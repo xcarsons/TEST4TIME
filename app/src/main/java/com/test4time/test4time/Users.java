@@ -138,6 +138,9 @@ public class Users extends Activity {
             switch (view.getId()) {
                 case R.id.settingsBtn:
 
+                    Intent intent = new Intent(getApplicationContext(), ParentMenu.class);
+                    startActivity(intent);
+
                     break;
                 case R.id.userList:
 
