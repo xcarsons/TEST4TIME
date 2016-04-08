@@ -15,10 +15,7 @@ public class User {
         this.grade = grade;
         this.time = time;
     }
-
-    public void setName(String name) {
-        this.name = db.getString(1);
-    }
+    
 
     public String getName() {
         return name;
