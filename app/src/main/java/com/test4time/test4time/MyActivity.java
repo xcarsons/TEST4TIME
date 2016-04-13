@@ -134,7 +134,7 @@ public class MyActivity extends Activity {
         try {
             // instantiate font, then apply
             //Typeface font = Typeface.createFromAsset(getAssets(), "fonts/squeakychalksound.ttf");
-            User cn = new User();
+
 
             Typeface font = Typeface.createFromAsset(getAssets(), "fonts/chawp.ttf");
             num1.setTypeface(font);
@@ -143,7 +143,7 @@ public class MyActivity extends Activity {
             answer.setTypeface(font);
             submitBtn.setTypeface(font);
             grade.setTypeface(font);
-            name.setText("Timothy");
+            name.setText("Tom");
             name.setTypeface(font);
 
             time_saved.setTypeface(font);

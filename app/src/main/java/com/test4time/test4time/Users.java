@@ -67,6 +67,7 @@ public class Users extends Activity {
         Database db = new Database(this, null, null, 0, null);
         Cursor data = db.getUsers();
         db.insertUser("Tom", 0, 1234, "K", 5, 0);
+        db.insertUser("Bill", 0, 1234, "K", 5, 0);
 
 
         while (data.moveToNext()) {
@@ -74,10 +75,11 @@ public class Users extends Activity {
             String grade = data.getString(4);
             String time = data.getString(5);
             users.add(name);
-            users.add("Grade Level: " + grade);
-            users.add("Time Earned: " + time + " Minutes");
+            //users.add("Grade Level: " + grade);
+            //users.add("Time Earned: " + time + " Minutes");
         }
         db.deleteUser("Tom");
+        db.deleteUser("Bill");
         data.close();
         db.close();
 

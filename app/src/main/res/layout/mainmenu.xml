@@ -8,15 +8,19 @@
     android:visibility="visible">
 
     <ImageButton
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:rotation = "0"
+        android:text = "Settings"
         android:id="@+id/settingsBtn"
         android:layout_gravity="right|top"
-        android:longClickable="true"
-        android:src="@drawable/gear"
+        android:longClickable="false"
+        android:src="@drawable/eraser"
         android:background="@null"
         android:cropToPadding="false"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:clickable="true"
+         />
 
     <TextView
         android:layout_width="wrap_content"
