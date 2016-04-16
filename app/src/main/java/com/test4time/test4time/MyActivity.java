@@ -53,6 +53,7 @@ public class MyActivity extends Activity {
         // remove the top title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.mathquestion);
+        setContentView(R.layout.mathquestion_v2);
 
 
         final PackageManager pm = getPackageManager();
@@ -66,7 +67,9 @@ public class MyActivity extends Activity {
 //            Log.d("", "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName));
 //        }
         Intent intent = getIntent();
-        String easyPuzzle = intent.getExtras().getString("KEY");
+        if(intent.hasExtra("KEY")) {
+            String easyPuzzle = intent.getExtras().getString("KEY");
+        }
 
         for (PackageInfo p :packs) {
             if(!isSystemPackage(p)) {
@@ -98,7 +101,7 @@ public class MyActivity extends Activity {
         keypad_8 = (Button) findViewById(R.id.key_8);
         keypad_9 = (Button) findViewById(R.id.key_9);
         keypad_0 = (Button) findViewById(R.id.key_0);
-        keypad_minus = (Button) findViewById(R.id.key_minus);
+//        keypad_minus = (Button) findViewById(R.id.key_minus);
         keypad_back = (Button) findViewById(R.id.key_back);
 
 
@@ -115,7 +118,7 @@ public class MyActivity extends Activity {
         keypad_7.setOnClickListener(clickListener);
         keypad_8.setOnClickListener(clickListener);
         keypad_9.setOnClickListener(clickListener);
-        keypad_minus.setOnClickListener(clickListener);
+//        keypad_minus.setOnClickListener(clickListener);
         keypad_back.setOnClickListener(clickListener);
 
         //answer.setOnEditorActionListener(submitListener);
@@ -158,7 +161,7 @@ public class MyActivity extends Activity {
             keypad_8.setTypeface(font);
             keypad_9.setTypeface(font);
             keypad_0.setTypeface(font);
-            keypad_minus.setTypeface(font);
+//            keypad_minus.setTypeface(font);
             keypad_back.setTypeface(font);
             //timer.setTypeface(font            );
             //text.setTextSize(16 * getResources().getDisplayMetrics().density);
