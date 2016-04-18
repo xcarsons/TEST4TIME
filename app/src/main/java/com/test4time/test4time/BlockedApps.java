@@ -8,9 +8,9 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -29,7 +29,7 @@ public class BlockedApps extends Activity {
     private PackageManager packageManager = null;
     private List<ApplicationInfo> applist = null;
     private ApplicationAdapter listadaptor = null;
-
+    private MenuItem checkall = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +51,9 @@ public class BlockedApps extends Activity {
 
         packageManager = getPackageManager();
 
+        // show the back button in the top-left corner
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+
         new LoadApplications().execute(); // start thread to generate List of apps
     }
 
@@ -60,6 +63,7 @@ public class BlockedApps extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.applistmenu, menu);
+        checkall = menu.findItem(R.id.action_checkall);
         return true;
     }
 
@@ -71,13 +75,26 @@ public class BlockedApps extends Activity {
 
         switch (item.getItemId()) {
             case R.id.action_save: { // Saved button is selected
-                Log.d("REFRESH", "BTN pressed");
                 Toast.makeText(BlockedApps.this, "List Saved", Toast.LENGTH_SHORT).show();
                 listadaptor.saveApplications();
 
                 Intent i = new Intent(this, DeviceIntentService.class);
-                startService(i);
+                startService(i); // start intent service so it can update the list of blocked apps
                 break;
+            }
+            // Respond to the action bar's Up/Home button (the top-left back button)
+            case android.R.id.home: {
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+	        }
+            case R.id.action_checkall: {
+                if (checkall.getTitle().toString().equalsIgnoreCase("check all")) {
+                    checkall.setTitle("UnCheck All");
+                    listadaptor.checkAll(true, this);
+                } else {
+                    checkall.setTitle("Check All");
+                    listadaptor.checkAll(false, this);
+                }
             }
             default: {
                 result = super.onOptionsItemSelected(item);
@@ -128,6 +145,7 @@ public class BlockedApps extends Activity {
                 Application app = new Application(data.getString(1), data.getString(2), data.getString(3));
                 listadaptor.addApp(data.getString(1), app);
             }
+            data.close();
             db.close();
             return null;
         }
@@ -140,6 +158,10 @@ public class BlockedApps extends Activity {
         @Override
         protected void onPostExecute(Void result) {
             mRecyclerView.setAdapter(listadaptor);
+            if (listadaptor.getCheckedItemCount() == listadaptor.getItemCount()) {
+                checkall.setTitle("UnCheck All");
+            }
+            listadaptor.notifyDataSetChanged(); // new
             progress.dismiss();
             super.onPostExecute(result);
         }

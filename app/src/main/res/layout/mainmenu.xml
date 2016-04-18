@@ -7,16 +7,12 @@
     android:weightSum="1"
     android:visibility="visible">
 
-    <ImageButton
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Settings"
         android:id="@+id/settingsBtn"
-        android:layout_gravity="right|top"
-        android:longClickable="true"
-        android:src="@drawable/gear"
-        android:background="@null"
-        android:cropToPadding="false"
-        android:scaleType="centerCrop" />
+        android:layout_gravity="right|top" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -33,46 +29,35 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="fill_parent"
-            android:layout_weight=".50"
-            android:rotation="180"
-            android:id="@+id/pencil2"
-            android:src="@drawable/penciledit"
-            android:background="@null"
-            android:scaleType="centerCrop"
-            android:paddingLeft="10dp"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true" />
-
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="fill_parent"
-            android:layout_weight=".50"
-            android:rotation="180"
-            android:id="@+id/pencil"
-            android:src="@drawable/penciledit"
-            android:layout_gravity="center_horizontal|left"
-            android:background="@null"
-            android:scaleType="centerCrop"
-            android:paddingLeft="10dp"
-            android:layout_centerVertical="true"
-            android:contextClickable="false"
-            android:clickable="true"
-            android:nestedScrollingEnabled="true" />
-
         <ListView
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
             android:id="@+id/userList"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@+id/pencil"
-            android:layout_centerInParent="true"
-            android:layout_toStartOf="@+id/pencil2"
-            android:clickable="true"
-            android:contextClickable="true">
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:isScrollContainer="false"
+            android:dividerHeight="20dp"
+            android:background="@null"
+            android:textAlignment="center">
     </ListView>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"></LinearLayout>
+
+        <ImageView
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:id="@+id/T4TLogo"
+            android:src="@drawable/test4timelogo"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentTop="false"
+            android:alpha=".75"
+            android:layout_centerHorizontal="true" />
+
     </RelativeLayout>
 
 

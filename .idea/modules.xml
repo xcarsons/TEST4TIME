@@ -3,6 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/TEST4TIME.iml" filepath="$PROJECT_DIR$/TEST4TIME.iml" />
+<<<<<<< HEAD
+=======
+      <module fileurl="file://$PROJECT_DIR$/Test4Time.iml" filepath="$PROJECT_DIR$/Test4Time.iml" />
+>>>>>>> master
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

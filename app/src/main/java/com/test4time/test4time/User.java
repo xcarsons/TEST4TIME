@@ -1,8 +1,11 @@
+/*
 package com.test4time.test4time;
 
+*/
 /**
  * Created by Zach on 4/6/16.
- */
+ *//*
+
 public class User {
     private String name, grade, time;
 
@@ -29,3 +32,4 @@ public class User {
         return time;
     }
 }
+*/

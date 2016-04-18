@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,7 +57,7 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
         listRowViewHolder.packageName.setText(app.packageName);
         listRowViewHolder.processName.setText(app.processName);
 
-        // prevents app from being removed from appSelected(hashmap) when scrolling out of view
+        // prevents app check from being removed from appSelected(hashmap) when scrolling out of view
         listRowViewHolder.checkBox.setOnCheckedChangeListener(null);
 
         // check the appropriate apps (check apps that should be checked
@@ -87,6 +86,10 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
         return (appsList !=null ? appsList.size():0);
     }
 
+    public int getCheckedItemCount() {
+        return (appSelected.size());
+    }
+
     public void clearAdapter() {
         appsList.clear();
         notifyDataSetChanged();
@@ -102,17 +105,34 @@ public class ApplicationAdapter extends RecyclerView.Adapter<ListRowViewHolder> 
         while (iterator.hasNext()) {
             Map.Entry pair = (Map.Entry) iterator.next();
             Application app = (Application) pair.getValue();
-            Log.d("PACKAGE",app.getPackageName());
+            //Log.d("PACKAGE",app.getPackageName());
             db.insertApp(app.getName(), app.getPackageName(), app.getProcessName());
         }
-
+        db.close();
     }
 
     /*
      * add app to selected list
+     * used in the BlockApps async task LoadApplications
      */
     protected void addApp(String appName, Application app) {
         appSelected.put(appName, app);
+    }
+
+    /*
+     * Check/uncheck all listed apps
+     */
+    protected void checkAll(boolean checked, Context context) {
+        if (checked) {
+            for (ApplicationInfo appInfo : appsList) {
+                Application app = new Application(appInfo.loadLabel(context.getPackageManager()).toString(), appInfo.packageName.toString(), appInfo.processName.toString());
+                appSelected.put(app.getName(),app);
+            }
+        } else {
+            appSelected.clear(); // remove all blocked applications
+        }
+
+        notifyDataSetChanged(); // refresh the recycler view
     }
 
 }

@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AnalogClock;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.LinkedList;
@@ -33,6 +34,7 @@ public class MyActivity extends Activity {
     TextView num1, num2, sign;
     TextView grade, name;
     TextView time_saved;
+    ImageView t4t;
     Question q;
     LinkedList<Question> questions;
 
@@ -74,7 +76,7 @@ public class MyActivity extends Activity {
             }
         }
 
-
+        t4t = (ImageView) findViewById(R.id.mqT4T);
         num1 = (TextView) findViewById(R.id.num1);
         num2 = (TextView) findViewById(R.id.num2);
         sign = (TextView) findViewById(R.id.sign);
@@ -118,6 +120,10 @@ public class MyActivity extends Activity {
         keypad_minus.setOnClickListener(clickListener);
         keypad_back.setOnClickListener(clickListener);
 
+        Intent myIntent = new Intent(getIntent());
+        String childName = (myIntent.getStringExtra("KEY"));
+        String gradeLevel = (myIntent.getStringExtra("KEY2"));
+        String timeRemaining = (myIntent.getStringExtra("KEY3"));
         //answer.setOnEditorActionListener(submitListener);
         answer.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -134,7 +140,6 @@ public class MyActivity extends Activity {
         try {
             // instantiate font, then apply
             //Typeface font = Typeface.createFromAsset(getAssets(), "fonts/squeakychalksound.ttf");
-            User cn = new User();
 
             Typeface font = Typeface.createFromAsset(getAssets(), "fonts/chawp.ttf");
             num1.setTypeface(font);
@@ -142,11 +147,13 @@ public class MyActivity extends Activity {
             sign.setTypeface(font);
             answer.setTypeface(font);
             submitBtn.setTypeface(font);
+            grade.setText("Grade: "+gradeLevel);
             grade.setTypeface(font);
-            name.setText("Timothy");
+            name.setText(childName);
             name.setTypeface(font);
 
             time_saved.setTypeface(font);
+            time_saved.setText(timeRemaining + " Minutes");
 
             keypad_1.setTypeface(font);
             keypad_2.setTypeface(font);
@@ -213,7 +220,7 @@ public class MyActivity extends Activity {
         if(questions.size() <= 0) {
             char gradelevel = 'K';
             questions = q.generateQuestionPool(gradelevel);
-            grade.setText("Grade: " + gradelevel);
+            //grade.setText("Grade: " + gradelevel);
         }
         answer.setText("");
 
@@ -254,7 +261,7 @@ public class MyActivity extends Activity {
                                 CreateQuestion();
 
                 sampleTime++;
-                time_saved.setText(String.format("%d minutes",sampleTime));
+                //time_saved.setText(String.format("%d minutes",sampleTime));
 
                 //timeText.setText(String.format("Your Play Time\n        %02d:%02d", 0, sampleTime));
                 //       //"Your Time 0:%02f" + sampleTime);
