@@ -20,6 +20,8 @@ public class UserData {
         return name;
     }
 
+    public void setName() {this.name = name;}
+
     public String getGradeLevel() {
         return gradeLevel;
     }

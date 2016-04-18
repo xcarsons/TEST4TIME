@@ -28,10 +28,10 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1.5"
         android:layout_gravity="center_horizontal"
         android:layout_margin="10dp"
-        android:background="@drawable/border_style">
+        android:background="@drawable/border_style"
+        android:layout_weight="1.5">
         <!-- <TextView
                     android:id="@+id/grade_label"
                     android:layout_width="wrap_content"
@@ -41,15 +41,33 @@
                     android:textSize="36sp"
                     android:layout_weight="1"/>-->
 
-        <TextView
-            android:id="@+id/grade_label"
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:text="Grade 4"
-            android:textSize="36sp"
-            android:paddingRight="10dp"
-            android:layout_gravity="center_vertical|left" />
+            android:layout_height="match_parent"
+            android:layout_gravity="left"
+            android:layout_weight="1">
+
+            <TextView
+                android:id="@+id/grade_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:text="Grade 4"
+                android:textSize="36sp"
+                android:paddingRight="10dp"
+                android:layout_gravity="center_vertical|left" />
+
+            <TextView
+                android:id="@+id/name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="One Smart Kid"
+                android:textSize="36sp"
+                android:layout_weight="3"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+
         <!--<View
             android:layout_width="3dp"
             android:layout_height="80dp"
@@ -57,28 +75,28 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             />-->
-        <TextView
-            android:id="@+id/name_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="One Smart Kid"
-            android:textSize="36sp"
-            android:layout_gravity="center"
-            android:layout_weight="3"
-            />
 
-       <!-- <View
-            android:layout_width="3dp"
-            android:layout_height="80dp"
-            android:background="#ffffff" android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>-->
+        <!-- <View
+             android:layout_width="3dp"
+             android:layout_height="80dp"
+             android:background="#ffffff" android:layout_gravity="center_vertical"
+             android:layout_marginLeft="10dp"
+             android:layout_marginRight="10dp"/>-->
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/mqT4T"
+            android:src="@drawable/test4timelogo"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"
+            android:layout_gravity="center_horizontal"
+            android:scaleType="fitCenter" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            >
+            android:orientation="vertical">
             <AnalogClock
                 android:id="@+id/analog_timer"
                 android:layout_height="0dp"
