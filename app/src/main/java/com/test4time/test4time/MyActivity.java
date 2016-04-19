@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AnalogClock;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.LinkedList;
@@ -33,6 +34,7 @@ public class MyActivity extends Activity {
     TextView num1, num2, sign;
     TextView grade, name;
     TextView time_saved;
+    ImageView t4t;
     Question q;
     LinkedList<Question> questions;
 
@@ -52,9 +54,8 @@ public class MyActivity extends Activity {
         super.onCreate(savedInstanceState);
         // remove the top title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.mathquestion);
+        //setContentView(R.layout.mathquestion);
         setContentView(R.layout.mathquestion_v2);
-
 
         final PackageManager pm = getPackageManager();
         //get a list of installed apps.
@@ -77,7 +78,7 @@ public class MyActivity extends Activity {
             }
         }
 
-
+        t4t = (ImageView) findViewById(R.id.mqT4T);
         num1 = (TextView) findViewById(R.id.num1);
         num2 = (TextView) findViewById(R.id.num2);
         sign = (TextView) findViewById(R.id.sign);
@@ -121,6 +122,10 @@ public class MyActivity extends Activity {
 //        keypad_minus.setOnClickListener(clickListener);
         keypad_back.setOnClickListener(clickListener);
 
+        Intent myIntent = new Intent(getIntent());
+        String childName = (myIntent.getStringExtra("KEY"));
+        String gradeLevel = (myIntent.getStringExtra("KEY2"));
+        String timeRemaining = (myIntent.getStringExtra("KEY3"));
         //answer.setOnEditorActionListener(submitListener);
         answer.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -137,7 +142,6 @@ public class MyActivity extends Activity {
         try {
             // instantiate font, then apply
             //Typeface font = Typeface.createFromAsset(getAssets(), "fonts/squeakychalksound.ttf");
-            User cn = new User();
 
             Typeface font = Typeface.createFromAsset(getAssets(), "fonts/chawp.ttf");
             num1.setTypeface(font);
@@ -145,11 +149,13 @@ public class MyActivity extends Activity {
             sign.setTypeface(font);
             answer.setTypeface(font);
             submitBtn.setTypeface(font);
+            grade.setText("Grade: "+gradeLevel);
             grade.setTypeface(font);
-            name.setText("Timothy");
+            name.setText(childName);
             name.setTypeface(font);
 
             time_saved.setTypeface(font);
+            time_saved.setText(timeRemaining + " Minutes");
 
             keypad_1.setTypeface(font);
             keypad_2.setTypeface(font);
@@ -210,13 +216,13 @@ public class MyActivity extends Activity {
     }
 
     /****************************************************************
-        Generate question and set the View object correctly
+     Generate question and set the View object correctly
      **************************************************************/
     private void CreateQuestion() {
         if(questions.size() <= 0) {
             char gradelevel = 'K';
             questions = q.generateQuestionPool(gradelevel);
-            grade.setText("Grade: " + gradelevel);
+            //grade.setText("Grade: " + gradelevel);
         }
         answer.setText("");
 
@@ -253,11 +259,11 @@ public class MyActivity extends Activity {
             //ansString = ansString.replaceFirst("^0", "").replaceFirst("^0", "");
             if (ansString.equals(q.answer)) {
                 final MediaPlayer mp = MediaPlayer.create(this, R.raw.bellsound);
-                    mp.start();
-                                CreateQuestion();
+                mp.start();
+                CreateQuestion();
 
                 sampleTime++;
-                time_saved.setText(String.format("%d minutes",sampleTime));
+                //time_saved.setText(String.format("%d minutes",sampleTime));
 
                 //timeText.setText(String.format("Your Play Time\n        %02d:%02d", 0, sampleTime));
                 //       //"Your Time 0:%02f" + sampleTime);
@@ -300,7 +306,6 @@ public class MyActivity extends Activity {
         }catch(RuntimeException e) {
             Log.e("Dialog Fontload", e.toString());
         }
-
         AlertDialog.Builder myalert = new AlertDialog.Builder(this);
         myalert.setTitle("Your title");
         myalert.setView(dialogText);
@@ -313,7 +318,7 @@ public class MyActivity extends Activity {
     }
 
     /****************************************************************
-        Responsible for handling clicks
+     Responsible for handling clicks
      **************************************************************/
     private class ClickListener implements View.OnClickListener {
         @Override
@@ -355,9 +360,9 @@ public class MyActivity extends Activity {
                 case R.id.key_9:
                     onPressedKeypad(keypad_9.getText().toString());
                     break;
-                case R.id.key_minus:
-                    onPressedMinus(keypad_minus.getText().toString());
-                    break;
+//                case R.id.key_minus:
+//                    onPressedMinus(keypad_minus.getText().toString());
+//                    break;
                 case R.id.key_back:
                     //remove the last typed number from answer
                     onRemoveAction();
