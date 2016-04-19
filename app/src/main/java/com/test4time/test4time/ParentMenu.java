@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -32,6 +33,7 @@ public class ParentMenu extends Activity
 
     private Button viewApps;
     private Button addUser;
+    private Button changePin;
 
     private EditText userName;
 
@@ -44,7 +46,8 @@ public class ParentMenu extends Activity
     private TextView editNameTextView;
     private TextView editTimeTextView;
     private RadioGroup editRadioGroup;
-    private Button editTime5, editTime10;
+    // The add time buttons are not currently implemented
+    //private Button editTime5, editTime10;
 
     /**
      * Called when the activity is first created.
@@ -58,11 +61,12 @@ public class ParentMenu extends Activity
 
         viewApps = (Button) findViewById(R.id.parent_viewApps);
         addUser = (Button) findViewById(R.id.parent_addUser);
+        changePin = (Button) findViewById(R.id.parent_changePin);
 
         userName = (EditText)findViewById(R.id.parent_add_name);
 
-        editTime5 = (Button)findViewById(R.id.parent_edit_time5);
-        editTime10= (Button)findViewById(R.id.parent_edit_time10);
+//        editTime5 = (Button)findViewById(R.id.parent_edit_time5);
+//        editTime10= (Button)findViewById(R.id.parent_edit_time10);
 
 //        editRadioGroup = (RadioGroup)findViewById(R.id.radiogroup_edit);
 
@@ -70,6 +74,8 @@ public class ParentMenu extends Activity
         ClickListener clickListener = new ClickListener();
         viewApps.setOnClickListener(clickListener);
         addUser.setOnClickListener(clickListener);
+        changePin.setOnClickListener(clickListener);
+
 
         //editTime5.setOnClickListener(clickListener);
         //editTime10.setOnClickListener(clickListener);
@@ -89,7 +95,7 @@ public class ParentMenu extends Activity
 
     public void viewBlockedApps(View view) {
         //TODO: launch the BlockedApps activity when the viewApps button is pressed
-        System.out.println("VIEW BLOCKED APPS");
+//        System.out.println("VIEW BLOCKED APPS");
         Intent intent = new Intent(this, BlockedApps.class);
         startActivity(intent);
     }
@@ -99,10 +105,19 @@ public class ParentMenu extends Activity
         fragment.show(getFragmentManager(), "add_user");
     }
 
+    private void onChangePin() {
+        Toast.makeText(ParentMenu.this, "Sorry, changing your PIN is currently unavailable",
+                Toast.LENGTH_SHORT).show();
+    }
+
     private void addTime(int time) {
         int currTime = Integer.parseInt(editTimeTextView.getText().toString());
         currTime += time;
         editTimeTextView.setText(Integer.toString(currTime));
+    }
+
+    private void updateUserGrade(UserData user, String newGrade) {
+        user.setGradeLevel(newGrade);
     }
 
     // The dialog fragment receives a reference to this Activity through the
@@ -111,16 +126,16 @@ public class ParentMenu extends Activity
     @Override
     public void onDialogPositiveClick(DialogFragment dialog) {
         // user pressed the "submit" button
-        System.out.println("test submit");
+//        System.out.println("test submit");
         //if the name is not empty, then we can dismiss the dialog and update the user list
         //userName = (EditText)findViewById(R.id.parent_add_name);
         //if(!userName.getText().toString().equals("")) {
         String name = ((AddUserDialogFragment)dialog).getUserName();
-        System.out.println("name: " + name);
+//        System.out.println("name: " + name);
         String grade = ((AddUserDialogFragment)dialog).getNewGradeLevel();
-        System.out.println("grade: " + grade);
+//        System.out.println("grade: " + grade);
         if(!name.equals("")) {
-            System.out.println("dismiss");
+//            System.out.println("dismiss");
             /*RadioGroup radioGroup = (RadioGroup) dialog.getActivity().findViewById(R.id.radiogroup_grade);
             int id = radioGroup.getCheckedRadioButtonId();
             if(id == -1) {
@@ -154,14 +169,15 @@ public class ParentMenu extends Activity
             Database db = new Database(getApplicationContext(), null, null, 0, null);
             //insert (name, user type, pin, grade, time, timeup)
             // TEMPORARILY REMOVED FOR TESTING
-            //db.insertUser(name, 0, 1234, grade, 0,0 );
+            System.out.println("inserted: " + name);
+            db.insertUser(name, 0, 1234, grade, 0,0 );
             UserData newUserData = new UserData(name, grade, 0, 0);
             listadaptor.addUser(name, newUserData);
             Toast.makeText(ParentMenu.this, "Adding " + name + " to the list...",
                     Toast.LENGTH_SHORT).show();
             dialog.dismiss();
         } else {
-            System.out.println("don't dismiss");
+//            System.out.println("don't dismiss");
             //dialog.show(getFragmentManager(), "add_user");
         }
 
@@ -170,7 +186,7 @@ public class ParentMenu extends Activity
     @Override
     public void onDialogNegativeClick(DialogFragment dialog) {
         // user pressed the "cancel" button
-        System.out.println("test cancel");
+//        System.out.println("test cancel");
         dialog.dismiss();
     }
 
@@ -183,30 +199,34 @@ public class ParentMenu extends Activity
             switch (view.getId()) {
                 // Send to page to view and update list of blocked apps
                 case R.id.parent_viewApps:
-                    System.out.println("VIEW APPS");
                     viewBlockedApps(view);
                     break;
                 // Open a view to add a new child user
                 case R.id.parent_addUser:
-                    System.out.println("ADD A USER");
                     onAddUserAction();
                     break;
+                // Open a view to edit the parent's pin
+                case R.id.parent_changePin:
+                    onChangePin();
+                    break;
+                /* Add Time buttons not currently implemented
+                 * - Allow parents to add bonus time to children
                 case R.id.parent_edit_time5:
-                    System.out.println("PLUS 5");
                     addTime(5);
                     break;
                 case R.id.parent_edit_time10:
-                    System.out.println("PLUS 10");
                     addTime(10);
                     break;
+                    */
             }
         }
     }
 
-    private void onUserSelected(UserData user) {
-        Toast.makeText(getApplicationContext(), user.getName() + " Clicked", Toast.LENGTH_SHORT).show();
+    // are final parameters allowed?
+    private void onUserSelected(final UserData user) {
+        Toast.makeText(getApplicationContext(), "Selected " + user.getName(), Toast.LENGTH_SHORT).show();
 
-
+//        listadaptor[2];
         // open a dialog to view / edit the child user's information
         AlertDialog.Builder builder = new AlertDialog.Builder(ParentMenu.this);
         LayoutInflater inflater = ParentMenu.this.getLayoutInflater();
@@ -226,132 +246,157 @@ public class ParentMenu extends Activity
                         if (radioId != -1) {
                             switch (radioId) {
                                 case R.id.radioButton_K_edit:    //grade is Kindergarten
+//                                    updateUserGrade(user, "K");
+                                    user.setGradeLevel("K");
                                     break;
                                 case R.id.radioButton_1_edit:    //grade is 1st
+                                    user.setGradeLevel("1");
                                     break;
                                 case R.id.radioButton_2_edit:    //grade is 2nd
+                                    user.setGradeLevel("2");
                                     break;
                                 case R.id.radioButton_3_edit:    //grade is 3rd
+                                    user.setGradeLevel("3");
                                     break;
                                 case R.id.radioButton_4_edit:    //grade is 4th
+                                    user.setGradeLevel("4");
                                     break;
                                 case R.id.radioButton_5_edit:    //grade is 5th
+                                    user.setGradeLevel("5");
                                     break;
                                 case R.id.radioButton_6_edit:    //grade is 6th
+                                    user.setGradeLevel("6");
                                     break;
                             }
+                            Database db = new Database(getApplicationContext(), null, null, 0, null);
+                            //update: String name, int type, int pin, String grade, int time, int timeUp
+                            //cursor:
+                            /* - data.getString(0) returns ID
+                             * - data.getString(1) returns NAME
+                             * - data.getString(2) returns TYPE
+                             * - data.getString(3) returns PIN
+                             * - data.getString(4) returns GRADE
+                             * - data.getString(5) returns TIME
+                             * - data.getString(6) returns TIMEUP
+                             */
+                            System.out.printf("getName:%s\n", user.getName());
+                            Cursor data = db.getUserData(user.getName());
+
+                            System.out.printf("getName: %s; 0:%s\n", user.getName(), data.getString(4));
+                            db.updateUser(data.getString(1), Integer.parseInt(data.getString(2)),
+                                    Integer.parseInt(data.getString(3)), user.getGradeLevel(),
+                                    Integer.parseInt(data.getString(5)), Integer.parseInt(data.getString(6)));
+                            //                            db.updateUser(user.getName(), user.getIsParent(), db.get)
                         }
                         switch (which) {
-                            case R.id.parent_edit_time5:
-                                // add 5 minutes to time
-                                int currTime5 = Integer.parseInt(editTimeTextView.getText().toString());
-                                currTime5 += 5;
-                                editNameTextView.setText(Integer.toString(currTime5));
-                                break;
-                            case R.id.parent_edit_time10:
-                                // add 10 minutes to time
-                                int currTime10 = Integer.parseInt(editTimeTextView.getText().toString());
-                                currTime10 += 10;
-                                editNameTextView.setText(Integer.toString(currTime10));
-                                break;
+                            //                            case R.id.parent_edit_time5:
+                            //                                // add 5 minutes to time
+                            //                                int currTime5 = Integer.parseInt(editTimeTextView.getText().toString());
+                            //                                currTime5 += 5;
+                            //                                editNameTextView.setText(Integer.toString(currTime5));
+                            //                                break;
+                            //                            case R.id.parent_edit_time10:
+                            //                                // add 10 minutes to time
+                            //                                int currTime10 = Integer.parseInt(editTimeTextView.getText().toString());
+                            //                                currTime10 += 10;
+                            //                                editNameTextView.setText(Integer.toString(currTime10));
+                            //                                break;
 
                         }
                     }
                 })
-        .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        AlertDialog dialog = builder.create();
-        dialog.setTitle("Edit Child Information");
-        dialog.show();
-    }
+                             .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                                 @Override
+                                 public void onClick(DialogInterface dialog, int which) {
+                                     dialog.dismiss();
+                                 }
+                             });
+                             AlertDialog dialog = builder.create();
+                             dialog.setTitle("Edit Child Information");
+                             dialog.show();
+                             }
 
-    /*
-     * generate list of users
-     */
-    private List<ApplicationInfo> checkForLaunchIntent(List<ApplicationInfo> list) {
-        ArrayList<ApplicationInfo> userlist = new ArrayList<ApplicationInfo>();
-        for (ApplicationInfo info : list) {
-            try {
-                if (null != packageManager.getLaunchIntentForPackage(info.packageName)) {
-                    userlist.add(info);
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return userlist;
-    }
+                             /*
+                             * generate list of users
+                             */
+                            private List<ApplicationInfo> checkForLaunchIntent
+                            (List < ApplicationInfo > list) {
+                                ArrayList<ApplicationInfo> userlist = new ArrayList<ApplicationInfo>();
+                                for (ApplicationInfo info : list) {
+                                    try {
+                                        if (null != packageManager.getLaunchIntentForPackage(info.packageName)) {
+                                            userlist.add(info);
+                                        }
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                return userlist;
+                            }
 
     /*
          * inner class creates a thread to populated the RecyclerView
          * Data retrieved (applications installed on device, applications in BLOCKAPPS table)
          */
-    private class LoadUsers extends AsyncTask<Void, Void, Void> {
-        private ProgressDialog progress = null;
+                            private class LoadUsers extends AsyncTask<Void, Void, Void> {
+                                private ProgressDialog progress = null;
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            //userlist = checkForLaunchIntent(packageManager.getInstalledApplications(PackageManager.GET_META_DATA));
-            //listadaptor = new ApplicationAdapter(ParentMenu.this, userlist);
-            userlist = new ArrayList<>();
-            listadaptor = new UserAdapter(ParentMenu.this, userlist, new OnItemClickListener() {
-                @Override
-                public void onItemClick(UserData item) {
-                    onUserSelected(item);
-                }
-            });
+                                @Override
+                                protected Void doInBackground(Void... params) {
+                                    //userlist = checkForLaunchIntent(packageManager.getInstalledApplications(PackageManager.GET_META_DATA));
+                                    //listadaptor = new ApplicationAdapter(ParentMenu.this, userlist);
+                                    userlist = new ArrayList<>();
+                                    listadaptor = new UserAdapter(ParentMenu.this, userlist, new OnItemClickListener() {
+                                        @Override
+                                        public void onItemClick(UserData item) {
+                                            onUserSelected(item);
+                                        }
+                                    });
 
-            // Populate the list with the current users in the database
-            // TEMPORARILY REMOVED - does not work on my phone, but works on tablet
-            /*
-            Database db = new Database(getApplicationContext(), null, null, 0, null);
-            Cursor data = db.getUsers();
-            // get list of users from USERS table, add them to the list of current users
-            while (data.moveToNext()) {
-                //Application app = new Application(data.getString(1), data.getString(2), data.getString(3));
-                // UserData( name, grade, currentTime, isParent)
-                UserData newUser = new UserData(data.getString(1), data.getString(4),
-                        Integer.parseInt(data.getString(5)), Integer.parseInt(data.getString(2)));
-//                listadaptor.addApp(data.getString(1), newUser);
-                listadaptor.addUser(data.getString(1), newUser);
-            }
-            data.close();
-            db.close();
-            */
+                                    // Populate the list with the current users in the database
+                                    Database db = new Database(getApplicationContext(), null, null, 0, null);
+                                    // TEMPORARILY REMOVED - does not work on my phone, but works on tablet
+                                    Cursor data = db.getUsers();
+                                    // get list of users from USERS table, add them to the list of current users
+                                    while (data.moveToNext()) {
+                                        // UserData( name, grade, currentTime, isParent)
+                                        UserData newUser = new UserData(data.getString(1), data.getString(4),
+                                                Integer.parseInt(data.getString(5)), Integer.parseInt(data.getString(2)));
+                                        listadaptor.addUser(data.getString(1), newUser);
+                                    }
+                                    data.close();
+                                    db.close();
 
             /* TESTING LIST POPULATION
-            */
             String sampleName = "Jimmy";
             for(int i = 0; i < 3; i++) {
                 UserData newUser = new UserData(sampleName + i, Integer.toString((i % 6) + 1),
                         (i+1)*5, (i+1)*5);
                 listadaptor.addUser(sampleName + i, newUser);
             }
-            return null;
-        }
+            */
 
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-        }
+                                    return null;
+                                }
 
-        @Override
-        protected void onPostExecute(Void result) {
-            mRecyclerView.setAdapter(listadaptor);
-            System.out.println("POST EXECUTE");
-            progress.dismiss();
-            super.onPostExecute(result);
-        }
+                                @Override
+                                protected void onCancelled() {
+                                    super.onCancelled();
+                                }
 
-        @Override
-        protected void onPreExecute() {
-            progress = ProgressDialog.show(ParentMenu.this, null,
-                    "Loading Users");
-            super.onPreExecute();
+                                @Override
+                                protected void onPostExecute(Void result) {
+                                    mRecyclerView.setAdapter(listadaptor);
+//            System.out.println("POST EXECUTE");
+                                    progress.dismiss();
+                                    super.onPostExecute(result);
+                                }
+
+                                @Override
+                                protected void onPreExecute() {
+                                    progress = ProgressDialog.show(ParentMenu.this, null,
+                                            "Loading Users");
+                                    super.onPreExecute();
         }
 
         @Override

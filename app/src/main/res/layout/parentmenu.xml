@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/chalkboard_dark2"
@@ -9,7 +10,7 @@
 
     <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/parent_title"
         android:id="@+id/textView"
@@ -24,26 +25,49 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="96dp"
+        android:layout_height="wrap_content"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
         android:paddingTop="15dp"
-        android:paddingBottom="15dp">
+        android:paddingBottom="15dp"
+        android:gravity="center">
 
         <Button
             android:id="@+id/parent_viewApps"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="View Blocked Apps"
-            android:textSize="24dp"/>
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:text="@string/viewBlockedApps"
+            android:textSize="24dp"
+            android:layout_gravity="right"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+        <Button
+            android:id="@+id/parent_changePin"
+            android:layout_width="0dp"
+            android:layout_height="80dp"
+            android:layout_weight="1"
+            android:text="@string/changePIN"
+            android:textSize="24dp"
+            android:layout_gravity="right"
+            android:gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
     </LinearLayout>
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:background="@drawable/border_style"/>
+
+    <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center_horizontal"
-        android:background="@drawable/border_style"
+        android:layout_gravity="center_horizontal"
         android:paddingLeft="30dp"
         android:paddingRight="30dp"
         android:paddingTop="15dp"
@@ -53,8 +77,8 @@
 
         <Button
             android:id="@+id/parent_addUser"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="256dp"
+            android:layout_height="80dp"
             android:text="Add a User"
             android:textSize="24dp"
 
@@ -63,9 +87,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/parent_userList"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-
-            />
+            android:layout_height="match_parent"
+            tools:listitem="@android:layout/simple_list_item_1" />
     </LinearLayout>
 
 
