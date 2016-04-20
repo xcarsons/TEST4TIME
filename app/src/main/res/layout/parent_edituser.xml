@@ -14,11 +14,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="24dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
             android:text="Gerald"
-            android:textAppearance="?android:attr/textAppearanceLarge"/>
+            android:textAppearance="?android:attr/textAppearanceLarge" />
         <!--android:background="@drawable/round_tb" android:textColor="#000000"/>-->
 
         <TextView
@@ -39,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="left"
-            android:layout_marginLeft="15dp">
+            android:layout_marginLeft="45dp">
 
             <RadioGroup
                 android:id="@+id/radiogroup_edit"
@@ -96,14 +96,16 @@
             <View
                 android:layout_width="3dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="10dp"
-                android:background="#ffffff" android:layout_gravity="center_horizontal"/>
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="20dp"
+                android:background="#ffffff" android:layout_gravity="center"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:gravity="right"
+                android:layout_gravity="right">
 
                 <TextView
                     android:id="@+id/parent_edit_time"
@@ -124,19 +126,21 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <Button
-                        android:id="@+id/parent_edit_time5"
-                        android:layout_width="55dp"
-                        android:layout_height="wrap_content"
-                        android:text="+5"
-                        android:layout_gravity="right"
-                        />
-                    <Button
-                        android:id="@+id/parent_edit_time10"
-                        android:layout_width="55dp"
-                        android:layout_height="wrap_content"
-                        android:text="+10" />
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal">
+                    <!--Hidden until implement adding bonus time-->
+                    <!--<Button-->
+                        <!--android:id="@+id/parent_edit_time5"-->
+                        <!--android:layout_width="55dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="+5"-->
+                        <!--android:layout_gravity="right"-->
+                        <!--/>-->
+                    <!--<Button-->
+                        <!--android:id="@+id/parent_edit_time10"-->
+                        <!--android:layout_width="55dp"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="+10" />-->
                 </LinearLayout>
 
             </LinearLayout>

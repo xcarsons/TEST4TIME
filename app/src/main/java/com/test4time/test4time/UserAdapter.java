@@ -130,4 +130,8 @@ public class UserAdapter extends RecyclerView.Adapter<ListRowViewHolder> {
         userDataHashMap.put(userName, userData);
         usersList.add(userData);
     }
+
+    protected UserData getUser(String userName) {
+       return userDataHashMap.get(userName);
+    }
 }

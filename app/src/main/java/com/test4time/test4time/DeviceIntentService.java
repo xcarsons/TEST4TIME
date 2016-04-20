@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
@@ -67,18 +68,21 @@ public class DeviceIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         // open settings to let user grant Test4Time access to usage data
+        // TODO: un-comment this section
+        /*
         if (needPermissionForBlocking(this)) {
-                Intent settings = new Intent("android.settings.USAGE_ACCESS_SETTINGS");//Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                settings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(settings);
+            Intent settings = new Intent("android.settings.USAGE_ACCESS_SETTINGS");//Settings.ACTION_USAGE_ACCESS_SETTINGS);
+            settings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(settings);
         }
+        */
         ActivityManager manager = (ActivityManager) getApplicationContext().getSystemService(ACTIVITY_SERVICE);
 
         while(true) {
             List<ActivityManager.RunningAppProcessInfo> tasks = manager.getRunningAppProcesses(); // used for android 5.0
             List<ActivityManager.RunningTaskInfo> taskInfo = manager.getRunningTasks(1); // used for older versions of android
 
-            String p = getTopPackage(); // used for android 5.1.1 and above
+            String p = "";//getTopPackage(); // used for android 5.1.1 and above
 
             if(blockApps.contains(tasks.get(0).processName) || blockApps.contains(taskInfo.get(0).topActivity.getPackageName()) || blockApps.contains(p)) {// get foreground activity
                 Intent test4Time = new Intent(getApplicationContext(), EnterPin.class);
@@ -135,7 +139,8 @@ public class DeviceIntentService extends IntentService {
 
         @Override
         public int compare(UsageStats lhs, UsageStats rhs) {
-            return (lhs.getLastTimeUsed() > rhs.getLastTimeUsed()) ? -1 : (lhs.getLastTimeUsed() == rhs.getLastTimeUsed()) ? 0 : 1;
+            return 1;
+            //return (lhs.getLastTimeUsed() > rhs.getLastTimeUsed()) ? -1 : (lhs.getLastTimeUsed() == rhs.getLastTimeUsed()) ? 0 : 1;
         }
     }
 

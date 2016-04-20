@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 /*********************************************************
@@ -46,6 +48,9 @@ public class MyActivity extends Activity {
     //Chronometer timer;
     AnalogClock clock;
 
+    MediaPlayer mp;
+    AssetFileDescriptor afd;
+
     /**
      * Called when the activity is first created.
      */
@@ -54,8 +59,8 @@ public class MyActivity extends Activity {
         super.onCreate(savedInstanceState);
         // remove the top title bar
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        setContentView(R.layout.mathquestion);
-
+        //setContentView(R.layout.mathquestion);
+        setContentView(R.layout.mathquestion_v2);
 
         final PackageManager pm = getPackageManager();
         //get a list of installed apps.
@@ -68,13 +73,16 @@ public class MyActivity extends Activity {
 //            Log.d("", "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName));
 //        }
         Intent intent = getIntent();
-        String easyPuzzle = intent.getExtras().getString("KEY");
+        if(intent.hasExtra("KEY")) {
+            String easyPuzzle = intent.getExtras().getString("KEY");
+        }
 
         for (PackageInfo p :packs) {
             if(!isSystemPackage(p)) {
                 Log.d("","Package name: "+p.packageName);
             }
         }
+
 
         t4t = (ImageView) findViewById(R.id.mqT4T);
         num1 = (TextView) findViewById(R.id.num1);
@@ -88,7 +96,7 @@ public class MyActivity extends Activity {
         //timeText = (TextView) findViewById(R.id.time);
         //timer = (Chronometer) findViewById(R.id.chrono);
         clock = (AnalogClock) findViewById(R.id.analog_timer);
-        time_saved = (TextView) findViewById(R.id.time_display);
+        time_saved = (TextView) findViewById(R.id.time_display_time);
 
         keypad_1 = (Button) findViewById(R.id.key_1);
         keypad_2 = (Button) findViewById(R.id.key_2);
@@ -100,7 +108,7 @@ public class MyActivity extends Activity {
         keypad_8 = (Button) findViewById(R.id.key_8);
         keypad_9 = (Button) findViewById(R.id.key_9);
         keypad_0 = (Button) findViewById(R.id.key_0);
-        keypad_minus = (Button) findViewById(R.id.key_minus);
+//        keypad_minus = (Button) findViewById(R.id.key_minus);
         keypad_back = (Button) findViewById(R.id.key_back);
 
 
@@ -117,7 +125,7 @@ public class MyActivity extends Activity {
         keypad_7.setOnClickListener(clickListener);
         keypad_8.setOnClickListener(clickListener);
         keypad_9.setOnClickListener(clickListener);
-        keypad_minus.setOnClickListener(clickListener);
+//        keypad_minus.setOnClickListener(clickListener);
         keypad_back.setOnClickListener(clickListener);
 
         Intent myIntent = new Intent(getIntent());
@@ -153,7 +161,9 @@ public class MyActivity extends Activity {
             name.setTypeface(font);
 
             time_saved.setTypeface(font);
-            time_saved.setText(timeRemaining + " Minutes");
+
+            time_saved.setText(timeRemaining);
+
 
             keypad_1.setTypeface(font);
             keypad_2.setTypeface(font);
@@ -165,7 +175,7 @@ public class MyActivity extends Activity {
             keypad_8.setTypeface(font);
             keypad_9.setTypeface(font);
             keypad_0.setTypeface(font);
-            keypad_minus.setTypeface(font);
+//            keypad_minus.setTypeface(font);
             keypad_back.setTypeface(font);
             //timer.setTypeface(font            );
             //text.setTextSize(16 * getResources().getDisplayMetrics().density);
@@ -214,12 +224,15 @@ public class MyActivity extends Activity {
     }
 
     /****************************************************************
-        Generate question and set the View object correctly
+     Generate question and set the View object correctly
      **************************************************************/
     private void CreateQuestion() {
         if(questions.size() <= 0) {
             char gradelevel = 'K';
-            questions = q.generateQuestionPool(gradelevel);
+
+            //questions = q.generateQuestionPool(gradelevel);
+            //System.out.printf("Grade: %s; charAt 0: %c\n", grade.getText(), grade.getText().charAt(7));
+            questions = q.generateQuestionPool(grade.getText().charAt(7));
             //grade.setText("Grade: " + gradelevel);
         }
         answer.setText("");
@@ -256,11 +269,28 @@ public class MyActivity extends Activity {
             }
             //ansString = ansString.replaceFirst("^0", "").replaceFirst("^0", "");
             if (ansString.equals(q.answer)) {
-                final MediaPlayer mp = MediaPlayer.create(this, R.raw.bellsound);
+                //final MediaPlayer mp = MediaPlayer.create(this, R.raw.bellsound);
+                //mp.start();
+
+                try {
+                    mp.reset();
+                    mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                    mp.prepare();
                     mp.start();
-                                CreateQuestion();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+//                mp.setDataSouce(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+//                mp.reset();
+
+                CreateQuestion();
 
                 sampleTime++;
+
+                int prev_time = Integer.parseInt(time_saved.getText().toString());
+                prev_time++;
+                time_saved.setText(Integer.toString(prev_time));
+
                 //time_saved.setText(String.format("%d minutes",sampleTime));
 
                 //timeText.setText(String.format("Your Play Time\n        %02d:%02d", 0, sampleTime));
@@ -304,7 +334,6 @@ public class MyActivity extends Activity {
         }catch(RuntimeException e) {
             Log.e("Dialog Fontload", e.toString());
         }
-
         AlertDialog.Builder myalert = new AlertDialog.Builder(this);
         myalert.setTitle("Your title");
         myalert.setView(dialogText);
@@ -317,7 +346,7 @@ public class MyActivity extends Activity {
     }
 
     /****************************************************************
-        Responsible for handling clicks
+     Responsible for handling clicks
      **************************************************************/
     private class ClickListener implements View.OnClickListener {
         @Override
@@ -359,9 +388,9 @@ public class MyActivity extends Activity {
                 case R.id.key_9:
                     onPressedKeypad(keypad_9.getText().toString());
                     break;
-                case R.id.key_minus:
-                    onPressedMinus(keypad_minus.getText().toString());
-                    break;
+//                case R.id.key_minus:
+//                    onPressedMinus(keypad_minus.getText().toString());
+//                    break;
                 case R.id.key_back:
                     //remove the last typed number from answer
                     onRemoveAction();

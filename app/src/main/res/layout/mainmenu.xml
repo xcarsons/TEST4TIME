@@ -9,7 +9,11 @@
 
     <Button
         android:layout_width="wrap_content"
+<<<<<<< HEAD
         android:layout_height="wrap_content"
+=======
+        android:layout_height="48dp"
+>>>>>>> a032ba5ee63754effe03c18388e99c7813f08668
         android:text="Settings"
         android:id="@+id/settingsBtn"
         android:layout_gravity="right|top" />
@@ -35,9 +39,15 @@
             android:layout_height="wrap_content"
             android:isScrollContainer="false"
             android:dividerHeight="20dp"
+<<<<<<< HEAD
             android:background="@null"
             android:textAlignment="center">
     </ListView>
+=======
+            android:background="@drawable/border_style"
+            android:textAlignment="center">
+        </ListView>
+>>>>>>> a032ba5ee63754effe03c18388e99c7813f08668
 
         <LinearLayout
             android:orientation="horizontal"
@@ -50,7 +60,11 @@
             android:layout_width="300dp"
             android:layout_height="300dp"
             android:id="@+id/T4TLogo"
+<<<<<<< HEAD
             android:src="@drawable/test4timelogo"
+=======
+            android:src="@drawable/test4time_log_edited_v5"
+>>>>>>> a032ba5ee63754effe03c18388e99c7813f08668
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="false"
             android:layout_alignParentRight="false"
