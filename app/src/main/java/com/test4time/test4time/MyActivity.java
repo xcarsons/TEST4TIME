@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.AssetFileDescriptor;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 /*********************************************************
@@ -45,6 +47,9 @@ public class MyActivity extends Activity {
     int sampleTime;
     //Chronometer timer;
     AnalogClock clock;
+
+    MediaPlayer mp;
+    AssetFileDescriptor afd;
 
     /**
      * Called when the activity is first created.
@@ -77,6 +82,10 @@ public class MyActivity extends Activity {
                 Log.d("","Package name: "+p.packageName);
             }
         }
+
+        mp = new MediaPlayer();
+        afd = getResources().openRawResourceFd(R.raw.bellsound);
+
 
         t4t = (ImageView) findViewById(R.id.mqT4T);
         num1 = (TextView) findViewById(R.id.num1);
@@ -260,8 +269,20 @@ public class MyActivity extends Activity {
             }
             //ansString = ansString.replaceFirst("^0", "").replaceFirst("^0", "");
             if (ansString.equals(q.answer)) {
-                final MediaPlayer mp = MediaPlayer.create(this, R.raw.bellsound);
-                mp.start();
+                //final MediaPlayer mp = MediaPlayer.create(this, R.raw.bellsound);
+                //mp.start();
+
+                try {
+                    mp.reset();
+                    mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                    mp.prepare();
+                    mp.start();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+//                mp.setDataSouce(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+//                mp.reset();
+
                 CreateQuestion();
 
                 sampleTime++;
