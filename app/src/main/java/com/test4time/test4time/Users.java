@@ -34,6 +34,8 @@ public class Users extends Activity {
     TextView usersText;
     private Context context;
 
+
+
     /**
      * Called when the activity is first created.
      */
@@ -52,6 +54,8 @@ public class Users extends Activity {
         //mRecyclerView = (RecyclerView) findViewById(R.id.userList);
         usersText = (TextView) findViewById(R.id.UsersText);
 
+        //ArrayAdapter<String> ad = new ArrayAdapter<String>(getApplicationContext(), R.layout.userrow, R.id.user_name, (String[]) null);
+        //userList.setAdapter(ad);
 
         settingsBtn.setOnClickListener(new ClickListener());
         settingsBtn.setTypeface(font);
@@ -103,6 +107,7 @@ public class Users extends Activity {
 
                 // Set the border of View (ListView Item)
                 //view.setBackground(getContext().getDrawable(R.drawable.u));
+
 
                 // Return the view
                 return view;

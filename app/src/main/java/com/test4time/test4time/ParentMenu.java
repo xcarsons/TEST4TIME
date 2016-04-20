@@ -404,6 +404,7 @@ public class ParentMenu extends Activity
                                     //userlist = checkForLaunchIntent(packageManager.getInstalledApplications(PackageManager.GET_META_DATA));
                                     //listadaptor = new ApplicationAdapter(ParentMenu.this, userlist);
                                     userlist = new ArrayList<>();
+
                                     listadaptor = new UserAdapter(ParentMenu.this, userlist, new OnItemClickListener() {
                                         @Override
                                         public void onItemClick(UserData item) {

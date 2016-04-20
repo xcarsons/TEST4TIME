@@ -35,7 +35,7 @@ public class MyActivity extends Activity {
     TextView answer;
     TextView num1, num2, sign;
     TextView grade, name;
-    TextView time_saved;
+    TextView time_saved, time_text;
     ImageView t4t;
     Question q;
     LinkedList<Question> questions;
@@ -43,6 +43,8 @@ public class MyActivity extends Activity {
     Button keypad_1, keypad_2, keypad_3, keypad_4, keypad_5;
     Button keypad_6, keypad_7, keypad_8, keypad_9;
     Button keypad_0, keypad_minus, keypad_back;
+
+    Button playButton;
 
     int sampleTime;
     //Chronometer timer;
@@ -93,6 +95,7 @@ public class MyActivity extends Activity {
         sign = (TextView) findViewById(R.id.sign);
         answer = (TextView) findViewById(R.id.answer);
         submitBtn = (Button) findViewById(R.id.submitBtn);
+        playButton = (Button) findViewById(R.id.play_button);
         grade = (TextView) findViewById(R.id.grade_label);
         name = (TextView) findViewById(R.id.name_label);
         sampleTime = 0;
@@ -100,6 +103,7 @@ public class MyActivity extends Activity {
         //timer = (Chronometer) findViewById(R.id.chrono);
         clock = (AnalogClock) findViewById(R.id.analog_timer);
         time_saved = (TextView) findViewById(R.id.time_display_time);
+        time_text = (TextView) findViewById(R.id.time_display_text);
 
         keypad_1 = (Button) findViewById(R.id.key_1);
         keypad_2 = (Button) findViewById(R.id.key_2);
@@ -118,6 +122,7 @@ public class MyActivity extends Activity {
 
         ClickListener clickListener = new ClickListener();
         submitBtn.setOnClickListener(clickListener);
+        playButton.setOnClickListener(clickListener);
         keypad_0.setOnClickListener(clickListener);
         keypad_1.setOnClickListener(clickListener);
         keypad_2.setOnClickListener(clickListener);
@@ -158,13 +163,17 @@ public class MyActivity extends Activity {
             sign.setTypeface(font);
             answer.setTypeface(font);
             submitBtn.setTypeface(font);
-            grade.setText("Grade: "+gradeLevel);
+            playButton.setTypeface(font);
+            playButton.setText("Play");
+            grade.setText("Grade: "+ gradeLevel);
             grade.setTypeface(font);
             name.setText(childName);
             name.setTypeface(font);
 
             time_saved.setTypeface(font);
             time_saved.setText(timeRemaining);
+            time_text.setTypeface(font);
+            time_text.setText("minutes");
 
             keypad_1.setTypeface(font);
             keypad_2.setTypeface(font);
@@ -289,6 +298,8 @@ public class MyActivity extends Activity {
                 int prev_time = Integer.parseInt(time_saved.getText().toString());
                 prev_time++;
                 time_saved.setText(Integer.toString(prev_time));
+                Database db = new Database(getApplicationContext(), null, null, 0, null);
+//                db.updateUser()
                 //time_saved.setText(String.format("%d minutes",sampleTime));
 
                 //timeText.setText(String.format("Your Play Time\n        %02d:%02d", 0, sampleTime));
@@ -309,6 +320,26 @@ public class MyActivity extends Activity {
                 alert.show();
             }
 
+        }
+    }
+
+    private void onPlayPauseAction() {
+        if(playButton.getText().toString().equals("Play")) {
+            //set text to "Pause"
+            playButton.setText("Pause");
+            try {
+                mp.reset();
+                mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+                mp.prepare();
+                mp.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // TODO: start using time
+        } else {
+            //set text to "Pause"
+            playButton.setText("Play");
+            // TODO: stop using time
         }
     }
 
@@ -354,6 +385,9 @@ public class MyActivity extends Activity {
                 case R.id.submitBtn:
                     onSubmitAction();
                     break;
+                case R.id.play_button:
+                    onPlayPauseAction();
+                    break;
                 case R.id.answer:
                     break;
                 case R.id.key_0:
@@ -397,6 +431,8 @@ public class MyActivity extends Activity {
             }
         }
     }
+
+
 
 
 }

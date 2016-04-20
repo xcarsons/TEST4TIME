@@ -12,5 +12,6 @@
     <string name="current_time">Current Time</string>
     <string name="viewBlockedApps">View Blocked Apps</string>
     <string name="changePIN">Change PIN</string>
+    <string name="play">Play</string>
 
 </resources>
