@@ -12,7 +12,7 @@
         </receiver>
         <activity android:name=".ParentMenu"
             android:label="@string/app_name">
-            
+
 
         </activity>
         <activity

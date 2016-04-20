@@ -32,6 +32,7 @@ public class Users extends Activity {
     ImageView t4tLogo;
     //RecyclerView mRecyclerView;
     TextView usersText;
+    TextView text;
     private Context context;
 
     /**
@@ -99,7 +100,7 @@ public class Users extends Activity {
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
-                android.R.layout.simple_list_item_1,
+                R.layout.row_listview,
                 users ) {
             public View getView(int position, View convertView, ViewGroup parent) {
                 /// Get the Item from ListView
@@ -107,7 +108,7 @@ public class Users extends Activity {
 
                 // Set the border of View (ListView Item)
 
-                view.setBackground(getContext().getDrawable(R.drawable.userlistview));
+                //view.setBackground(getContext().getDrawable(R.drawable.userlistview));
 
 
                 // Return the view

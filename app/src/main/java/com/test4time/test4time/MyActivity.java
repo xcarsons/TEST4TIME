@@ -83,6 +83,8 @@ public class MyActivity extends Activity {
             }
         }
 
+        mp = new MediaPlayer();
+        afd = getResources().openRawResourceFd(R.raw.bellsound);
 
         t4t = (ImageView) findViewById(R.id.mqT4T);
         num1 = (TextView) findViewById(R.id.num1);
