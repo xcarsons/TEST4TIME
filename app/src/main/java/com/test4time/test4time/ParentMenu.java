@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -118,6 +119,43 @@ public class ParentMenu extends Activity
 
     private void updateUserGrade(UserData user, String newGrade) {
         user.setGradeLevel(newGrade);
+    }
+
+    //takes a String gradelevel and returns the appropriate radioButton to set as checked/on
+    private int convertGradeToRadioButton(String gradeLevel, boolean isEditing) {
+        if(! isEditing) {
+            if(gradeLevel.equals("K"))
+                return R.id.radioButton_K;
+            else if(gradeLevel.equals("1"))
+                return R.id.radioButton_1;
+            else if(gradeLevel.equals("2"))
+                return R.id.radioButton_2;
+            else if(gradeLevel.equals("3"))
+                return R.id.radioButton_3;
+            else if(gradeLevel.equals("4"))
+                return R.id.radioButton_4;
+            else if(gradeLevel.equals("5"))
+                return R.id.radioButton_5;
+            else if(gradeLevel.equals("6"))
+                return R.id.radioButton_6;
+        } else {
+            if(gradeLevel.equals("K"))
+                return R.id.radioButton_K_edit;
+            else if(gradeLevel.equals("1"))
+                return R.id.radioButton_1_edit;
+            else if(gradeLevel.equals("2"))
+                return R.id.radioButton_2_edit;
+            else if(gradeLevel.equals("3"))
+                return R.id.radioButton_3_edit;
+            else if(gradeLevel.equals("4"))
+                return R.id.radioButton_4_edit;
+            else if(gradeLevel.equals("5"))
+                return R.id.radioButton_5_edit;
+            else if(gradeLevel.equals("6"))
+                return R.id.radioButton_6_edit;
+        }
+        //default return checked Kindergarten button
+        return R.id.radioButton_K;
     }
 
     // The dialog fragment receives a reference to this Activity through the
@@ -231,8 +269,9 @@ public class ParentMenu extends Activity
         AlertDialog.Builder builder = new AlertDialog.Builder(ParentMenu.this);
         LayoutInflater inflater = ParentMenu.this.getLayoutInflater();
 
+        View content = inflater.inflate(R.layout.parent_edituser, null);
 
-        builder.setView(inflater.inflate(R.layout.parent_edituser, null))
+        builder.setView(content)
                 .setPositiveButton(R.string.submitText, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -281,11 +320,25 @@ public class ParentMenu extends Activity
                              */
                             System.out.printf("getName:%s\n", user.getName());
                             Cursor data = db.getUserData(user.getName());
+//                            data = db.getUsers();
+//                            db.
+                            if (data != null) {
+                                if (data.moveToFirst()) {
+                                    System.out.printf("getName: %s; 0:%s\n", user.getName(), data.getString(4));
+                                    db.updateUser(data.getString(1), Integer.parseInt(data.getString(2)),
+                                            Integer.parseInt(data.getString(3)), user.getGradeLevel(),
+                                            Integer.parseInt(data.getString(5)), Integer.parseInt(data.getString(6)));
+                                } else {
+                                    Toast.makeText(ParentMenu.this, "Cursor can't move to first; " + user.getName(),
+                                            Toast.LENGTH_SHORT).show();
 
-                            System.out.printf("getName: %s; 0:%s\n", user.getName(), data.getString(4));
-                            db.updateUser(data.getString(1), Integer.parseInt(data.getString(2)),
-                                    Integer.parseInt(data.getString(3)), user.getGradeLevel(),
-                                    Integer.parseInt(data.getString(5)), Integer.parseInt(data.getString(6)));
+                                }
+
+                            } else {
+                                Toast.makeText(ParentMenu.this, "No such user: " + user.getName(),
+                                        Toast.LENGTH_SHORT).show();
+                            }
+
                             //                            db.updateUser(user.getName(), user.getIsParent(), db.get)
                         }
                         switch (which) {
@@ -305,16 +358,21 @@ public class ParentMenu extends Activity
                         }
                     }
                 })
-                             .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
-                                 @Override
-                                 public void onClick(DialogInterface dialog, int which) {
-                                     dialog.dismiss();
-                                 }
-                             });
-                             AlertDialog dialog = builder.create();
-                             dialog.setTitle("Edit Child Information");
-                             dialog.show();
-                             }
+                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                     @Override
+                     public void onClick(DialogInterface dialog, int which) {
+                         dialog.dismiss();
+                     }
+                 });
+                AlertDialog dialog = builder.create();
+                TextView editChildName = (TextView) content.findViewById(R.id.parent_edit_name);
+                editChildName.setText(user.getName());
+                RadioGroup editChildRG = (RadioGroup) content.findViewById(R.id.radiogroup_edit);
+
+                editChildRG.check(convertGradeToRadioButton(user.getGradeLevel(), true));
+                dialog.setTitle("Edit Child Information");
+                dialog.show();
+            }
 
                              /*
                              * generate list of users
@@ -332,7 +390,7 @@ public class ParentMenu extends Activity
                                     }
                                 }
                                 return userlist;
-                            }
+    }
 
     /*
          * inner class creates a thread to populated the RecyclerView

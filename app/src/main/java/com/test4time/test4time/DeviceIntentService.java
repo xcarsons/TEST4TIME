@@ -14,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.WindowManager;
 
 import java.util.ArrayList;
@@ -68,9 +69,9 @@ public class DeviceIntentService extends IntentService {
     protected void onHandleIntent(Intent intent) {
         // open settings to let user grant Test4Time access to usage data
         if (needPermissionForBlocking(this)) {
-                Intent settings = new Intent("android.settings.USAGE_ACCESS_SETTINGS");//Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                settings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(settings);
+            Intent settings = new Intent("android.settings.USAGE_ACCESS_SETTINGS");//Settings.ACTION_USAGE_ACCESS_SETTINGS);
+            settings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(settings);
         }
         ActivityManager manager = (ActivityManager) getApplicationContext().getSystemService(ACTIVITY_SERVICE);
 

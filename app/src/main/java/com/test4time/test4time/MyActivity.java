@@ -221,7 +221,9 @@ public class MyActivity extends Activity {
     private void CreateQuestion() {
         if(questions.size() <= 0) {
             char gradelevel = 'K';
-            questions = q.generateQuestionPool(gradelevel);
+            //questions = q.generateQuestionPool(gradelevel);
+            System.out.printf("Grade: %s; charAt 0: %c\n", grade.getText(), grade.getText().charAt(7));
+            questions = q.generateQuestionPool(grade.getText().charAt(7));
             //grade.setText("Grade: " + gradelevel);
         }
         answer.setText("");
