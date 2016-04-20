@@ -174,7 +174,7 @@ public class Question {
 
                     } else {
                         leftVal = 1 + random.nextInt(100);
-                        int limit = 100 - leftVal;
+                        int limit = 100 - leftVal + 1;
                         rightVal = random.nextInt(limit);
                     }
                     if (addOrS % 2 == 0) {
@@ -186,7 +186,10 @@ public class Question {
                         //questions[index] = new Question(leftNew, rightNew, "+", ansNew, level);
                     } else {
                         if (addOrS % 2 != 0) {
-                            rightVal = random.nextInt(leftVal);
+                            if(leftVal <= 0)
+                                rightVal = random.nextInt(-1 * leftVal +2);
+                            else
+                                rightVal = random.nextInt(leftVal);
                             //Swap if left bigger than right
                             if (leftVal >= rightVal) {
                                 leftNew = Integer.toString(leftVal);
@@ -234,7 +237,7 @@ public class Question {
 
                     } else {
                         if (index == 9 || index == 19) {
-                            leftVal = 99 + (random.nextInt() * 1000);
+                            leftVal = 99 + (random.nextInt(1000));
                             int limit = 1000 - leftVal;
                             rightVal = random.nextInt(limit);
 
@@ -253,7 +256,10 @@ public class Question {
                         //questions[index] = new Question(leftNew, rightNew, "+", ansNew, level);
                     } else {
                         if (addOrSubtract % 2 != 0) {
-                            rightVal = random.nextInt(leftVal);
+                            if(leftVal <= 0)
+                                rightVal = random.nextInt(-1 * leftVal + 2);
+                            else
+                                rightVal = random.nextInt(leftVal);
                             //Swap if left bigger than right
                             if (leftVal >= rightVal) {
                                 leftNew = Integer.toString(leftVal);

@@ -90,7 +90,7 @@ public class MyActivity extends Activity {
         //timeText = (TextView) findViewById(R.id.time);
         //timer = (Chronometer) findViewById(R.id.chrono);
         clock = (AnalogClock) findViewById(R.id.analog_timer);
-        time_saved = (TextView) findViewById(R.id.time_display);
+        time_saved = (TextView) findViewById(R.id.time_display_time);
 
         keypad_1 = (Button) findViewById(R.id.key_1);
         keypad_2 = (Button) findViewById(R.id.key_2);
@@ -155,7 +155,7 @@ public class MyActivity extends Activity {
             name.setTypeface(font);
 
             time_saved.setTypeface(font);
-            time_saved.setText(timeRemaining + " Minutes");
+            time_saved.setText(timeRemaining);
 
             keypad_1.setTypeface(font);
             keypad_2.setTypeface(font);
@@ -222,7 +222,7 @@ public class MyActivity extends Activity {
         if(questions.size() <= 0) {
             char gradelevel = 'K';
             //questions = q.generateQuestionPool(gradelevel);
-            System.out.printf("Grade: %s; charAt 0: %c\n", grade.getText(), grade.getText().charAt(7));
+            //System.out.printf("Grade: %s; charAt 0: %c\n", grade.getText(), grade.getText().charAt(7));
             questions = q.generateQuestionPool(grade.getText().charAt(7));
             //grade.setText("Grade: " + gradelevel);
         }
@@ -265,6 +265,9 @@ public class MyActivity extends Activity {
                 CreateQuestion();
 
                 sampleTime++;
+                int prev_time = Integer.parseInt(time_saved.getText().toString());
+                prev_time++;
+                time_saved.setText(Integer.toString(prev_time));
                 //time_saved.setText(String.format("%d minutes",sampleTime));
 
                 //timeText.setText(String.format("Your Play Time\n        %02d:%02d", 0, sampleTime));

@@ -123,13 +123,24 @@
                 <!--android:background="?android:selectableItemBackground"/>-->
             <!--android:background="@drawable/background_play"-->
 
-            <TextView
-                android:id="@+id/time_display"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0 minutes"
-                android:textSize="22dp"
-                android:gravity="bottom" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/time_display_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="22dp"
+                    android:gravity="bottom" />
+                <TextView
+                    android:id="@+id/time_display_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" minutes"
+                    android:textSize="22dp"
+                    android:gravity="bottom" />
+            </LinearLayout>
 
         </LinearLayout>
 

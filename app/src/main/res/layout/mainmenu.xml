@@ -9,7 +9,7 @@
 
     <Button
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:text="Settings"
         android:id="@+id/settingsBtn"
         android:layout_gravity="right|top" />
@@ -35,7 +35,7 @@
             android:layout_height="wrap_content"
             android:isScrollContainer="false"
             android:dividerHeight="20dp"
-            android:background="@null"
+            android:background="@drawable/border_style"
             android:textAlignment="center">
         </ListView>
 
