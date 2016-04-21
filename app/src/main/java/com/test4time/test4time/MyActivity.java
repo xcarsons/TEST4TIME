@@ -211,7 +211,7 @@ public class MyActivity extends Activity {
         Database db = new Database(getApplicationContext(), null, null, 0, null);
         Cursor data = db.getUserData(childName);
         data.moveToNext();
-        String timeRemaining = data.getColumnName(5);
+        String timeRemaining = data.getString(5);
         data.close();
         db.close();
         time_saved.setText(timeRemaining);
