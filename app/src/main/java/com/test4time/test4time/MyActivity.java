@@ -301,12 +301,9 @@ public class MyActivity extends Activity {
                 int prev_time = Integer.parseInt(time_saved.getText().toString());
                 prev_time++;
                 time_saved.setText(Integer.toString(prev_time));
-<<<<<<< HEAD
                 Database db = new Database(getApplicationContext(), null, null, 0, null);
 //                db.updateUser()
-=======
 
->>>>>>> ef5cc819fbd88485cb36cbf2025453144fbff4e1
                 //time_saved.setText(String.format("%d minutes",sampleTime));
 
                 //timeText.setText(String.format("Your Play Time\n        %02d:%02d", 0, sampleTime));
