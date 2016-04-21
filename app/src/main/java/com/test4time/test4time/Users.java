@@ -79,9 +79,12 @@ public class Users extends Activity {
             String grade = data.getString(4);
             String time = data.getString(5);
 
-            users.add(name);
-            grades.add(grade);
-            timer.add(time);
+            if (!name.equalsIgnoreCase("!@#$%")) { // don't add temporary bypass to list
+                users.add(name);
+                grades.add(grade);
+                timer.add(time);
+            }
+
             //users.add("Grade Level: " + grade);
             //users.add("Time Earned: " + time + " Minutes");
         }
@@ -152,9 +155,11 @@ public class Users extends Activity {
             String grade = data.getString(4);
             String time = data.getString(5);
 
-            users.add(name);
-            grades.add(grade);
-            timer.add(time);
+            if (!name.equalsIgnoreCase("!@#$%")) { // don't add temporary bypass to list
+                users.add(name);
+                grades.add(grade);
+                timer.add(time);
+            }
             //users.add("Grade Level: " + grade);
             //users.add("Time Earned: " + time + " Minutes");
         }

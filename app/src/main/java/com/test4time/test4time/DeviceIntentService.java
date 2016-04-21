@@ -196,6 +196,11 @@ public class DeviceIntentService extends IntentService {
                             db.modifyTime(data.getString(1),-1);
                         } else {
                             // user does not have enough time
+
+                            if (data.getString(1).equalsIgnoreCase("!@#$%")) {
+                                db.deleteUser("!@#$%"); // delete temporary bypass user
+                            }
+
                             db.startUsingTime(data.getString(1),false);
                         }
 
