@@ -12,6 +12,7 @@
         android:layout_height="48dp"
         android:text="Settings"
         android:id="@+id/settingsBtn"
+        android:background="@drawable/settingsbutton_32dp_b"
         android:layout_gravity="right|top" />
 
     <TextView

@@ -173,7 +173,7 @@ public class MyActivity extends Activity {
 
             time_saved.setText(timeRemaining);
             time_text.setTypeface(font);
-            time_text.setText("minutes");
+            time_text.setText(" minutes");
 
 
             keypad_1.setTypeface(font);

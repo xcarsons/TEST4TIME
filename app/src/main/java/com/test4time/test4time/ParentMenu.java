@@ -46,7 +46,10 @@ public class ParentMenu extends Activity
 
     private TextView editNameTextView;
     private TextView editTimeTextView;
+    private TextView editTimeValue;
     private RadioGroup editRadioGroup;
+
+    private Button deleteUser;
     // The add time buttons are not currently implemented
     //private Button editTime5, editTime10;
 
@@ -64,6 +67,9 @@ public class ParentMenu extends Activity
         addUser = (Button) findViewById(R.id.parent_addUser);
         changePin = (Button) findViewById(R.id.parent_changePin);
 
+        deleteUser = (Button) findViewById(R.id.parent_edit_delete);
+
+
         userName = (EditText)findViewById(R.id.parent_add_name);
 
 //        editTime5 = (Button)findViewById(R.id.parent_edit_time5);
@@ -76,6 +82,7 @@ public class ParentMenu extends Activity
         viewApps.setOnClickListener(clickListener);
         addUser.setOnClickListener(clickListener);
         changePin.setOnClickListener(clickListener);
+        deleteUser.setOnClickListener(clickListener);
 
 
         //editTime5.setOnClickListener(clickListener);
@@ -101,14 +108,40 @@ public class ParentMenu extends Activity
         startActivity(intent);
     }
 
-    private void onAddUserAction() {
+    private void onAddUserAction(View view) {
         DialogFragment fragment = new AddUserDialogFragment();
         fragment.show(getFragmentManager(), "add_user");
     }
 
-    private void onChangePin() {
+    private void onChangePin(View view) {
         Toast.makeText(ParentMenu.this, "Sorry, changing your PIN is currently unavailable",
                 Toast.LENGTH_SHORT).show();
+    }
+
+    private void onDeleteUser(View view) {
+        AlertDialog.Builder alertBuild = new AlertDialog.Builder(getApplicationContext());
+        alertBuild.setNegativeButton("Cancel",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        alertBuild.setPositiveButton("Delete",
+            new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                    Dialog d = (Dialog) dialog;
+                    String name = ((TextView) d.findViewById(R.id.parent_edit_name)).getText().toString();
+                    Toast.makeText(ParentMenu.this, name + " has been removed",
+                            Toast.LENGTH_LONG).show();
+                    Database db = new Database(getApplicationContext(), null, null, 0, null);
+                    db.deleteUser(name);
+                }
+            });
+        alertBuild.setTitle("Delete User");
+        alertBuild.setMessage("Are you sure you want to DELETE this user? This CANNOT be undone.");
+        AlertDialog alert = alertBuild.create();
+        alert.show();
     }
 
     private void addTime(int time) {
@@ -206,14 +239,22 @@ public class ParentMenu extends Activity
             */
             Database db = new Database(getApplicationContext(), null, null, 0, null);
             //insert (name, user type, pin, grade, time, timeup)
-            // TEMPORARILY REMOVED FOR TESTING
-            System.out.println("inserted: " + name);
-            db.insertUser(name, 0, 1234, grade, 0,0 );
-            UserData newUserData = new UserData(name, grade, 0, 0);
-            listadaptor.addUser(name, newUserData);
-            Toast.makeText(ParentMenu.this, "Adding " + name + " to the list...",
-                    Toast.LENGTH_SHORT).show();
-            dialog.dismiss();
+            //trim extra spaces
+            name = name.trim();
+            Cursor cursor = db.getUserData(name);
+            if(!cursor.moveToFirst()) {
+                System.out.println("inserted: " + name);
+                db.insertUser(name, 0, 1234, grade, 0, 0);
+                UserData newUserData = new UserData(name, grade, 0, 0);
+                listadaptor.addUser(name, newUserData);
+                Toast.makeText(ParentMenu.this, "Adding " + name + " to the list...",
+                        Toast.LENGTH_SHORT).show();
+                dialog.dismiss();
+            } else {
+                Toast.makeText(ParentMenu.this, "Sorry, " + name + " has already been added.",
+                        Toast.LENGTH_LONG).show();
+            }
+
         } else {
 //            System.out.println("don't dismiss");
             //dialog.show(getFragmentManager(), "add_user");
@@ -241,11 +282,14 @@ public class ParentMenu extends Activity
                     break;
                 // Open a view to add a new child user
                 case R.id.parent_addUser:
-                    onAddUserAction();
+                    onAddUserAction(view);
                     break;
                 // Open a view to edit the parent's pin
                 case R.id.parent_changePin:
-                    onChangePin();
+                    onChangePin(view);
+                    break;
+                case R.id.parent_edit_delete:
+                    onDeleteUser(view);
                     break;
                 /* Add Time buttons not currently implemented
                  * - Allow parents to add bonus time to children
@@ -281,6 +325,9 @@ public class ParentMenu extends Activity
                         editNameTextView = (TextView) d.findViewById(R.id.parent_edit_name);
                         editRadioGroup = (RadioGroup) (d.findViewById(R.id.radiogroup_edit));
                         editTimeTextView = (TextView) d.findViewById(R.id.parent_edit_time);
+
+                        editTimeValue = (TextView) d.findViewById(R.id.parent_edit_time_value);
+                        editTimeValue.setText(user.getCurrentTime());
                         int radioId = editRadioGroup.getCheckedRadioButtonId();
                         if (radioId != -1) {
                             switch (radioId) {
@@ -319,6 +366,7 @@ public class ParentMenu extends Activity
                              * - data.getString(6) returns TIMEUP
                              */
                             System.out.printf("getName:%s\n", user.getName());
+
                             Cursor data = db.getUserData(user.getName());
 //                            data = db.getUsers();
 //                            db.

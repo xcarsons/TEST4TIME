@@ -36,7 +36,7 @@ public class Users extends Activity {
     TextView text;
     private Context context;
 
-
+    ArrayAdapter<String> arrayAdapter;
 
     /**
      * Called when the activity is first created.
@@ -65,7 +65,6 @@ public class Users extends Activity {
         settingsBtn.setTypeface(font);
         usersText.setTypeface(font);
 
-
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         //mRecyclerView.setLayoutManager(linearLayoutManager);
 
@@ -80,9 +79,11 @@ public class Users extends Activity {
 //        Database db = new Database(this, null, null, 0, null);
         Database db = new Database(getApplicationContext(), null, null, 0, null);
         Cursor data = db.getUsers();
+        // Testing time tracking and inserting into the database
+        /*
         db.insertUser("Tom", 0, 1234, "K", 5, 0);
         Log.d("deb", db.modifyTime("Tom", 5) ? "true" : "false");
-
+        */
 
         while (data.moveToNext()) {
             String name = data.getString(1);
@@ -98,6 +99,7 @@ public class Users extends Activity {
             //users.add("Time Earned: " + time + " Minutes");
         }
 
+        /*
         db.deleteUser("Tom");
         db.deleteUser("Tim");
         db.insertUser("Jim", 0, 1234, "K", 5, 0);
@@ -106,6 +108,7 @@ public class Users extends Activity {
         data.moveToNext();
         Log.d("deb", "NAME: " + data.getString(1) + " TYPE:" + data.getString(2));
         db.startUsingTime("Jim", false);
+        */
 
 
         data.close();
@@ -113,7 +116,8 @@ public class Users extends Activity {
 
 
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+        arrayAdapter = new ArrayAdapter<String>(
                 this,
                 R.layout.row_listview,
                 users ) {
@@ -158,7 +162,37 @@ public class Users extends Activity {
         //getMenuInflater().inflate(R.menu.test_menu, menu);
         return true;
     }
+    
 
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Database db = new Database(getApplicationContext(), null, null, 0, null);
+        Cursor data = db.getUsers();
+
+        while (data.moveToNext()) {
+            String name = data.getString(1);
+            String grade = data.getString(4);
+            String time = data.getString(5);
+            if (name.equalsIgnoreCase("Tom")) {
+                Log.d("deb",time);
+            }
+            // if the arrayAdapter does not already contain 'name', add it to the list
+            // unfortunately can't handle people with the same name
+            if(arrayAdapter.getPosition(name) == -1) {
+                arrayAdapter.add(name);
+            }
+//            users.add(name);
+//            grades.add(grade);
+//            timer.add(time);
+            //users.add("Grade Level: " + grade);
+            //users.add("Time Earned: " + time + " Minutes");
+        }
+
+        data.close();
+        db.close();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:drawable="@drawable/pausebutton_32dp_b" />
+
+    <!--<item android:drawable="@android:color/transparent"/>-->
+    <item android:drawable="@drawable/playbutton_32dp_b" />
+
+</selector>
