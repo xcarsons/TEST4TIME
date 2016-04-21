@@ -32,6 +32,7 @@ public class Users extends Activity {
     ImageView t4tLogo;
     //RecyclerView mRecyclerView;
     TextView usersText;
+    TextView text;
     private Context context;
 
 
@@ -71,6 +72,7 @@ public class Users extends Activity {
 
         final List<String> users = new ArrayList <String>();
         final List<String> grades = new ArrayList <String>();
+
         final List<String> timer = new ArrayList<String>();
 //        Database db = new Database(this, null, null, 0, null);
         Database db = new Database(getApplicationContext(), null, null, 0, null);
@@ -78,6 +80,7 @@ public class Users extends Activity {
 
 //        db.insertUser("Tom", 0, 1234, "K", 5, 0);
 //        db.insertUser("Bill", 0, 1234, "2", 1, 0);
+
 
 
         while (data.moveToNext()) {
@@ -90,8 +93,10 @@ public class Users extends Activity {
             //users.add("Grade Level: " + grade);
             //users.add("Time Earned: " + time + " Minutes");
         }
-//        db.deleteUser("Tom");
-//        db.deleteUser("Bill");
+
+        db.deleteUser("Tom");
+        db.deleteUser("Bill");
+
         data.close();
         db.close();
 
@@ -99,14 +104,16 @@ public class Users extends Activity {
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 this,
-                android.R.layout.simple_list_item_1,
+                R.layout.row_listview,
                 users ) {
             public View getView(int position, View convertView, ViewGroup parent) {
                 /// Get the Item from ListView
                 View view = super.getView(position, convertView, parent);
 
                 // Set the border of View (ListView Item)
-                //view.setBackground(getContext().getDrawable(R.drawable.u));
+
+                //view.setBackground(getContext().getDrawable(R.drawable.userlistview));
+
 
 
                 // Return the view
@@ -122,11 +129,13 @@ public class Users extends Activity {
 
                 userList.getSelectedItemId();
 
+
                 Intent intent = new Intent(getApplicationContext(), MyActivity.class);
                 intent.putExtra("KEY",users.get(position));
                 intent.putExtra("KEY2",grades.get(position));
                 intent.putExtra("KEY3",timer.get(position));
                 startActivity(intent);
+
             }
         });
     }

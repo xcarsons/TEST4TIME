@@ -88,7 +88,6 @@ public class MyActivity extends Activity {
         mp = new MediaPlayer();
         afd = getResources().openRawResourceFd(R.raw.bellsound);
 
-
         t4t = (ImageView) findViewById(R.id.mqT4T);
         num1 = (TextView) findViewById(R.id.num1);
         num2 = (TextView) findViewById(R.id.num2);
@@ -171,9 +170,11 @@ public class MyActivity extends Activity {
             name.setTypeface(font);
 
             time_saved.setTypeface(font);
+
             time_saved.setText(timeRemaining);
             time_text.setTypeface(font);
             time_text.setText("minutes");
+
 
             keypad_1.setTypeface(font);
             keypad_2.setTypeface(font);
@@ -239,6 +240,7 @@ public class MyActivity extends Activity {
     private void CreateQuestion() {
         if(questions.size() <= 0) {
             char gradelevel = 'K';
+
             //questions = q.generateQuestionPool(gradelevel);
             //System.out.printf("Grade: %s; charAt 0: %c\n", grade.getText(), grade.getText().charAt(7));
             questions = q.generateQuestionPool(grade.getText().charAt(7));
@@ -295,11 +297,16 @@ public class MyActivity extends Activity {
                 CreateQuestion();
 
                 sampleTime++;
+
                 int prev_time = Integer.parseInt(time_saved.getText().toString());
                 prev_time++;
                 time_saved.setText(Integer.toString(prev_time));
+<<<<<<< HEAD
                 Database db = new Database(getApplicationContext(), null, null, 0, null);
 //                db.updateUser()
+=======
+
+>>>>>>> ef5cc819fbd88485cb36cbf2025453144fbff4e1
                 //time_saved.setText(String.format("%d minutes",sampleTime));
 
                 //timeText.setText(String.format("Your Play Time\n        %02d:%02d", 0, sampleTime));

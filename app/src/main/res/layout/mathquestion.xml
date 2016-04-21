@@ -86,7 +86,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/mqT4T"
-            android:src="@drawable/ic_test4time_logo_edited_v4"
+
+            android:src="@drawable/test4timelogo"
+
+
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
             android:layout_gravity="center_horizontal"
