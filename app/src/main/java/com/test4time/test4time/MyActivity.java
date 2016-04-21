@@ -347,13 +347,13 @@ public class MyActivity extends Activity {
      */
     private void onPlayPauseAction() {
         Database db = new Database(getApplicationContext(), null, null, 0, null);
-        Cursor data = db.getUserData(childName);
-        if(data.moveToNext()) {
-            userType = Integer.parseInt(data.getString(2));
+        Cursor userData = db.getUserData(childName);
+        if(userData.moveToNext()) {
+            userType = Integer.parseInt(userData.getString(2));
         }
 
         // check if a user is already playing
-        data = db.userUsingTime();
+        Cursor data = db.userUsingTime();
         if(data.moveToNext()) {
             if (!data.getString(1).equalsIgnoreCase(childName)) {
                 AlertDialog.Builder alertBuild = new AlertDialog.Builder(MyActivity.this);
@@ -372,7 +372,7 @@ public class MyActivity extends Activity {
             }
         }
 
-        if (userType==0 && Integer.parseInt(data.getString(5))>0) {
+        if (userType==0 && Integer.parseInt(userData.getString(5))>0) {
             db.startUsingTime(childName,true);
             try {
                 mp.reset();
