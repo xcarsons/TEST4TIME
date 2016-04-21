@@ -20,12 +20,26 @@ public class UserData {
         return name;
     }
 
+    public void setName() {this.name = name;}
+
     public String getGradeLevel() {
         return gradeLevel;
     }
 
     public int getCurrentTime() {
         return currentTime;
+    }
+
+    public void setName(String newName) {
+        name = newName;
+    }
+
+    public void setGradeLevel(String newGradeLevel) {
+        gradeLevel = newGradeLevel;
+    }
+
+    public void setCurrentTime(int newTime) {
+        currentTime = newTime;
     }
 
     // isParent = 1 means user is a Parent,

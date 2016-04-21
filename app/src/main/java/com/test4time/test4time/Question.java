@@ -174,7 +174,7 @@ public class Question {
 
                     } else {
                         leftVal = 1 + random.nextInt(100);
-                        int limit = 100 - leftVal;
+                        int limit = 100 - leftVal + 1;
                         rightVal = random.nextInt(limit);
                     }
                     if (addOrS % 2 == 0) {
@@ -186,7 +186,10 @@ public class Question {
                         //questions[index] = new Question(leftNew, rightNew, "+", ansNew, level);
                     } else {
                         if (addOrS % 2 != 0) {
-                            rightVal = random.nextInt(leftVal);
+                            if(leftVal <= 0)
+                                rightVal = random.nextInt(-1 * leftVal +2);
+                            else
+                                rightVal = random.nextInt(leftVal);
                             //Swap if left bigger than right
                             if (leftVal >= rightVal) {
                                 leftNew = Integer.toString(leftVal);
@@ -234,7 +237,7 @@ public class Question {
 
                     } else {
                         if (index == 9 || index == 19) {
-                            leftVal = 99 + (random.nextInt() * 1000);
+                            leftVal = 99 + (random.nextInt(1000));
                             int limit = 1000 - leftVal;
                             rightVal = random.nextInt(limit);
 
@@ -253,7 +256,10 @@ public class Question {
                         //questions[index] = new Question(leftNew, rightNew, "+", ansNew, level);
                     } else {
                         if (addOrSubtract % 2 != 0) {
-                            rightVal = random.nextInt(leftVal);
+                            if(leftVal <= 0)
+                                rightVal = random.nextInt(-1 * leftVal + 2);
+                            else
+                                rightVal = random.nextInt(leftVal);
                             //Swap if left bigger than right
                             if (leftVal >= rightVal) {
                                 leftNew = Integer.toString(leftVal);
@@ -356,9 +362,37 @@ public class Question {
                         // make the 4th problem inverse of 3rd
                         // 3rd: 6x3=18  becomes  4th: 18 / 6 = 3
                         Question third = questions.peekLast();
-                        leftNew = third.answer;
-                        rightNew = third.left;
-                        ansNew = third.right;
+                        //check if previous ans was 0, to avoid (0 / 0)
+                        // 0 x 6 = 0; 6 x 0 = 0; 0 x 0 = 0
+                        if(third.right.equals("0")) {
+                            //check if both left and right of previous Q were 0
+                            if(third.left.equals("0")) {
+                                //generate a new problem?
+                                //for now, just give a consistent problem
+                                leftNew = third.right;
+                                rightNew = "4";
+                                ansNew = third.answer;
+                            } else {
+                                //prev problem: non-zero * zero = 0
+                                //new problem:  0 / non-zero = 0
+                                leftNew = third.right;
+                                rightNew = third.left;
+                                ansNew = third.answer;
+                            }
+                        } else if(third.left.equals("0")) {
+                            //prev problem: 0 * non-zero = 0
+                            //new problem:  0 / non-zero = 0
+                            leftNew = third.left;
+                            rightNew = third.right;
+                            ansNew = third.answer;
+                        }
+                        //otherwise, generate reverse of previous problem
+                        else {
+                            leftNew = third.answer;
+                            rightNew = third.left;
+                            ansNew = third.right;
+                        }
+
                         // display the character for the division symbol
                         String testOpStr = "\u00F7";
                         //questions.add(new Question(leftNew, rightNew, "/", ansNew, level));
@@ -379,13 +413,21 @@ public class Question {
              */
             case '5':
                 questions  = new LinkedList<Question>();
+                //TODO: Implement 5th Grade Questions
+                //TEMPORARILY GENERATE 4th GRADE QUESTIONS
+                questions = generateQuestionPool('4');
                 index = 0;
                 break;
             case '6':
                 questions  = new LinkedList<Question>();
+                //TODO: Implement 6th Grade Questions
+                // TEMPORARILY GENERATE 4th GRADE QUESTIONS
+                questions = generateQuestionPool('4');
                 break;
             default:
-                questions = null;
+                // By default, generate Kindergarten questions (or the simplest questions)
+                questions = generateQuestionPool('K');
+                //questions = null;
                 break;
         }
 

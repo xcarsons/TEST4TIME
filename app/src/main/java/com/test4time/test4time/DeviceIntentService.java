@@ -78,6 +78,7 @@ public class DeviceIntentService extends IntentService {
 //                settings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                startActivity(settings);
 //        }
+
         ActivityManager manager = (ActivityManager) getApplicationContext().getSystemService(ACTIVITY_SERVICE);
         block = false;
 
@@ -93,6 +94,7 @@ public class DeviceIntentService extends IntentService {
 
             //  USED IN API 21
             String p = "";// getTopPackage(); // used for android 5.1.1 and above
+
 
             if(block&&(blockApps.contains(tasks.get(0).processName) || blockApps.contains(taskInfo.get(0).topActivity.getPackageName()) || blockApps.contains(p))) {// get foreground activity
                 Intent test4Time = new Intent(getApplicationContext(), EnterPin.class);
@@ -170,6 +172,7 @@ public class DeviceIntentService extends IntentService {
 //    }
 
 
+
     /*
      * Class running on separate thread making sure users have time
      * to use the blocked applications
@@ -201,5 +204,4 @@ public class DeviceIntentService extends IntentService {
     }
 
 }
-
 

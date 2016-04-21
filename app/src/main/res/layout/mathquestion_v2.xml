@@ -1,0 +1,431 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/chalkboard_dark2"
+    android:orientation="vertical"
+    tools:context=".MyActivity">
+
+
+   <!-- <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/AppTheme.AppBarOverlay">
+
+        &lt;!&ndash;<android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            />&ndash;&gt;
+    </android.support.design.widget.AppBarLayout>-->
+
+
+    <!-- Header bar layout-->
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="110dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="10dp"
+        android:background="@drawable/border_style">
+        <!-- <TextView
+                    android:id="@+id/grade_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="Grade: 4th"
+                    android:textSize="36sp"
+                    android:layout_weight="1"/>-->
+
+        <!--Layout for displaying child's name and grade level-->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_alignParentLeft="true"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:id="@+id/name_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Jeremy"
+                android:textSize="32dp"
+                android:layout_gravity="left"/>
+
+            <TextView
+                android:id="@+id/grade_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Grade 4"
+                android:textSize="32dp"
+                android:paddingRight="10dp"
+                android:layout_gravity="left" />
+        </LinearLayout>
+
+        <!--<View
+            android:layout_width="3dp"
+            android:layout_height="80dp"
+            android:background="#ffffff" android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            />-->
+
+
+       <!-- <View
+            android:layout_width="3dp"
+            android:layout_height="80dp"
+            android:background="#ffffff" android:layout_gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>-->
+
+        <!--<ImageView-->
+            <!--android:layout_width="128dp"-->
+            <!--android:layout_height="match_parent"-->
+            <!--android:contentDescription="@string/app_name"-->
+            <!--android:src="@drawable/ic_launcher"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_centerHorizontal="true" />-->
+
+        <ImageView
+            android:layout_width="128dp"
+            android:layout_height="match_parent"
+            android:id="@+id/mqT4T"
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/ic_test4timelogo_large"
+            android:layout_gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:scaleType="fitCenter"
+            android:layout_marginTop="-20dp"
+            android:layout_marginBottom="-20dp"
+            android:alpha=".75"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/linearLayout"
+            android:gravity="center_vertical">
+
+            <Button
+                android:id="@+id/play_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/play"
+                />
+                <!--android:background="@drawable/highlight_play"/>-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/time_display_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="22dp"
+                    android:gravity="bottom" />
+                <TextView
+                    android:id="@+id/time_display_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=" minutes"
+                    android:textSize="22dp"
+                    android:gravity="bottom" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    <!--android:layout_height="wrap_content"-->
+
+    <!-- Question/Problem layout-->
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="5"
+        android:layout_marginTop="20dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal">
+            <Space
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
+                android:paddingRight="15dp"
+                />
+            <TextView
+                android:id="@+id/num1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="000"
+                android:textSize="56dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:paddingRight="15dp"
+                android:layout_gravity="center_vertical"
+                android:paddingLeft="20dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal">
+            <TextView
+                android:id="@+id/sign"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_gravity="center_vertical"
+                android:text="+"
+                android:textSize="56dp"
+                android:paddingRight="15dp" />
+            <TextView
+                android:id="@+id/num2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_gravity="center_vertical"
+                android:text="000"
+                android:textSize="56dp"
+                android:paddingRight="15dp" android:paddingLeft="20dp" />
+        </LinearLayout>
+        <!--<TextView
+            android:layout_width="76dp"
+            android:layout_height="15dp"
+            android:text="____________"
+            android:textSize="4s"
+            android:layout_gravity="center_horizontal"/>-->
+        <View
+            android:layout_width="180dp"
+            android:layout_height="3dp"
+            android:background="#ffffff" android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/answer"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="0.8"
+            android:ems="3"
+            android:background="@drawable/border_style"
+            android:minLines="1"
+            android:textSize="48dp"
+            android:inputType="text"
+            android:gravity="right"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"/>
+        <!--<EditText
+                android:id="@+id/answer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="numberSigned"
+                android:ems="10"
+                android:background="@drawable/border_style"
+                android:minLines="1"
+                android:maxLength="3"
+                android:textSize="48sp" android:width="140dp"
+                android:gravity="right"
+                android:layout_gravity="center_horizontal" android:layout_marginTop="15dp"/>-->
+    </LinearLayout>
+
+    <!--<Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="15dp">
+
+    </Space>-->
+    <!--<LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" android:layout_gravity="center_horizontal"
+            android:layout_marginTop="15dp">
+    </LinearLayout>-->
+    <!--<Button-->
+        <!--android:id="@+id/submitBtn"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_weight="1"-->
+        <!--android:text="@string/submitText"-->
+        <!--android:layout_gravity="center" android:textSize="32sp"-->
+        <!--android:layout_marginTop="10dp" android:layout_marginBottom="10dp"-->
+        <!--/>-->
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:background="@drawable/border_style"/>
+
+    <!-- Layout for the "numpad" to type in answers -->
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4">
+        <!--android:layout_gravity="center_horizontal"-->
+        <!--android:background="@drawable/border_style">-->
+
+        <!-- TODO: Change to Image Buttons? -->
+        <!-- TODO: Add a backspace button -->
+
+        <!-- 3 columns -->
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="2dp" >
+
+            <Button
+                android:id="@+id/key_1"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:textSize="48dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="1" />
+
+            <Button
+                android:id="@+id/key_2"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:textSize="48dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="2" />
+
+            <Button
+                android:id="@+id/key_3"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:textSize="48dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="3" />
+        </TableRow>
+
+        <!-- 3 columns -->
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="2dp" >
+
+            <Button
+                android:id="@+id/key_4"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:textSize="48dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="4" />
+
+            <Button
+                android:id="@+id/key_5"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:textSize="48dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="5" />
+
+            <Button
+                android:id="@+id/key_6"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:textSize="48dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="6" />
+        </TableRow>
+
+        <!-- 3 columns -->
+        <TableRow
+            android:id="@+id/tableRow3"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="2dp" >
+
+            <Button
+                android:id="@+id/key_7"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:textSize="48dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="7" />
+
+            <Button
+                android:id="@+id/key_8"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:textSize="48dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="8" />
+
+            <Button
+                android:id="@+id/key_9"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:textSize="48dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="9" />
+
+        </TableRow>
+
+        <!-- 3 columns -->
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:padding="2dp" >
+
+            <Button
+                android:id="@+id/submitBtn"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="Submit "
+                android:textSize="48dp"
+            />
+            <!--android:text="@string/submitText"-->
+
+            <Button
+                android:id="@+id/key_0"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:textSize="48dp"
+                style="?android:attr/borderlessButtonStyle"
+                android:text="0" />
+
+            <Button
+                android:id="@+id/key_back"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:background="@drawable/highlight_backspace"
+                style="?android:attr/borderlessButtonStyle"/>
+                <!--android:textSize="48dp"-->
+                <!--android:text="@string/backspace_string" />-->
+        </TableRow>
+
+    </TableLayout>
+
+</LinearLayout>
+

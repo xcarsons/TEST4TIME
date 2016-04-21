@@ -4,11 +4,14 @@
     <string name="welcome">Welcome to Test4Time!</string>
     <string name="start">Press to Start</string>
     <string name="submitText">SUBMIT</string>
-    <string name="backspace_string">CLEAR</string>
+    <string name="backspace_string">X</string>
     <string name="parent_title">Parent Menu</string>
     <string name="parent_add_name">  Child\'s Name</string>
     <string name="parent_add_grade">Select a Grade Level</string>
     <string name="cancel">Cancel</string>
     <string name="current_time">Current Time</string>
+    <string name="viewBlockedApps">View Blocked Apps</string>
+    <string name="changePIN">Change PIN</string>
+    <string name="play">Play</string>
 
 </resources>
