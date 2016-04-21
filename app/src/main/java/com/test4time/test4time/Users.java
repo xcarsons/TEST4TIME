@@ -85,8 +85,6 @@ public class Users extends Activity {
                 timer.add(time);
             }
 
-            //users.add("Grade Level: " + grade);
-            //users.add("Time Earned: " + time + " Minutes");
         }
 
         data.close();
@@ -160,8 +158,7 @@ public class Users extends Activity {
                 grades.add(grade);
                 timer.add(time);
             }
-            //users.add("Grade Level: " + grade);
-            //users.add("Time Earned: " + time + " Minutes");
+
         }
 
         data.close();
