@@ -57,6 +57,21 @@ public class BlockedApps extends Activity {
         new LoadApplications().execute(); // start thread to generate List of apps
     }
 
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
+    // Kill Activity once home button is pressed
+    @Override
+    protected void onPause() {
+        super.onPause();
+        finish();
+    }
+
+
     /*
      * Create ActionBar
      */

@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,20 +44,20 @@ public class Users extends Activity {
         // remove the top title bar
         //requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+
+        Intent i = new Intent(this, DeviceIntentService.class);
+        startService(i);
+
+
         setContentView(R.layout.mainmenu);
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/chawp.ttf");
         settingsBtn = (ImageButton) findViewById(R.id.settingsBtn);
         pencila = (ImageView) findViewById(R.id.pencil);
         pencilb = (ImageView) findViewById(R.id.pencil2);
         userList = (ListView) findViewById(R.id.userList);
-<<<<<<< HEAD
         //mRecyclerView = (RecyclerView) findViewById(R.id.userList);
         usersText = (TextView) findViewById(R.id.UsersText);
 
-
-=======
-        usersText = (TextView) findViewById(R.id.UsersText);
->>>>>>> CarsonBranch
         settingsBtn.setOnClickListener(new ClickListener());
         usersText.setTypeface(font);
 
@@ -71,17 +72,28 @@ public class Users extends Activity {
         Database db = new Database(this, null, null, 0, null);
         Cursor data = db.getUsers();
         db.insertUser("Tom", 0, 1234, "K", 5, 0);
-
+        Log.d("deb", db.modifyTime("Tom", 5) ? "true" : "false");
 
         while (data.moveToNext()) {
             String name = data.getString(1);
             String grade = data.getString(4);
             String time = data.getString(5);
+            if (name.equalsIgnoreCase("Tom")) {
+                Log.d("deb",time);
+            }
             users.add(name);
             users.add("Grade Level: " + grade);
             users.add("Time Earned: " + time + " Minutes");
         }
         db.deleteUser("Tom");
+        db.deleteUser("Tim");
+        db.insertUser("Jim", 0, 1234, "K", 5, 0);
+        db.startUsingTime("Jim", true);
+        data = db.userUsingTime();
+        data.moveToNext();
+        Log.d("deb", "NAME: " + data.getString(1) + " TYPE:" + data.getString(2));
+        db.startUsingTime("Jim", false);
+
         data.close();
         db.close();
 

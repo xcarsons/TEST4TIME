@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.test4time.test4time"
-        minSdkVersion 21 //was 17
+        minSdkVersion 17 //19 //was 17
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"

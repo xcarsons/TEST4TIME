@@ -48,7 +48,7 @@ public class Database extends SQLiteOpenHelper {
             }
             sqLiteDatabase.execSQL(sql);
         } catch (Exception e) {
-            Log.e("ONCREATEFAIL", e.toString());
+            Log.e("error", e.toString());
         }
 
     }
@@ -77,7 +77,7 @@ public class Database extends SQLiteOpenHelper {
             result = db.insertOrThrow(USERS_TABLE, null, contentValues); // returns -1 if data is not inserted
         }
         catch (Exception e) {
-            Log.e("INSERTFAIL", e.toString());
+            Log.e("error", e.toString());
         }
         return result == -1 ? false : true;
     }
@@ -118,10 +118,72 @@ public class Database extends SQLiteOpenHelper {
             int result = db.update(USERS_TABLE,contentValues, "NAME = " + "'" + name + "'", null);
             return result == 0 ? false : true; // result is number of rows updated
         } catch (Exception e) {
-            Log.e("UPDATEUSER",e.toString());
+            Log.e("error",e.toString());
             return false;
         }
     }
+
+    /*
+     * Modifies a USERS TIME,
+     */
+    public boolean modifyTime(String name, int time) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            Cursor data = getUserData(name);
+            data.moveToNext();
+            int insertTime = time + Integer.parseInt(data.getString(5));
+            ContentValues contentValues = new ContentValues();
+            contentValues.put("TIME", insertTime);
+            int result = db.update(USERS_TABLE,contentValues, "NAME = " + "'" + name + "'", null);
+            return result == 0 ? false : true; // result is number of rows updated
+        } catch (Exception e) {
+            Log.e("error", e.toString());
+            return false;
+        }
+    }
+
+    /*
+     * Return user(s) using time
+     */
+    public Cursor userUsingTime() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor result = null;
+        try {
+            String sql = "SELECT * FROM "+USERS_TABLE + " WHERE TYPE = 2";
+            result = db.rawQuery(sql, null);
+            return result;
+        } catch (Exception e) {
+            Log.e("error", e.toString());
+        }
+        return result;
+    }
+
+    /*
+     * Starts or stops a users time.
+     * Done by changing the type of the account to a 2 if unlocking
+     * or to a 0 if locking
+     * @ start = true for a 2 (unlock)
+     *         = false for a 0 (lock)
+     */
+    public boolean startUsingTime(String name, boolean start) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        try {
+            ContentValues contentValues = new ContentValues();
+            if (start) {
+                contentValues.put("TYPE", 2);
+            } else {
+                contentValues.put("TYPE", 0);
+            }
+
+            int result = db.update(USERS_TABLE,contentValues, "NAME = " + "'" + name + "'", null);
+            return result == 0 ? false : true; // result is number of rows updated
+        } catch (Exception e) {
+            Log.e("error", e.toString());
+            return false;
+        }
+    }
+
 
     /*
      * Returns all columns of a User
@@ -148,7 +210,7 @@ public class Database extends SQLiteOpenHelper {
             }
             result = db.rawQuery(sql + "'" + name + "'", null);
         } catch (Exception e) {
-            Log.e("getUserData", e.toString());
+            Log.e("error", e.toString());
         }
         return result;
     }
@@ -174,7 +236,7 @@ public class Database extends SQLiteOpenHelper {
             }
             result = db.rawQuery(sql + "'" + name + "'", null);
         } catch (Exception e) {
-            Log.e("getBlockAppData", e.toString());
+            Log.e("error", e.toString());
         }
         return result;
     }

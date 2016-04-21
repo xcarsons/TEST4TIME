@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.SystemClock;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
@@ -31,6 +32,7 @@ import java.util.List;
 public class DeviceIntentService extends IntentService {
     private static final String TAG = "com.test4time.test4time";
     private ArrayList<String> blockApps;
+    private boolean block;
 
     public DeviceIntentService() {
         super("DeviceIntentService");
@@ -60,6 +62,8 @@ public class DeviceIntentService extends IntentService {
         super.onTaskRemoved(rootIntent);
     }
 
+
+
     /*
      * Logic of the intent service
      * Current Foreground activity is monitored, if it's in the block apps list
@@ -67,25 +71,34 @@ public class DeviceIntentService extends IntentService {
      */
     @Override
     protected void onHandleIntent(Intent intent) {
+        /** check for device API level USES API 21 */
         // open settings to let user grant Test4Time access to usage data
-        if (needPermissionForBlocking(this)) {
-                Intent settings = new Intent("android.settings.USAGE_ACCESS_SETTINGS");//Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                settings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(settings);
-        }
+//        if (needPermissionForBlocking(this)) {
+//                Intent settings = new Intent("android.settings.USAGE_ACCESS_SETTINGS");//Settings.ACTION_USAGE_ACCESS_SETTINGS);
+//                settings.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(settings);
+//        }
         ActivityManager manager = (ActivityManager) getApplicationContext().getSystemService(ACTIVITY_SERVICE);
+        block = false;
+
+
+        Log.d("testing", "TIMERSTART");
+        new ClockTimer().start();
+        Log.d("testing","......");
+
 
         while(true) {
             List<ActivityManager.RunningAppProcessInfo> tasks = manager.getRunningAppProcesses(); // used for android 5.0
             List<ActivityManager.RunningTaskInfo> taskInfo = manager.getRunningTasks(1); // used for older versions of android
 
-            String p = getTopPackage(); // used for android 5.1.1 and above
+            //  USED IN API 21
+            String p = "";// getTopPackage(); // used for android 5.1.1 and above
 
-            if(blockApps.contains(tasks.get(0).processName) || blockApps.contains(taskInfo.get(0).topActivity.getPackageName()) || blockApps.contains(p)) {// get foreground activity
+            if(block&&(blockApps.contains(tasks.get(0).processName) || blockApps.contains(taskInfo.get(0).topActivity.getPackageName()) || blockApps.contains(p))) {// get foreground activity
                 Intent test4Time = new Intent(getApplicationContext(), EnterPin.class);
                 test4Time.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 String appLaunch = blockApps.contains(tasks.get(0).processName) ? tasks.get(0).processName :
-                        blockApps.contains(taskInfo.get(0).topActivity.getPackageName()) ? taskInfo.get(0).topActivity.getPackageName() :p;
+                        blockApps.contains(taskInfo.get(0).topActivity.getPackageName()) ? taskInfo.get(0).topActivity.getPackageName():p;
 
                 test4Time.putExtra("appLaunched", appLaunch);
                 startActivity(test4Time);
@@ -112,48 +125,81 @@ public class DeviceIntentService extends IntentService {
         blockApps.remove(TAG); // remove the test4time process if it exists
     }
 
-    /*
+    /*  USED IN API 21
      * get the package of the application running in the foreground
      */
-    private String getTopPackage(){
-        long ts = System.currentTimeMillis();
-        //noinspection ResourceType
-        UsageStatsManager mUsageStatsManager = (UsageStatsManager)this.getSystemService("usagestats");
-        List<UsageStats> usageStats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, ts-1000, ts);
-        if (usageStats == null || usageStats.size() == 0) { // why is size 0?
-            return "NONE_PKG";
-        }
-        Collections.sort(usageStats, new RecentUseComparator());
-        return usageStats.get(0).getPackageName();
-    }
+//    private String getTopPackage(){
+//        long ts = System.currentTimeMillis();
+//        //noinspection ResourceType
+//        UsageStatsManager mUsageStatsManager = (UsageStatsManager)this.getSystemService("usagestats");
+//        List<UsageStats> usageStats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, ts-1000, ts);
+//        if (usageStats == null || usageStats.size() == 0) { // why is size 0?
+//            return "NONE_PKG";
+//        }
+//        Collections.sort(usageStats, new RecentUseComparator());
+//        return usageStats.get(0).getPackageName();
+//    }
 
-    /*
+    /*  USED IN API 21
      * Compares the time that an application was used.
      * This sorts the order that packages have been "opened"
      * The front will be the Foreground activity
      */
-    static class RecentUseComparator implements Comparator<UsageStats> {
+//    static class RecentUseComparator implements Comparator<UsageStats> {
+//
+//        @Override
+//        public int compare(UsageStats lhs, UsageStats rhs) {
+//            return (lhs.getLastTimeUsed() > rhs.getLastTimeUsed()) ? -1 : (lhs.getLastTimeUsed() == rhs.getLastTimeUsed()) ? 0 : 1;
+//        }
+//    }
 
-        @Override
-        public int compare(UsageStats lhs, UsageStats rhs) {
-            return (lhs.getLastTimeUsed() > rhs.getLastTimeUsed()) ? -1 : (lhs.getLastTimeUsed() == rhs.getLastTimeUsed()) ? 0 : 1;
-        }
-    }
+
+    /*  USED IN API 21
+     * Check if Test4Time has access to usage Data
+     */
+//    private static boolean needPermissionForBlocking(Context context) {
+//        try {
+//            PackageManager packageManager = context.getPackageManager();
+//            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
+//            AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+//            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
+//            return  (mode != AppOpsManager.MODE_ALLOWED);
+//        } catch (PackageManager.NameNotFoundException e) {
+//            return true;
+//        }
+//    }
 
 
     /*
-     * Check if Test4Time has access to usage Data
+     * Class running on separate thread making sure users have time
+     * to use the blocked applications
      */
-    private static boolean needPermissionForBlocking(Context context) {
-        try {
-            PackageManager packageManager = context.getPackageManager();
-            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
-            AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
-            return  (mode != AppOpsManager.MODE_ALLOWED);
-        } catch (PackageManager.NameNotFoundException e) {
-            return true;
+    private class ClockTimer extends Thread {
+
+        public void run() {
+//            try {
+//                Thread.sleep(20000);
+//                Log.d("testing", "CLOCKTIMER");
+//                block=true;
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+
+            try {
+                while(true) {
+
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                Log.e("CLOCKTIMER",e.toString());
+            }
+
+
         }
     }
 
 }
+
+
