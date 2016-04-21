@@ -11,6 +11,7 @@ import android.database.Cursor;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -200,6 +201,20 @@ public class MyActivity extends Activity {
 
     }
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Database db = new Database(getApplicationContext(), null, null, 0, null);
+        Cursor data = db.getUserData(childName);
+        data.moveToNext();
+        String timeRemaining = data.getColumnName(5);
+        data.close();
+        db.close();
+        time_saved.setText(timeRemaining);
+    }
+
+
     /**
      * Return whether the given PackgeInfo represents a system package or not.
      * User-installed packages (Market or otherwise) should not be denoted as
@@ -354,10 +369,7 @@ public class MyActivity extends Activity {
             }
         }
 
-        data.close();
-
-
-        if (userType==0) {
+        if (userType==0 && Integer.parseInt(data.getString(5))>0) {
             db.startUsingTime(childName,true);
             try {
                 mp.reset();
@@ -372,7 +384,7 @@ public class MyActivity extends Activity {
             db.startUsingTime(childName,false);
             playButton.setText("Play");
         }
-
+        data.close();
         db.close();
     }
 
