@@ -6,8 +6,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.content.res.AssetFileDescriptor;
+import android.database.Cursor;
 import android.graphics.Typeface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -24,7 +24,6 @@ import android.widget.TextView;
 
 import java.io.IOException;
 import java.util.LinkedList;
-import java.util.List;
 /*********************************************************
  * Class responsible for manipulating the math question view
  *********************************************************/
@@ -46,7 +45,10 @@ public class MyActivity extends Activity {
 
     Button playButton;
 
+    String childName;
+
     int sampleTime;
+    int userType;
     //Chronometer timer;
     AnalogClock clock;
 
@@ -64,26 +66,12 @@ public class MyActivity extends Activity {
         //setContentView(R.layout.mathquestion);
         setContentView(R.layout.mathquestion_v2);
 
-        final PackageManager pm = getPackageManager();
-        //get a list of installed apps.
-        List<PackageInfo> packs = pm.getInstalledPackages(0);
-        List<ApplicationInfo> packages = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 
-//        for (ApplicationInfo packageInfo : packages) {
-//            Log.d("", "Installed package :" + packageInfo.packageName);
-//            Log.d("", "Source dir : " + packageInfo.sourceDir);
-//            Log.d("", "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName));
-//        }
         Intent intent = getIntent();
         if(intent.hasExtra("KEY")) {
             String easyPuzzle = intent.getExtras().getString("KEY");
         }
 
-        for (PackageInfo p :packs) {
-            if(!isSystemPackage(p)) {
-                Log.d("","Package name: "+p.packageName);
-            }
-        }
 
         mp = new MediaPlayer();
         afd = getResources().openRawResourceFd(R.raw.bellsound);
@@ -136,9 +124,19 @@ public class MyActivity extends Activity {
         keypad_back.setOnClickListener(clickListener);
 
         Intent myIntent = new Intent(getIntent());
-        String childName = (myIntent.getStringExtra("KEY"));
+        childName = (myIntent.getStringExtra("KEY"));
         String gradeLevel = (myIntent.getStringExtra("KEY2"));
         String timeRemaining = (myIntent.getStringExtra("KEY3"));
+
+        // get whether user is using time or not, usertype will be 2 if using
+        Database db = new Database(getApplicationContext(), null, null, 0, null);
+        Cursor data = db.getUserData(childName);
+        userType = 0;
+        if (data.moveToNext()) {
+            userType = Integer.parseInt(data.getString(2));
+        }
+
+
         //answer.setOnEditorActionListener(submitListener);
         answer.setOnKeyListener(new View.OnKeyListener() {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
@@ -163,7 +161,9 @@ public class MyActivity extends Activity {
             answer.setTypeface(font);
             submitBtn.setTypeface(font);
             playButton.setTypeface(font);
-            playButton.setText("Play");
+            //playButton.setText("Play");
+            playButton.setText(userType==0?"Play" :"Pause");
+
             grade.setText("Grade: "+ gradeLevel);
             grade.setTypeface(font);
             name.setText(childName);
@@ -302,12 +302,9 @@ public class MyActivity extends Activity {
                 prev_time++;
                 time_saved.setText(Integer.toString(prev_time));
                 Database db = new Database(getApplicationContext(), null, null, 0, null);
-//                db.updateUser()
+                db.modifyTime(childName,1);
+                db.close();
 
-                //time_saved.setText(String.format("%d minutes",sampleTime));
-
-                //timeText.setText(String.format("Your Play Time\n        %02d:%02d", 0, sampleTime));
-                //       //"Your Time 0:%02f" + sampleTime);
             } else {
                 alertBuild.setCancelable(false).setPositiveButton(
                         "OK",
@@ -327,10 +324,41 @@ public class MyActivity extends Activity {
         }
     }
 
+    /*
+     * Handles play or pausing a users time
+     */
     private void onPlayPauseAction() {
-        if(playButton.getText().toString().equals("Play")) {
-            //set text to "Pause"
-            playButton.setText("Pause");
+        Database db = new Database(getApplicationContext(), null, null, 0, null);
+        Cursor data = db.getUserData(childName);
+        if(data.moveToNext()) {
+            userType = Integer.parseInt(data.getString(2));
+        }
+
+        // check if a user is already playing
+        data = db.userUsingTime();
+        if(data.moveToNext()) {
+            if (!data.getString(1).equalsIgnoreCase(childName)) {
+                AlertDialog.Builder alertBuild = new AlertDialog.Builder(MyActivity.this);
+                alertBuild.setTitle(data.getString(1) + " is currently playing");
+                alertBuild.setMessage("Please pause " + data.getString(1) + "'s time");
+                alertBuild.setCancelable(false).setPositiveButton(
+                        "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                CreateQuestion();
+                            }
+                        });
+                alertBuild.show();
+                return;
+            }
+        }
+
+        data.close();
+
+
+        if (userType==0) {
+            db.startUsingTime(childName,true);
             try {
                 mp.reset();
                 mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
@@ -339,12 +367,13 @@ public class MyActivity extends Activity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            // TODO: start using time
+            playButton.setText("Pause");
         } else {
-            //set text to "Pause"
+            db.startUsingTime(childName,false);
             playButton.setText("Play");
-            // TODO: stop using time
         }
+
+        db.close();
     }
 
     private void onPressedKeypad(String num) {

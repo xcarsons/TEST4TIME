@@ -1,6 +1,8 @@
 package com.test4time.test4time;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -11,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.EventListener;
 
@@ -77,10 +80,26 @@ public class EnterPin extends Activity {
                     break;
 
                 case R.id.openAppBtn:
-                    PackageManager manager = getPackageManager();
-                    Intent appLaunched = manager.getLaunchIntentForPackage(appLaunch);
-                    appLaunched.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(appLaunched);
+                    if (pinTb.getText().toString().equalsIgnoreCase("1234")) {
+                        Database db = new Database(getApplicationContext(), null, null, 0, null);
+                        db.insertUser("!@#$%",2,1234,"K",5,0); // create a temporary user to bypass the security
+                        PackageManager manager = getPackageManager();
+                        Intent appLaunched = manager.getLaunchIntentForPackage(appLaunch);
+                        appLaunched.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(appLaunched);
+                    } else {
+                        AlertDialog.Builder alertBuild = new AlertDialog.Builder(EnterPin.this);
+                        alertBuild.setTitle("Invalid Password");
+                        alertBuild.setCancelable(false).setPositiveButton(
+                                "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                        alertBuild.show();
+                    }
+
                     break;
 
                 default:
