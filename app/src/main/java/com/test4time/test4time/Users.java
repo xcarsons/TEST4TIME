@@ -36,7 +36,10 @@ public class Users extends Activity {
     TextView text;
     private Context context;
 
-
+    private List<String> users;
+    private List<String> grades;
+    private List<String> timer;
+    private ArrayAdapter<String> arrayAdapter;
 
     /**
      * Called when the activity is first created.
@@ -55,10 +58,8 @@ public class Users extends Activity {
         setContentView(R.layout.mainmenu);
         Typeface font = Typeface.createFromAsset(getAssets(), "fonts/chawp.ttf");
         settingsBtn = (Button) findViewById(R.id.settingsBtn);
-        //pencila = (ImageView) findViewById(R.id.pencil);
         t4tLogo = (ImageView) findViewById(R.id.T4TLogo);
         userList = (ListView) findViewById(R.id.userList);
-        //mRecyclerView = (RecyclerView) findViewById(R.id.userList);
         usersText = (TextView) findViewById(R.id.UsersText);
 
         settingsBtn.setOnClickListener(new ClickListener());
@@ -66,31 +67,18 @@ public class Users extends Activity {
         usersText.setTypeface(font);
 
 
-        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        //mRecyclerView.setLayoutManager(linearLayoutManager);
+        users = new ArrayList <String>();
+        grades = new ArrayList <String>();
 
-        //mRecyclerView.setHasFixedSize(true);
-
-        //usersAdapter = new UsersAdapter(Users.this, users);
-
-        final List<String> users = new ArrayList <String>();
-        final List<String> grades = new ArrayList <String>();
-
-        final List<String> timer = new ArrayList<String>();
-//        Database db = new Database(this, null, null, 0, null);
+        timer = new ArrayList<String>();
         Database db = new Database(getApplicationContext(), null, null, 0, null);
         Cursor data = db.getUsers();
-        db.insertUser("Tom", 0, 1234, "K", 5, 0);
-        Log.d("deb", db.modifyTime("Tom", 5) ? "true" : "false");
-
 
         while (data.moveToNext()) {
             String name = data.getString(1);
             String grade = data.getString(4);
             String time = data.getString(5);
-            if (name.equalsIgnoreCase("Tom")) {
-                Log.d("deb",time);
-            }
+
             users.add(name);
             grades.add(grade);
             timer.add(time);
@@ -98,22 +86,12 @@ public class Users extends Activity {
             //users.add("Time Earned: " + time + " Minutes");
         }
 
-        db.deleteUser("Tom");
-        db.deleteUser("Tim");
-        db.insertUser("Jim", 0, 1234, "K", 5, 0);
-        db.startUsingTime("Jim", true);
-        data = db.userUsingTime();
-        data.moveToNext();
-        Log.d("deb", "NAME: " + data.getString(1) + " TYPE:" + data.getString(2));
-        db.startUsingTime("Jim", false);
-
-
         data.close();
         db.close();
 
 
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
+        arrayAdapter = new ArrayAdapter<String>(
                 this,
                 R.layout.row_listview,
                 users ) {
@@ -157,6 +135,69 @@ public class Users extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         //getMenuInflater().inflate(R.menu.test_menu, menu);
         return true;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        users = new ArrayList <String>();
+        grades = new ArrayList <String>();
+
+        timer = new ArrayList<String>();
+        Database db = new Database(getApplicationContext(), null, null, 0, null);
+        Cursor data = db.getUsers();
+
+        while (data.moveToNext()) {
+            String name = data.getString(1);
+            String grade = data.getString(4);
+            String time = data.getString(5);
+
+            users.add(name);
+            grades.add(grade);
+            timer.add(time);
+            //users.add("Grade Level: " + grade);
+            //users.add("Time Earned: " + time + " Minutes");
+        }
+
+        data.close();
+        db.close();
+
+        arrayAdapter = new ArrayAdapter<String>(
+                this,
+                R.layout.row_listview,
+                users ) {
+            public View getView(int position, View convertView, ViewGroup parent) {
+                /// Get the Item from ListView
+                View view = super.getView(position, convertView, parent);
+
+                // Set the border of View (ListView Item)
+
+                //view.setBackground(getContext().getDrawable(R.drawable.userlistview));
+
+
+
+                // Return the view
+                return view;
+            }
+        };
+
+        userList.setAdapter(arrayAdapter);
+
+        userList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                userList.getSelectedItemId();
+
+
+                Intent intent = new Intent(getApplicationContext(), MyActivity.class);
+                intent.putExtra("KEY", users.get(position));
+                intent.putExtra("KEY2", grades.get(position));
+                intent.putExtra("KEY3", timer.get(position));
+                startActivity(intent);
+
+            }
+        });
     }
 
 

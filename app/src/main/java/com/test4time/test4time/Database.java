@@ -124,7 +124,8 @@ public class Database extends SQLiteOpenHelper {
     }
 
     /*
-     * Modifies a USERS TIME,
+     * Increments a users time by the entered amount
+     * @time - how much to increment a users time (minutes)
      */
     public boolean modifyTime(String name, int time) {
         SQLiteDatabase db = this.getWritableDatabase();

@@ -2,26 +2,17 @@ package com.test4time.test4time;
 
 import android.app.ActivityManager;
 import android.app.AlarmManager;
-import android.app.AppOpsManager;
 import android.app.IntentService;
 import android.app.PendingIntent;
-import android.app.usage.UsageStats;
-import android.app.usage.UsageStatsManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.SystemClock;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
-import android.view.WindowManager;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Author - Carson Schaefer
@@ -80,7 +71,7 @@ public class DeviceIntentService extends IntentService {
 //        }
 
         ActivityManager manager = (ActivityManager) getApplicationContext().getSystemService(ACTIVITY_SERVICE);
-        block = false;
+        block = true;
 
 
         Log.d("testing", "TIMERSTART");
@@ -189,8 +180,30 @@ public class DeviceIntentService extends IntentService {
 //            }
 
             try {
+                Database db = null;
+                Cursor data = null;
                 while(true) {
+                    db = new Database(getApplicationContext(), null, null, 0, null);
+                    data = db.userUsingTime();
+                    if (data.moveToNext()) {
+                        // user has enough time
+                        if (Integer.parseInt(data.getString(5)) > 0) {
+                            block = false;
+                            if (Integer.parseInt(data.getString(5)) == 2) {
+                                // 2 minute warning
+                            }
+                            TimeUnit.MINUTES.sleep(1);
+                            db.modifyTime(data.getString(1),-1);
+                        } else {
+                            // user does not have enough time
+                            db.startUsingTime(data.getString(1),false);
+                        }
 
+                    } else {
+                        block = true;
+                    }
+                    data.close();
+                    db.close();
 
                 }
 
