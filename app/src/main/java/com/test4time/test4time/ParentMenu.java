@@ -67,7 +67,7 @@ public class ParentMenu extends Activity
         addUser = (Button) findViewById(R.id.parent_addUser);
         changePin = (Button) findViewById(R.id.parent_changePin);
 
-        deleteUser = (Button) findViewById(R.id.parent_edit_delete);
+        //deleteUser = (Button) findViewById(R.id.parent_edit_delete);
 
 
         userName = (EditText)findViewById(R.id.parent_add_name);
@@ -82,7 +82,7 @@ public class ParentMenu extends Activity
         viewApps.setOnClickListener(clickListener);
         addUser.setOnClickListener(clickListener);
         changePin.setOnClickListener(clickListener);
-        deleteUser.setOnClickListener(clickListener);
+        //deleteUser.setOnClickListener(clickListener);
 
 
         //editTime5.setOnClickListener(clickListener);

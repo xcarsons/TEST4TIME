@@ -64,6 +64,7 @@ public class Users extends Activity {
 
         settingsBtn.setOnClickListener(new ClickListener());
         settingsBtn.setTypeface(font);
+        settingsBtn.setBackgroundResource(R.drawable.settingsbutton_32dp_b);
         usersText.setTypeface(font);
 
 
@@ -136,13 +137,6 @@ public class Users extends Activity {
         return true;
     }
     
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        Database db = new Database(getApplicationContext(), null, null, 0, null);
-        Cursor data = db.getUsers();
 
     @Override
     public void onResume() {

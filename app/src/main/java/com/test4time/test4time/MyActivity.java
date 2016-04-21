@@ -160,9 +160,12 @@ public class MyActivity extends Activity {
             sign.setTypeface(font);
             answer.setTypeface(font);
             submitBtn.setTypeface(font);
-            playButton.setTypeface(font);
+            //playButton.setTypeface(font);
             //playButton.setText("Play");
-            playButton.setText(userType==0?"Play" :"Pause");
+//            playButton.setText(userType==0?"Play" :"Pause");
+            playButton.setText("");
+            playButton.setBackgroundResource(userType==0 ?
+                    R.drawable.playbutton_32dp_b : R.drawable.pausebutton_32dp_b);
 
             grade.setText("Grade: "+ gradeLevel);
             grade.setTypeface(font);
@@ -358,7 +361,7 @@ public class MyActivity extends Activity {
 
 
         if (userType==0) {
-            db.startUsingTime(childName,true);
+            db.startUsingTime(childName, true);
             try {
                 mp.reset();
                 mp.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
@@ -367,10 +370,14 @@ public class MyActivity extends Activity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            playButton.setText("Pause");
+//            playButton.setText("Pause");
+            playButton.setText("");
+            playButton.setBackgroundResource(R.drawable.pausebutton_32dp_b);
         } else {
-            db.startUsingTime(childName,false);
-            playButton.setText("Play");
+            db.startUsingTime(childName, false);
+//            playButton.setText("Play");
+            playButton.setText("");
+            playButton.setBackgroundResource(R.drawable.playbutton_32dp_b);
         }
 
         db.close();
