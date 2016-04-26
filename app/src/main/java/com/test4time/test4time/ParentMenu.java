@@ -327,7 +327,20 @@ public class ParentMenu extends Activity
                         editTimeTextView = (TextView) d.findViewById(R.id.parent_edit_time);
 
                         editTimeValue = (TextView) d.findViewById(R.id.parent_edit_time_value);
-                        editTimeValue.setText(user.getCurrentTime());
+
+                        if(user != null) {
+                            if(user.getCurrentTime() != -1) {
+//                                editTimeValue.setText(user.getCurrentTime();
+//                                editTimeValue.setText("1");
+                                editTimeValue.setText(Integer.toString(user.getCurrentTime()));
+                            } else {
+                                editTimeValue.setText("-2");
+                            }
+                        } else {
+                            editTimeValue.setText("-4");
+                        }
+
+                        //editTimeValue.setText(user.getCurrentTime());
                         int radioId = editRadioGroup.getCheckedRadioButtonId();
                         if (radioId != -1) {
                             switch (radioId) {
