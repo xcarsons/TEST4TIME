@@ -30,7 +30,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="575dp">
+        android:layout_height="420dp">
 
         <ListView
             android:id="@+id/userList"
@@ -50,14 +50,14 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center|bottom">
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="256dp"
             android:id="@+id/T4TLogo"
 
             android:src="@drawable/test4timelogo"
@@ -69,6 +69,13 @@
             android:alpha=".75"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center|bottom" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reinvent the Teachable Moment"
+            android:layout_gravity="center|bottom"
+            android:textSize="32dp"/>
     </LinearLayout>
 
 

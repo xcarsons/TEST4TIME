@@ -3,6 +3,8 @@ package com.test4time.test4time;
 import android.app.*;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.SystemClock;
 import android.support.v4.app.NotificationCompat;
@@ -148,17 +150,17 @@ public class DeviceIntentService extends IntentService {
     /*  USED IN API 21
      * Check if Test4Time has access to usage Data
      */
-//    private static boolean needPermissionForBlocking(Context context) {
-//        try {
-//            PackageManager packageManager = context.getPackageManager();
-//            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
-//            AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-//            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
-//            return  (mode != AppOpsManager.MODE_ALLOWED);
-//        } catch (PackageManager.NameNotFoundException e) {
-//            return true;
-//        }
-//    }
+    private static boolean needPermissionForBlocking(Context context) {
+        try {
+            PackageManager packageManager = context.getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(context.getPackageName(), 0);
+            AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+            int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, applicationInfo.uid, applicationInfo.packageName);
+            return  (mode != AppOpsManager.MODE_ALLOWED);
+        } catch (PackageManager.NameNotFoundException e) {
+            return true;
+        }
+    }
 
 
 

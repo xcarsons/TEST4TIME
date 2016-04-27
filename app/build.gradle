@@ -5,7 +5,7 @@ android {
     buildToolsVersion "23.0.3"
     defaultConfig {
         applicationId "com.test4time.test4time"
-        minSdkVersion 17 //21 //was 17
+        minSdkVersion 21 //21 //was 17
 
         targetSdkVersion 23
         versionCode 1

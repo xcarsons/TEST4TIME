@@ -415,7 +415,8 @@ public class MyActivity extends Activity {
         inc_left.setText(num1.getText().toString());
         inc_op.setText(sign.getText().toString());
         inc_right.setText(num2.getText().toString());
-        inc_ans.setText(answer.getText().toString());
+        //inc_ans.setText(answer.getText().toString());
+        inc_ans.setText(q.answer);
 
         inc_button.setOnClickListener(new View.OnClickListener() {
             @Override
