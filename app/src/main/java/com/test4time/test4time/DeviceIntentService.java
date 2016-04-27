@@ -1,13 +1,11 @@
 package com.test4time.test4time;
 
-import android.app.ActivityManager;
-import android.app.AlarmManager;
-import android.app.IntentService;
-import android.app.PendingIntent;
+import android.app.*;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.SystemClock;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -190,7 +188,29 @@ public class DeviceIntentService extends IntentService {
                         if (Integer.parseInt(data.getString(5)) > 0) {
                             block = false;
                             if (Integer.parseInt(data.getString(5)) == 2) {
-                                // 2 minute warning
+                                NotificationCompat.Builder mBuilder =
+                                        new NotificationCompat.Builder(getApplicationContext())
+                                                .setSmallIcon(R.drawable.test4time_log_edited_v5)
+                                                .setContentTitle("Test 4 Time")
+                                                .setContentText("Two minutes left!");
+
+                                Intent resultIntent = new Intent(getApplicationContext(),  Users.class);
+                                PendingIntent resultPendingIntent =
+                                        PendingIntent.getActivity(
+                                                getApplicationContext(),
+                                                0,
+                                                resultIntent,
+                                                PendingIntent.FLAG_UPDATE_CURRENT
+                                        );
+                                mBuilder.setContentIntent(resultPendingIntent);
+                                int mNotificationId = 001;
+                                // Gets an instance of the NotificationManager service
+                                NotificationManager mNotifyMgr =
+                                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                                // Builds the notification and issues it.
+                                mNotifyMgr.notify(mNotificationId, mBuilder.build());
+
+
                             }
                             TimeUnit.MINUTES.sleep(1);
                             db.modifyTime(data.getString(1),-1);
