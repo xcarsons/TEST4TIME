@@ -2,6 +2,8 @@ package com.test4time.test4time;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -24,6 +26,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.LinkedList;
 /*********************************************************
  * Class responsible for manipulating the math question view
@@ -144,7 +147,7 @@ public class MyActivity extends Activity {
                 if ((event.getAction() == KeyEvent.ACTION_DOWN) &&
                         (keyCode == KeyEvent.KEYCODE_ENTER)) {
                     //Toast.makeText(MyActivity.this, answer.getText(), Toast.LENGTH_SHORT).show();
-                    onSubmitAction();
+                    onSubmitAction(v);
                     return true;
                 }
                 return false;
@@ -273,10 +276,8 @@ public class MyActivity extends Activity {
 
     }
 
-    private void onSubmitAction() {
+    private void onSubmitAction(View view) {
         AlertDialog.Builder alertBuild = new AlertDialog.Builder(MyActivity.this);
-
-
 
         String ansString = answer.getText().toString();
         if (ansString.equals("")) {
@@ -324,19 +325,24 @@ public class MyActivity extends Activity {
                 db.close();
 
             } else {
-                alertBuild.setCancelable(false).setPositiveButton(
-                        "OK",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.cancel();
-                                CreateQuestion();
-                            }
-                        });
-                alertBuild.setTitle("Incorrect Answer");
-                //alertBuild.setMessage("Correct Answer: " + q.answer);
-                alertBuild.setMessage(q.left + " " + q.opSign + " " + q.right + " = " + q.answer);
-                AlertDialog alert = alertBuild.create();
-                alert.show();
+                // create a custom dialog fragment for displaying the incorrect answer
+//                onIncorrectAnswerDialog(view);
+                showIncorrectDialog();
+
+                // Previous version of the "Incorrect Answer" prompt.
+//                alertBuild.setCancelable(false).setPositiveButton(
+//                        "OK",
+//                        new DialogInterface.OnClickListener() {
+//                            public void onClick(DialogInterface dialog, int id) {
+//                                dialog.cancel();
+//                                CreateQuestion();
+//                            }
+//                        });
+//                alertBuild.setTitle("Incorrect Answer");
+//                //alertBuild.setMessage("Correct Answer: " + q.answer);
+//                alertBuild.setMessage(q.left + " " + q.opSign + " " + q.right + " = " + q.answer);
+//                AlertDialog alert = alertBuild.create();
+//                alert.show();
             }
 
         }
@@ -395,6 +401,33 @@ public class MyActivity extends Activity {
         db.close();
     }
 
+    private void showIncorrectDialog() {
+        final Dialog dialog = new Dialog(MyActivity.this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.incorrect_dialog);
+        final TextView inc_left = (TextView) dialog.findViewById(R.id.incorrect_left);
+        final TextView inc_op= (TextView) dialog.findViewById(R.id.incorrect_op);
+        final TextView inc_right = (TextView) dialog.findViewById(R.id.incorrect_right);
+        final TextView inc_ans = (TextView) dialog.findViewById(R.id.incorrect_ans);
+
+        final Button inc_button = (Button) dialog.findViewById(R.id.incorrect_ok_button);
+
+        inc_left.setText(num1.getText().toString());
+        inc_op.setText(sign.getText().toString());
+        inc_right.setText(num2.getText().toString());
+        inc_ans.setText(answer.getText().toString());
+
+        inc_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                CreateQuestion();
+            }
+        });
+        dialog.show();
+
+    }
+
     private void onPressedKeypad(String num) {
         answer.setText(answer.getText() + num);
     }
@@ -435,7 +468,7 @@ public class MyActivity extends Activity {
             switch (view.getId()) {
                 // Submit Answer
                 case R.id.submitBtn:
-                    onSubmitAction();
+                    onSubmitAction(view);
                     break;
                 case R.id.play_button:
                     onPlayPauseAction();

@@ -50,6 +50,8 @@ public class ParentMenu extends Activity
     private RadioGroup editRadioGroup;
 
     private Button deleteUser;
+
+    private AlertDialog editDialog, deleteDialog;
     // The add time buttons are not currently implemented
     //private Button editTime5, editTime10;
 
@@ -67,7 +69,6 @@ public class ParentMenu extends Activity
         addUser = (Button) findViewById(R.id.parent_addUser);
         changePin = (Button) findViewById(R.id.parent_changePin);
 
-        //deleteUser = (Button) findViewById(R.id.parent_edit_delete);
 
 
         userName = (EditText)findViewById(R.id.parent_add_name);
@@ -82,7 +83,11 @@ public class ParentMenu extends Activity
         viewApps.setOnClickListener(clickListener);
         addUser.setOnClickListener(clickListener);
         changePin.setOnClickListener(clickListener);
-        //deleteUser.setOnClickListener(clickListener);
+
+//        setContentView(R.layout.parent_edituser);
+//        deleteUser = (Button) findViewById(R.id.parent_edit_delete);
+//        deleteUser.setOnClickListener(clickListener);
+//        setContentView(R.layout.parentmenu);
 
 
         //editTime5.setOnClickListener(clickListener);
@@ -119,6 +124,7 @@ public class ParentMenu extends Activity
     }
 
     private void onDeleteUser(View view) {
+
         AlertDialog.Builder alertBuild = new AlertDialog.Builder(getApplicationContext());
         alertBuild.setNegativeButton("Cancel",
                 new DialogInterface.OnClickListener() {
@@ -127,21 +133,21 @@ public class ParentMenu extends Activity
                     }
                 });
         alertBuild.setPositiveButton("Delete",
-            new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                    Dialog d = (Dialog) dialog;
-                    String name = ((TextView) d.findViewById(R.id.parent_edit_name)).getText().toString();
-                    Toast.makeText(ParentMenu.this, name + " has been removed",
-                            Toast.LENGTH_LONG).show();
-                    Database db = new Database(getApplicationContext(), null, null, 0, null);
-                    db.deleteUser(name);
-                }
-            });
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                        Dialog d = (Dialog) dialog;
+                        String name = ((TextView) d.findViewById(R.id.parent_edit_name)).getText().toString();
+                        Toast.makeText(ParentMenu.this, name + " has been removed",
+                                Toast.LENGTH_LONG).show();
+                        Database db = new Database(getApplicationContext(), null, null, 0, null);
+                        db.deleteUser(name);
+                    }
+                });
         alertBuild.setTitle("Delete User");
         alertBuild.setMessage("Are you sure you want to DELETE this user? This CANNOT be undone.");
-        AlertDialog alert = alertBuild.create();
-        alert.show();
+        deleteDialog = alertBuild.create();
+        deleteDialog.show();
     }
 
     private void addTime(int time) {
@@ -289,6 +295,7 @@ public class ParentMenu extends Activity
                     onChangePin(view);
                     break;
                 case R.id.parent_edit_delete:
+                    System.out.println("Delete User - pressed");
                     onDeleteUser(view);
                     break;
                 /* Add Time buttons not currently implemented
@@ -314,6 +321,54 @@ public class ParentMenu extends Activity
         LayoutInflater inflater = ParentMenu.this.getLayoutInflater();
 
         View content = inflater.inflate(R.layout.parent_edituser, null);
+        editNameTextView = (TextView) content.findViewById(R.id.parent_edit_name);
+        editNameTextView.setText(user.getName());
+        editTimeTextView = (TextView) content.findViewById(R.id.parent_edit_time);
+        //editTimeTextView.setText(user.getCurrentTime());
+        editTimeValue = (TextView) content.findViewById(R.id.parent_edit_time_value);
+        editTimeValue.setText(user.getCurrentTime() + "");
+
+        final String name = editNameTextView.getText().toString();
+
+        deleteUser = (Button) content.findViewById(R.id.parent_edit_delete);
+        deleteUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                System.out.println("DELETE USER?");
+//                AlertDialog.Builder alertBuild = new AlertDialog.Builder(getApplicationContext());
+                AlertDialog.Builder alertBuild = new AlertDialog.Builder(ParentMenu.this);
+                alertBuild.setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+                alertBuild.setPositiveButton("Delete",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                Dialog d = (Dialog) dialog;
+//                                String name = ((TextView) d.findViewById(R.id.parent_edit_name)).getText().toString();
+                                Toast.makeText(ParentMenu.this, name + " has been removed",
+                                        Toast.LENGTH_LONG).show();
+                                Database db = new Database(getApplicationContext(), null, null, 0, null);
+                                db.deleteUser(name);
+                                dialog.cancel();
+                                editDialog.cancel();
+                                new LoadUsers().execute(); // start thread to update user list
+                            }
+                        });
+                alertBuild.setTitle("Delete User");
+                alertBuild.setMessage("Are you sure you want to DELETE this user? This CANNOT be undone.");
+                deleteDialog = alertBuild.create();
+                deleteDialog.show();
+//                //onDeleteUser(v);
+//                //String name = ((TextView) v.findViewById(R.id.parent_edit_name)).getText().toString();
+//                Toast.makeText(ParentMenu.this, name + " has been removed",
+//                        Toast.LENGTH_LONG).show();
+//                Database db = new Database(getApplicationContext(), null, null, 0, null);
+//                db.deleteUser(name);
+            }
+        });
 
         builder.setView(content)
                 .setPositiveButton(R.string.submitText, new DialogInterface.OnClickListener() {
@@ -324,9 +379,18 @@ public class ParentMenu extends Activity
                         //      it's inefficient to call it other than in onCreate
                         editNameTextView = (TextView) d.findViewById(R.id.parent_edit_name);
                         editRadioGroup = (RadioGroup) (d.findViewById(R.id.radiogroup_edit));
-                        editTimeTextView = (TextView) d.findViewById(R.id.parent_edit_time);
+                        //editTimeTextView = (TextView) d.findViewById(R.id.parent_edit_time);
+                        //editTimeTextView.setText(user.getCurrentTime());
+//                        deleteUser = (Button) d.findViewById(R.id.parent_edit_delete);
+//
+//                        deleteUser.setOnClickListener(new View.OnClickListener() {
+//                            @Override
+//                            public void onClick(View v) {
+//
+//                            }
+//                        });
 
-                        editTimeValue = (TextView) d.findViewById(R.id.parent_edit_time_value);
+                        //editTimeValue = (TextView) d.findViewById(R.id.parent_edit_time_value);
 
                         if(user != null) {
                             if(user.getCurrentTime() != -1) {
@@ -425,98 +489,98 @@ public class ParentMenu extends Activity
                          dialog.dismiss();
                      }
                  });
-                AlertDialog dialog = builder.create();
+                editDialog = builder.create();
                 TextView editChildName = (TextView) content.findViewById(R.id.parent_edit_name);
                 editChildName.setText(user.getName());
                 RadioGroup editChildRG = (RadioGroup) content.findViewById(R.id.radiogroup_edit);
 
                 editChildRG.check(convertGradeToRadioButton(user.getGradeLevel(), true));
-                dialog.setTitle("Edit Child Information");
-                dialog.show();
+                editDialog.setTitle("Edit Child Information");
+                editDialog.show();
             }
 
-                             /*
-                             * generate list of users
-                             */
-                            private List<ApplicationInfo> checkForLaunchIntent
-                            (List < ApplicationInfo > list) {
-                                ArrayList<ApplicationInfo> userlist = new ArrayList<ApplicationInfo>();
-                                for (ApplicationInfo info : list) {
-                                    try {
-                                        if (null != packageManager.getLaunchIntentForPackage(info.packageName)) {
-                                            userlist.add(info);
-                                        }
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                return userlist;
+     /*
+     * generate list of users
+     */
+    private List<ApplicationInfo> checkForLaunchIntent
+    (List < ApplicationInfo > list) {
+        ArrayList<ApplicationInfo> userlist = new ArrayList<ApplicationInfo>();
+        for (ApplicationInfo info : list) {
+            try {
+                if (null != packageManager.getLaunchIntentForPackage(info.packageName)) {
+                    userlist.add(info);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return userlist;
     }
 
     /*
          * inner class creates a thread to populated the RecyclerView
          * Data retrieved (applications installed on device, applications in BLOCKAPPS table)
          */
-                            private class LoadUsers extends AsyncTask<Void, Void, Void> {
-                                private ProgressDialog progress = null;
+        private class LoadUsers extends AsyncTask<Void, Void, Void> {
+            private ProgressDialog progress = null;
 
-                                @Override
-                                protected Void doInBackground(Void... params) {
-                                    //userlist = checkForLaunchIntent(packageManager.getInstalledApplications(PackageManager.GET_META_DATA));
-                                    //listadaptor = new ApplicationAdapter(ParentMenu.this, userlist);
-                                    userlist = new ArrayList<>();
+            @Override
+            protected Void doInBackground(Void... params) {
+                //userlist = checkForLaunchIntent(packageManager.getInstalledApplications(PackageManager.GET_META_DATA));
+                //listadaptor = new ApplicationAdapter(ParentMenu.this, userlist);
+                userlist = new ArrayList<>();
 
-                                    listadaptor = new UserAdapter(ParentMenu.this, userlist, new OnItemClickListener() {
-                                        @Override
-                                        public void onItemClick(UserData item) {
-                                            onUserSelected(item);
-                                        }
-                                    });
+                listadaptor = new UserAdapter(ParentMenu.this, userlist, new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(UserData item) {
+                        onUserSelected(item);
+                    }
+                });
 
-                                    // Populate the list with the current users in the database
-                                    Database db = new Database(getApplicationContext(), null, null, 0, null);
-                                    // TEMPORARILY REMOVED - does not work on my phone, but works on tablet
-                                    Cursor data = db.getUsers();
-                                    // get list of users from USERS table, add them to the list of current users
-                                    while (data.moveToNext()) {
-                                        // UserData( name, grade, currentTime, isParent)
-                                        UserData newUser = new UserData(data.getString(1), data.getString(4),
-                                                Integer.parseInt(data.getString(5)), Integer.parseInt(data.getString(2)));
-                                        listadaptor.addUser(data.getString(1), newUser);
-                                    }
-                                    data.close();
-                                    db.close();
+                // Populate the list with the current users in the database
+                Database db = new Database(getApplicationContext(), null, null, 0, null);
+                // TEMPORARILY REMOVED - does not work on my phone, but works on tablet
+                Cursor data = db.getUsers();
+                // get list of users from USERS table, add them to the list of current users
+                while (data.moveToNext()) {
+                    // UserData( name, grade, currentTime, isParent)
+                    UserData newUser = new UserData(data.getString(1), data.getString(4),
+                            Integer.parseInt(data.getString(5)), Integer.parseInt(data.getString(2)));
+                    listadaptor.addUser(data.getString(1), newUser);
+                }
+                data.close();
+                db.close();
 
-            /* TESTING LIST POPULATION
-            String sampleName = "Jimmy";
-            for(int i = 0; i < 3; i++) {
-                UserData newUser = new UserData(sampleName + i, Integer.toString((i % 6) + 1),
-                        (i+1)*5, (i+1)*5);
-                listadaptor.addUser(sampleName + i, newUser);
+/* TESTING LIST POPULATION
+String sampleName = "Jimmy";
+for(int i = 0; i < 3; i++) {
+UserData newUser = new UserData(sampleName + i, Integer.toString((i % 6) + 1),
+    (i+1)*5, (i+1)*5);
+listadaptor.addUser(sampleName + i, newUser);
+}
+*/
+
+                return null;
             }
-            */
 
-                                    return null;
-                                }
+            @Override
+            protected void onCancelled() {
+                super.onCancelled();
+            }
 
-                                @Override
-                                protected void onCancelled() {
-                                    super.onCancelled();
-                                }
-
-                                @Override
-                                protected void onPostExecute(Void result) {
-                                    mRecyclerView.setAdapter(listadaptor);
+            @Override
+            protected void onPostExecute(Void result) {
+                mRecyclerView.setAdapter(listadaptor);
 //            System.out.println("POST EXECUTE");
-                                    progress.dismiss();
-                                    super.onPostExecute(result);
-                                }
+                progress.dismiss();
+                super.onPostExecute(result);
+            }
 
-                                @Override
-                                protected void onPreExecute() {
-                                    progress = ProgressDialog.show(ParentMenu.this, null,
-                                            "Loading Users");
-                                    super.onPreExecute();
+            @Override
+            protected void onPreExecute() {
+                progress = ProgressDialog.show(ParentMenu.this, null,
+                        "Loading Users");
+                super.onPreExecute();
         }
 
         @Override
