@@ -5,11 +5,11 @@
     android:gravity="center">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/enterPinMsg" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Please enter a pin to continue with the application or go to Test4Time to earn time."
+            android:id="@+id/enterPinMsg" android:textAlignment="center" android:gravity="center_horizontal"/>
 
     <EditText
         android:layout_width="wrap_content"

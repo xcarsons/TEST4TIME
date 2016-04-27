@@ -60,7 +60,7 @@ public class DeviceIntentService extends IntentService {
      */
     @Override
     protected void onHandleIntent(Intent intent) {
-        /** check for device API level USES API 21 */
+        /** USES API 21 */
         // open settings to let user grant Test4Time access to usage data
 //        if (needPermissionForBlocking(this)) {
 //                Intent settings = new Intent("android.settings.USAGE_ACCESS_SETTINGS");//Settings.ACTION_USAGE_ACCESS_SETTINGS);
