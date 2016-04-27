@@ -401,17 +401,6 @@ public class MyActivity extends Activity {
         db.close();
     }
 
-    private void onIncorrectAnswerDialog(View view) {
-        DialogFragment fragment = new IncorrectDialogFragment();
-        Bundle b = new Bundle();
-        b.putString("num1", num1.getText().toString());
-        b.putString("sign", sign.getText().toString());
-        b.putString("num2", num2.getText().toString());
-        b.putString("answer", answer.getText().toString());
-        fragment.setArguments(b);
-        fragment.show(getFragmentManager(), "incorrect_answer");
-    }
-
     private void showIncorrectDialog() {
         final Dialog dialog = new Dialog(MyActivity.this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
