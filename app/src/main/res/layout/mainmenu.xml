@@ -38,6 +38,7 @@
             android:layout_height="fill_parent"
             android:isScrollContainer="false"
             android:dividerHeight="20dp"
+            android:divider="@null"
             android:background="@null"
             android:textAlignment="center"
             android:gravity = "center_horizontal"

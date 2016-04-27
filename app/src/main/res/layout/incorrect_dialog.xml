@@ -1,0 +1,90 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_gravity="center_horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/incorrect_title"
+            android:textSize="48dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp"/>
+
+        <View
+            android:layout_width="256dp"
+            android:layout_height="3dp"
+            android:background="#ffffff" android:layout_gravity="center_horizontal"
+            android:paddingBottom="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal"
+            android:paddingTop="25dp"
+            android:paddingBottom="25dp">
+
+            <TextView
+                android:id="@+id/incorrect_left"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="88"
+                android:textSize="48dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                />
+            <TextView
+                android:id="@+id/incorrect_op"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="%"
+                android:textSize="48dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                />
+            <TextView
+                android:id="@+id/incorrect_right"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="44"
+                android:textSize="48dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                />
+            <TextView
+                android:text="@string/equal_sign"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:textSize="48dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                />
+            <TextView
+                android:id="@+id/incorrect_ans"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="0"
+                android:textSize="48dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/incorrect_ok_button"
+            android:layout_width="256dp"
+            android:layout_height="wrap_content"
+            android:textSize="48dp"
+            android:text="@string/ok"/>
+
+    </LinearLayout>
+
+</LinearLayout>
